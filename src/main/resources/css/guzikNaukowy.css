@@ -1,0 +1,8 @@
+.btnNauk{
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: black;
+    -fx-font-family: Monospaced Regular ;
+    -fx-font-size: 13;
+}

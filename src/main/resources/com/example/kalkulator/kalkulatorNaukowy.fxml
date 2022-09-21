@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="pp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="762.0" prefWidth="1021.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.kalkulator.kalkulatorNaukowy">
+   <children>
+      <VBox prefHeight="770.0" prefWidth="1020.0">
+         <children>
+            <VBox prefHeight="208.0" prefWidth="1020.0">
+               <children>
+                  <Label prefHeight="51.0" prefWidth="541.0" text="KALKULATOR NAUKOWY" />
+                  <Pane fx:id="pane1" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="textArea" layoutX="22.0" layoutY="60.0" prefHeight="85.0" prefWidth="401.0" />
+                        <TextField fx:id="wynikK" layoutX="349.0" layoutY="14.0" />
+                        <TextField fx:id="ukryteDoObliczenia" layoutX="612.0" layoutY="62.0" prefHeight="75.0" prefWidth="350.0" />
+                        <HBox fx:id="hBOX" layoutX="22.0" layoutY="5.0" prefHeight="44.0" prefWidth="298.0" style="-fx-border-color: black; -fx-background-color: white;">
+                           <children>
+                              <TextField fx:id="doObliczenia" prefHeight="42.0" prefWidth="296.0" style="-fx-background-color: white; -fx-border-color: pink;" />
+                           </children>
+                        </HBox>
+                     </children></Pane>
+
+
+               </children>
+            </VBox>
+            <HBox prefHeight="556.0" prefWidth="1020.0">
+               <children>
+                  <Pane prefHeight="556.0" prefWidth="469.0">
+                     <children>
+                        <Button layoutX="24.0" layoutY="27.0" mnemonicParsing="false" onAction="#dodawanieOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="+" />
+                        <Button layoutX="24.0" layoutY="72.0" mnemonicParsing="false" onAction="#odejmowanieOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="−" />
+                        <Button layoutX="24.0" layoutY="115.0" mnemonicParsing="false" onAction="#mnozenieOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="×" />
+                        <Button layoutX="24.0" layoutY="162.0" mnemonicParsing="false" onAction="#dzieleniaOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="÷" />
+                        <Button layoutX="92.0" layoutY="27.0" mnemonicParsing="false" onAction="#nawiasLewyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="(" />
+                        <Button layoutX="160.0" layoutY="27.0" mnemonicParsing="false" onAction="#nawiasPrawyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text=")" />
+                        <Button layoutX="92.0" layoutY="72.0" mnemonicParsing="false" onAction="#silniaOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="n!" />
+                        <Button layoutX="160.0" layoutY="72.0" mnemonicParsing="false" onAction="#eOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="e" />
+                        <Button layoutX="90.0" layoutY="115.0" mnemonicParsing="false" onAction="#procentaOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="\%" />
+                        <Button layoutX="158.0" layoutY="115.0" mnemonicParsing="false" onAction="#piOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="π" />
+                        <Button layoutX="92.0" layoutY="162.0" mnemonicParsing="false" onAction="#logarytmOnAction" prefHeight="30.0" prefWidth="48.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" text="logₙm">
+                           <font>
+                              <Font name="Monospaced Regular" size="11.0" />
+                           </font></Button>
+                        <Button layoutX="158.0" layoutY="162.0" mnemonicParsing="false" onAction="#logarytmNaturalnyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="ln" />
+                        <Button layoutX="225.0" layoutY="27.0" mnemonicParsing="false" onAction="#pierwiastekKwadratowyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="√" />
+                        <Button layoutX="290.0" layoutY="72.0" mnemonicParsing="false" onAction="#potegaStopniaNOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="xⁿ" />
+                        <Button layoutX="290.0" layoutY="27.0" mnemonicParsing="false" onAction="#pierwiastekStopniaNOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="ⁿ√" />
+                        <Button layoutX="225.0" layoutY="72.0" mnemonicParsing="false" onAction="#kwadratOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="x²" />
+                        <Button layoutX="225.0" layoutY="162.0" mnemonicParsing="false" onAction="#wynikOnAction" prefHeight="30.0" prefWidth="115.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="=" />
+                        <Button layoutX="225.0" layoutY="115.0" mnemonicParsing="false" onAction="#stopienOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="°" />
+                        <Button layoutX="14.0" layoutY="223.0" mnemonicParsing="false" onAction="#sinOnAction" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="sin(x)" />
+                        <Button layoutX="14.0" layoutY="263.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="cos(x)" />
+                        <Button layoutX="92.0" layoutY="223.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="tg(x)" />
+                        <Button layoutX="92.0" layoutY="263.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="ctg(x)" />
+
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>

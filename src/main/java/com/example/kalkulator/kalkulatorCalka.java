@@ -10,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import jep.JepException;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 
@@ -18,6 +20,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import jep.Jep;
 
 public class kalkulatorCalka implements Initializable {
 
@@ -39,6 +42,10 @@ public class kalkulatorCalka implements Initializable {
     private TextField wynikCalka;
     @FXML
     private TextField wpisanaCalka;
+    @FXML
+    private RadioButton radianyButton;
+    @FXML
+    private RadioButton stopnieButton;
 
     public void ChoiceBoxMetodaCalk(){
         ObservableList rodzajMetodyCalkowania = FXCollections.observableArrayList();
@@ -63,7 +70,7 @@ public class kalkulatorCalka implements Initializable {
         liczbaPodprzedzialow.setText("4");
     }
 
-    public void wynikOnAction(ActionEvent actionEvent) throws PyException {
+    public void wynikOnAction(ActionEvent actionEvent) throws PyException , JepException {
         granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
         granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
         przeksztalcenieRownania();
@@ -85,6 +92,7 @@ public class kalkulatorCalka implements Initializable {
 ////KOMUNIKAT
             }
         }
+
     }
 
     public String przeksztalcenieRownania(){
@@ -95,9 +103,9 @@ public class kalkulatorCalka implements Initializable {
          String calka=wpisanaCalka.getText();
          Pattern kropka = Pattern.compile(".");
 
-         String licznik="", licznikNowy="";
-         int b=0;
+         String licznik="";
 
+        String kat="";
 
          for(int i=0;i<calka.length();i++){
              if(calka.charAt(i)=='/'){
@@ -148,7 +156,7 @@ public class kalkulatorCalka implements Initializable {
                 calka=calka.replace("sqrt("+stopienPierwiastka+","+liczbaPierwiastkowana+")",liczbaPierwiastkowana+"**(1./("+stopienPierwiastka+"))");
             }
             else if(calka.charAt(i)=='π'){
-                calka=calka.replace("π","pi");
+                calka=calka.replace("π","math.pi");
             }
             else if(calka.charAt(i)=='!'){
                 String liczbaSilni="";
@@ -204,39 +212,96 @@ public class kalkulatorCalka implements Initializable {
 
             }
             else if(calka.charAt(i)=='l' && calka.charAt(i+1)=='n'){
-               ///SPRAWDZA JAKI WYSZEDL LOGARYTM
-                /*String liczbaLogarytmowana="";
-                 for(int j=0; j<calka.length();j++){
-                     if(calka.charAt(j+1)=='x' && j+1<calka.length()){
+                // calka=calka.replace("ln","math.log");
+
+                 int k=0;
+                 for(int j=i;j<calka.length();j++){
+                     if (calka.charAt(j)==']') {
+                         k=j;
+                         break;
+                     }
+                 }
+
+                 StringBuilder str = new StringBuilder(calka);
+                 str.setCharAt(k,')');
+                 calka=String.valueOf(str);
+                 calka=calka.replace("ln[","math.log(");
+                 System.out.println(calka);
+            }
+            else  if(((calka.charAt(i)=='c' && calka.charAt(i+1)=='o' && calka.charAt(i+2)=='s') ||
+                     (calka.charAt(i)=='s' && calka.charAt(i+1)=='i' && calka.charAt(i+2)=='n') ||
+                     (calka.charAt(i)=='t' && calka.charAt(i+1)=='a' && calka.charAt(i+2)=='n') ||
+                     (calka.charAt(i)=='c' && calka.charAt(i+1)=='o' && calka.charAt(i+2)=='t')) ||
+                     (calka.charAt(i)=='a' && (calka.charAt(i+1)=='s' || calka.charAt(i+1)=='c' || calka.charAt(i+1)=='t') && (calka.charAt(i+2)=='i' || calka.charAt(i+2)=='o' || calka.charAt(i+2)=='a') && (calka.charAt(i+3)=='n' || calka.charAt(i+3)=='s' || calka.charAt(i+3)=='t'))){
+                kat="";
+
+                 for(int j=i; j<calka.length();j++){
+                     if(calka.charAt(j)==']'){
                          break;
                      }else{
-                         liczbaLogarytmowana+=calka.charAt(j);
+                         kat+=calka.charAt(j);
                      }
                  }
-                 for(int j=0;j<liczbaLogarytmowana.length();j++){
-                     if (liczbaLogarytmowana.charAt(j)=='^') {
-                         liczbaLogarytmowana=liczbaLogarytmowana.replace("^","**");
-
-                     }
-                 }
-                 System.out.println(liczbaLogarytmowana);
-                 liczbaLogarytmowana=liczbaLogarytmowana.replace("ln", "math.log");
-                 interpreter.exec("import math \nd=float("+liczbaLogarytmowana+")");
-                 System.out.println("log="+interpreter.get("d"));*/
-
-                calka=calka.replace("ln","math.log");
-            }
+                 kat+="]";
+                 calka=calka.replace(kat,funkcjeTrygonometryczne(kat));
+             }
 
         }
-
-        Pattern cosPatter=Pattern.compile("cos");
-        Matcher cosMatcher = cosPatter.matcher(calka);
-
-
 
          wartoscCalki.setText(calka);
 
          return calka;
+    }
+
+
+    public String funkcjeTrygonometryczne(String kat){
+        String  nowyKat = "";
+
+        StringBuilder str;
+        StringBuilder strLib;
+        String str2="";
+        if(kat.contains("π")){
+           nowyKat=kat.replace("π","sympy.pi");
+           str = new StringBuilder(nowyKat);
+           strLib = new StringBuilder("sympy.");
+           strLib.append(str);
+            str2 = String.valueOf(strLib);
+            str2= str2.replace("]",")");
+            str2= str2.replace("[","(");
+        }else{
+            str = new StringBuilder(kat);
+            strLib = new StringBuilder("sympy.");
+            strLib.append(str);
+            str2 = String.valueOf(strLib);
+            if(stopnieButton.isSelected() && !radianyButton.isSelected()){
+                str2= str2.replace("]",")");
+                str2= str2.replace("[","(");
+            }else if(!stopnieButton.isSelected() && radianyButton.isSelected()){
+                str2= str2.replace("]","))");
+                str2= str2.replace("[","(math.radians(");
+            }
+
+        }
+
+        return wynikFunkcjiTryg(str2);
+    }
+
+
+
+   public String wynikFunkcjiTryg(String kat){
+        String wynik="";
+
+        try(Jep jep = new Jep() {}){
+            jep.exec("""
+                    import sympy
+                    import math
+                    x=round(float("""+kat+"""
+                    ),15)
+                    """);
+            wynik = String.valueOf(jep.getValue("x"));
+        }
+return wynik;
+
     }
 
     public static Long silnia(int i){
@@ -465,47 +530,131 @@ public class kalkulatorCalka implements Initializable {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
 
 /// a - dolna granica calkowania, b- gorna granica calkowania , n - liczba podprzedziałów
-            interpreter.exec("""
-                    
-                    import sympy
-                    def f(x):
-                    \treturn\040""" + wartoscCalki.getText() +
-                    """
-                    \ndef simpson(a, b, n):
-                    \tx1=0.0
-                    \tx2=0.0
-                    \tx0=f(a)+f(b)
-                    \th=(b-a)/n
-                    \twynik=0.0
-                                         	
-                    \tfor i in range(1,n):
-                    \t\tx=(a+(i*h))
-                    \t\tif i%2==0:
-                    \t\t\tx2+=f(x)
-                    \t\telse:
-                    \t\t\tx1+=f(x)
-                    \twynik=h*(x0+2*x2+4*x1)/3
-                    \treturn wynik
-                    c=float(simpson(""" + granicaDolna.getText() + """
-                    ,""" + granicaGorna.getText() + """
-                    ,""" + liczbaPodprzedzialow.getText() + """
-                    ))"""
-            );
-            interpreter.exec("print(c)");
+                interpreter.exec("""
+                        import math
+                        def f(x):
+                        \treturn\040""" + wartoscCalki.getText() +
+                        """
+                                \ndef simpson(a, b, n):
+                                \tx1=0.0
+                                \tx2=0.0
+                                \tx0=f(a)+f(b)
+                                \th=(b-a)/n
+                                \twynik=0.0
+                                                     	
+                                \tfor i in range(1,n):
+                                \t\tx=(a+(i*h))
+                                \t\tif i%2==0:
+                                \t\t\tx2+=f(x)
+                                \t\telse:
+                                \t\t\tx1+=f(x)
+                                \twynik=h*(x0+2*x2+4*x1)/3
+                                \treturn wynik
+                                c=float(simpson(""" + granicaDolna.getText() + """
+                        ,""" + granicaGorna.getText() + """
+                        ,""" + liczbaPodprzedzialow.getText() + """
+                        ))"""
+                );
+                interpreter.exec("print(c)");
 
-            wynikCalka.setText(String.valueOf(interpreter.get("c")));
+                wynikCalka.setText(String.valueOf(interpreter.get("c")));
 
-         //   interpreter.exec("d=float(16**(1./(1./4)))");
-             //       interpreter.exec("print(d)");
+                //   interpreter.exec("d=float(16**(1./(1./4)))");
+                //       interpreter.exec("print(d)");
+            }
+
         }
 
-
-    }
 
     public void piOnAction(ActionEvent event){
         wpisanaCalka.setText(wpisanaCalka.getText()+"π");
     }
 
+    public void plusOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"+");
+    }
 
+    public void minusOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"-");
+    }
 
+    public void razyOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"*");
+    }
+
+    public void dzielenieOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"/");
+    }
+
+    public void nawiastLewyOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"(");
+    }
+
+    public void nawiasPrawyOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+")");
+    }
+
+    public void silniaOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"!");
+    }
+
+    public void eulerOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"e");
+    }
+
+    public void logarytmOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"log[?][?]");
+    }
+
+    public void logarytmNaturalnyOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"ln[?]");
+    }
+
+    public void pierwiastekKwadratowyOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"sqrt(2,?)");
+    }
+
+    public void potegaStopniaNOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"^");
+    }
+
+    public void pierwiastekStopniaNOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"sqrt(?,?)");
+    }
+
+    public void potegaKwadratowaOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"^2");
+    }
+
+    public void sinOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"sin[?]");
+    }
+
+    public void cosOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"cos[?]");
+    }
+
+    public void cotOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"cot[?]");
+    }
+
+    public void atanOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"atan[?]");
+    }
+
+    public void acosOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"acos[?]");
+    }
+
+    public void acotOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"acot[?]");
+    }
+
+    public void asinOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"asin[?]");
+    }
+
+    public void tanOnAction(ActionEvent actionEvent) {
+        wpisanaCalka.setText(wpisanaCalka.getText()+"tan[?]");
+    }
 }

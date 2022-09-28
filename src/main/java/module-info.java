@@ -12,6 +12,8 @@ module com.example.kalkulator {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires jython.slim;
+    requires jep;
+
 
 
     opens com.example.kalkulator to javafx.fxml;

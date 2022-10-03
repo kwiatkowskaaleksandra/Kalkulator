@@ -13,7 +13,7 @@ module com.example.kalkulator {
     requires java.sql;
     requires jython.slim;
     requires jep;
-
+    requires java.desktop;
 
 
     opens com.example.kalkulator to javafx.fxml;

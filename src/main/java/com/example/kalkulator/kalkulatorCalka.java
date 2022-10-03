@@ -94,6 +94,7 @@ public class kalkulatorCalka implements Initializable {
 
     public void graniceCheck(){
         String komunikat="";
+
         try {
             if (granicaDolna.getText().isEmpty() || granicaGorna.getText().isEmpty()) {
                komunikat= "Granica całki nie może pozostać pusta.";
@@ -109,6 +110,20 @@ public class kalkulatorCalka implements Initializable {
             if (granicaGorna.getText().matches("[0-9]+")) {
                 granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
             }
+
+            if(granicaDolna.getText().matches("(.*)∞(.*)")){
+                if(!granicaDolna.getText().equals("-∞") && !granicaDolna.getText().equals("+∞")){
+                    komunikat="Błędna wartość dolnej granicy.";
+                    throw new Exception(komunikat);
+                }
+            }
+            if(granicaGorna.getText().matches("(.*)∞(.*)")){
+                if(!granicaGorna.getText().equals("-∞") && !granicaGorna.getText().equals("+∞")){
+                    komunikat="Błędna wartość górnej granicy.";
+                    throw new Exception(komunikat);
+                }
+            }
+
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,komunikat,"Alert",JOptionPane.WARNING_MESSAGE);
         }
@@ -124,9 +139,7 @@ public class kalkulatorCalka implements Initializable {
         granicaDolnaPrzeksztalcona=przeksztalcenieRownania(granicaDolna.getText());
         granicaGornaPrzeksztalcona=przeksztalcenieRownania(granicaGorna.getText());
 
-        wartoscCalki.setText(zmianaRownania(wpisanaCalka.getText()));
-        granicaGornaWzor.setText(zmianaRownania(granicaGorna.getText()));
-        granicaDolnaWzor.setText(zmianaRownania(granicaDolna.getText()));
+
 
         switch (metodaCalkowania.getValue()) {
             case "Metoda prostokątów z niedomiarem (c. numeryczne)" -> metodaProstokatowZNiedomiarem();
@@ -174,17 +187,15 @@ public class kalkulatorCalka implements Initializable {
              }
 
              if(wzor.charAt(i)=='^'){
-                 int k=0;
-                 for(int j=i;j<wzor.length();j++){
+                 String wykladnik="";
+                 for(int j=i+2;j<wzor.length();j++){
                      if(wzor.charAt(j)==']'){
-                         k=j;
                          break;
+                     }else{
+                         wykladnik+=wzor.charAt(j);
                      }
                  }
-                 wzor= wzor.replace("^[", "**");
-                 StringBuilder str= new StringBuilder(wzor);
-                 str.replace(k,k+1,"");
-                 wzor=String.valueOf(str);
+                 wzor= wzor.replace("^["+wykladnik+"]", "**"+wykladnik);
              }
 
          }
@@ -290,13 +301,14 @@ public class kalkulatorCalka implements Initializable {
 
                  for(int j=i; j<wzor.length();j++){
                      if(wzor.charAt(j)==']'){
+                         kat+="]";
                          break;
                      }else{
                          kat+=wzor.charAt(j);
                      }
                  }
-                 kat+="]";
-                 wzor=wzor.replace(kat,funkcjeTrygonometryczne(kat));
+                 wzor=wzor.replace(kat,"("+funkcjeTrygonometryczne(kat)+")");
+                 System.out.println(wzor);
              }
 
         }
@@ -305,7 +317,6 @@ public class kalkulatorCalka implements Initializable {
 
          return wzor;
     }
-
 
     public String funkcjeTrygonometryczne(String kat){
         String  nowyKat = "";
@@ -371,7 +382,7 @@ return wynik;
                         break;
                     }else{ liczba+=wzor.charAt(j);}
                 }
-                System.out.println(liczba);
+
                 wzor=wzor.replace("ln["+liczba+"]","ln("+liczba+")");
 
             }
@@ -470,23 +481,27 @@ return wynik;
                     }
                 }
 
-                System.out.println(kat);
-                String nowyKat=kat.replace("[","(");
+                if(kat.matches("(.*)^(.*)")){
+                    kat+="]";
+                }
+
+                String nowyKat=kat.replaceFirst("\\[","(");
+
+                StringBuilder str = new StringBuilder(nowyKat);
+                int lastIndex = nowyKat.lastIndexOf("]");
+                str.setCharAt(lastIndex, ')');
+                nowyKat=String.valueOf(str);
                 wzor=wzor.replace(kat,nowyKat);
-                System.out.println(nowyKat);
-                String nowyKat2=nowyKat.replace("]",")");
-                wzor=wzor.replace(nowyKat,nowyKat2);
-                System.out.println(nowyKat2);
+
             }
 
 
 
         }
 
-
-
         return wzor;
     }
+
 
     public char kodowanieIndeksGorny(String wykladnik){
         char unicode = 0;
@@ -513,10 +528,10 @@ return wynik;
             case "n" -> unicode = '\u207F';
             case "t" -> unicode = '\u1D57';
             case "o" -> unicode = '\u1D52';
-            case "(" -> unicode = '\u207D';
-            case ")" -> unicode = '\u207E';
-            case "[" -> unicode = '\u207D';
-            case "]" -> unicode = '\u207E';
+           // case "(" -> unicode = '\u207D';
+           // case ")" -> unicode = '\u207E';
+         //   case "[" -> unicode = '\u207D';
+         //   case "]" -> unicode = '\u207E';
             case "s" -> unicode = '\u02E2';
            // case "x" -> unicode = '\u036F';
             // case "pi" -> unicode = '\u209C';
@@ -541,10 +556,10 @@ return wynik;
             case "/" -> unicode = '\u2E1D';
             case "." -> unicode = '\u002C';
             case "-" -> unicode = '\u208B';
-            case "(" -> unicode = '\u208D';
-            case ")" -> unicode = '\u208E';
-            case "[" -> unicode = '\u208D';
-            case "]" -> unicode = '\u208E';
+           // case "(" -> unicode = '\u208D';
+           // case ")" -> unicode = '\u208E';
+          //  case "[" -> unicode = '\u208D';
+         //   case "]" -> unicode = '\u208E';
             case "a" -> unicode = '\u2090';
           //  case "c" -> unicode = '\u1D9C';
             case "e" -> unicode = '\u2091';
@@ -699,326 +714,186 @@ return wynik;
         }
 
     public void piOnAction(ActionEvent event){
-
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "π");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "π");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "π");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "π");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "π");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "π");
         }
-
     }
 
     public void plusOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "+");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "+");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "+");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "+");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "+");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "+");
         }
     }
 
     public void minusOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "-");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "-");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "-");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "-");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "-");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "-");
         }
     }
 
     public void razyOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "*");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "*");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "*");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "*");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "*");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "*");
         }
     }
 
     public void dzielenieOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "/");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "/");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "/");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "/");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "/");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "/");
         }
     }
 
     public void nawiastLewyOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "(");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "(");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "(");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "(");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "(");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "(");
         }
     }
 
     public void nawiasPrawyOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + ")");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + ")");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + ")");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + ")");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + ")");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + ")");
         }
     }
 
     public void silniaOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "!");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "!");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "!");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "!");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "!");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "!");
         }
     }
 
     public void eulerOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "e");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "e");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "e");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "e");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "e");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "e");
         }
     }
 
     public void logarytmOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "log[?][?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "log[?][?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "log[?][?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "log[?][?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "log[?][?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "log[?][?]");
         }
     }
 
     public void logarytmNaturalnyOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "ln[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "ln[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "ln[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "ln[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "ln[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "ln[?]");
         }
     }
 
     public void pierwiastekKwadratowyOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "sqrt[2,?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "sqrt[2,?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "sqrt[2,?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "sqrt[2,?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "sqrt[2,?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "sqrt[2,?]");
         }
     }
 
     public void potegaStopniaNOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "^[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "^[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "^[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "^[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "^[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "^[?]");
         }
     }
 
     public void pierwiastekStopniaNOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "sqrt[?,?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "sqrt[?,?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "sqrt[?,?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "sqrt[?,?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "sqrt[?,?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "sqrt[?,?]");
         }
     }
 
     public void potegaKwadratowaOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "^[2]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "^[2]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "^[2]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "^[2]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "^[2]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "^[2]");
         }
     }
 
     public void sinOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "sin[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "sin[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "sin[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "sin[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "sin[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "sin[?]");
         }
     }
 
     public void cosOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "cos[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "cos[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "cos[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "cos[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "cos[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "cos[?]");
         }
     }
 
     public void cotOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "cot[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "cot[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "cot[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "cot[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "cot[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "cot[?]");
         }
     }
 
     public void atanOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "atan[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "atan[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "atan[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "atan[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "atan[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "atan[?]");
         }
     }
 
     public void acosOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "acos[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "acos[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "acos[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "acos[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "acos[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "acos[?]");
         }
     }
 
     public void acotOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "acot[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "acot[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "acot[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "acot[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "acot[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "acot[?]");
         }
     }
 
     public void asinOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "asin[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "asin[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "asin[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "asin[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "asin[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "asin[?]");
         }
     }
 
     public void tanOnAction(ActionEvent actionEvent) {
         switch (pressedField) {
-            case "GRANICA_GORNA" -> {
-                granicaGorna.setText(granicaGorna.getText() + "tan[?]");
-            }
-            case "GRANICA_DOLNA" -> {
-                granicaDolna.setText(granicaDolna.getText() + "tan[?]");
-            }
-            case "CALKA" -> {
-                wpisanaCalka.setText(wpisanaCalka.getText() + "tan[?]");
-            }
+            case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "tan[?]");
+            case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "tan[?]");
+            case "CALKA" -> wpisanaCalka.setText(wpisanaCalka.getText() + "tan[?]");
         }
     }
 
@@ -1032,5 +907,21 @@ return wynik;
 
     public void granicaGornaPressed(MouseEvent mouseEvent) {
         pressedField= String.valueOf(KilknietePole.GRANICA_GORNA);
+    }
+
+    public void nieskonczonoscOnAction(ActionEvent actionEvent) {
+        String komunikat="";
+        try {
+            switch (pressedField) {
+                case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "∞");
+                case "GRANICA_DOLNA" -> granicaDolna.setText(granicaDolna.getText() + "∞");
+                case "CALKA" -> {
+                    komunikat="Znak nieskończoności nie może zostać wpisany we wzór całki.";
+                    throw new Exception(komunikat);
+                }
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null,komunikat,"Alert",JOptionPane.WARNING_MESSAGE);
+        }
     }
 }

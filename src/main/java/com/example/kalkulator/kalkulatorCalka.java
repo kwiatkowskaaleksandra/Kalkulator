@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import jep.JepException;
 import org.python.util.PythonInterpreter;
 import javax.swing.*;
 import java.net.URL;
@@ -28,32 +29,31 @@ public class kalkulatorCalka implements Initializable {
     @FXML
     public Label granicaGornaWzor;
     @FXML
-    private ChoiceBox<String> metodaCalkowania;
+    public ChoiceBox<String> metodaCalkowania;
     @FXML
-    private TextField liczbaPodprzedzialow;
+    public TextField liczbaPodprzedzialow;
     @FXML
-    private TextField granicaDolna;
+    public TextField granicaDolna;
     @FXML
-    private TextField granicaGorna;
+    public TextField granicaGorna;
     @FXML
-    private TextField wartoscCalki;
+    public  TextField wartoscCalki;
     @FXML
-    private TextField wynikCalka;
+    public TextField wynikCalka;
     @FXML
-    private TextField wpisanaCalka;
+    public TextField wpisanaCalka;
     @FXML
-    private TextField ukrytyWzorCalki;
+    public TextField ukrytyWzorCalki;
     @FXML
-    private RadioButton radianyButton;
+    public RadioButton radianyButton;
     @FXML
-    private RadioButton stopnieButton;
+    public RadioButton stopnieButton;
 
-    private static String granicaGornaPrzeksztalcona=null;
-    private static String granicaDolnaPrzeksztalcona=null;
+    static String granicaGornaPrzeksztalcona=null;
+    static String granicaDolnaPrzeksztalcona=null;
 
 
     private static String pressedField= String.valueOf(KilknietePole.CALKA);
-
     public void ChoiceBoxMetodaCalk(){
         ObservableList rodzajMetodyCalkowania = FXCollections.observableArrayList();
         rodzajMetodyCalkowania.removeAll(rodzajMetodyCalkowania);
@@ -62,10 +62,10 @@ public class kalkulatorCalka implements Initializable {
         String c = "Metoda prostokątów z nadmiarem (c. numeryczne)";
         String d = "Metoda trapezów (c. numeryczne)";
         String e = "Metoda Simpsona (c.numeryczne)";
-//JESZCZE METODA ANALITYCZNA
-        rodzajMetodyCalkowania.addAll(b,c,d,e);
+        String f = "Metoda analityczna";
+        rodzajMetodyCalkowania.addAll(b,c,d,e,f);
         metodaCalkowania.getItems().addAll(rodzajMetodyCalkowania);
-        metodaCalkowania.setValue(a);
+       metodaCalkowania.setValue(a);
 
     }
 
@@ -92,9 +92,9 @@ public class kalkulatorCalka implements Initializable {
         }
     }
 
-    public void graniceCheck(){
+    public boolean graniceCheck(){
         String komunikat="";
-
+boolean er=false;
         try {
             if (granicaDolna.getText().isEmpty() || granicaGorna.getText().isEmpty()) {
                komunikat= "Granica całki nie może pozostać pusta.";
@@ -108,18 +108,27 @@ public class kalkulatorCalka implements Initializable {
                 granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
             }
             if (granicaGorna.getText().matches("[0-9]+")) {
-                granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
+               granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
             }
 
             if(granicaDolna.getText().matches("(.*)∞(.*)")){
                 if(!granicaDolna.getText().equals("-∞") && !granicaDolna.getText().equals("+∞")){
                     komunikat="Błędna wartość dolnej granicy.";
+                    er=true;
                     throw new Exception(komunikat);
                 }
             }
             if(granicaGorna.getText().matches("(.*)∞(.*)")){
                 if(!granicaGorna.getText().equals("-∞") && !granicaGorna.getText().equals("+∞")){
                     komunikat="Błędna wartość górnej granicy.";
+                    er=true;
+                    throw new Exception(komunikat);
+                }
+            }
+            if(granicaGorna.getText().matches("(.*)∞") || granicaDolna.getText().matches("(.*)∞")){
+                if(!metodaCalkowania.getValue().equals("Metoda analityczna")){
+                    komunikat="Granice nieskończoności mogą być jedynie użyte przy całkowaniu metodą analityczną.";
+                    er=true;
                     throw new Exception(komunikat);
                 }
             }
@@ -127,33 +136,62 @@ public class kalkulatorCalka implements Initializable {
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,komunikat,"Alert",JOptionPane.WARNING_MESSAGE);
         }
+        return  er;
     }
 
     public void wynikOnAction() {
 
-        graniceCheck();
-        liczbaPodprzedzialowCheck();
-
-        ukrytyWzorCalki.setText(przeksztalcenieRownania(wpisanaCalka.getText()));
-
-        granicaDolnaPrzeksztalcona=przeksztalcenieRownania(granicaDolna.getText());
-        granicaGornaPrzeksztalcona=przeksztalcenieRownania(granicaGorna.getText());
+        if(!graniceCheck()){
+            granicaGornaWzor.setText(zmianaRownania(granicaGorna.getText()));
+           granicaDolnaWzor.setText(zmianaRownania(granicaDolna.getText()));
 
 
+            wartoscCalki.setText(zmianaRownania(wpisanaCalka.getText()));
 
         switch (metodaCalkowania.getValue()) {
-            case "Metoda prostokątów z niedomiarem (c. numeryczne)" -> metodaProstokatowZNiedomiarem();
-            case "Metoda prostokątów z nadmiarem (c. numeryczne)" -> metodaProstokatowZNadmiarem();
-            case "Metoda trapezów (c. numeryczne)" -> metodaTrapezow();
-            case "Metoda Simpsona (c.numeryczne)" -> metodaSimpsona();
-            default -> {
-////KOMUNIKAT
+            case "Metoda prostokątów z niedomiarem (c. numeryczne)" -> {
+                liczbaPodprzedzialowCheck();
+                granicaDolnaPrzeksztalcona=przeksztalcenieRownania(granicaDolna.getText(),"math.");
+                granicaGornaPrzeksztalcona=przeksztalcenieRownania(granicaGorna.getText(),"math.");
+                ukrytyWzorCalki.setText(przeksztalcenieRownania(wpisanaCalka.getText(),"math."));
+                metodaProstokatowZNiedomiarem();
             }
+            case "Metoda prostokątów z nadmiarem (c. numeryczne)" -> {
+                liczbaPodprzedzialowCheck();
+               granicaDolnaPrzeksztalcona=przeksztalcenieRownania(granicaDolna.getText(),"math.");
+                granicaGornaPrzeksztalcona=przeksztalcenieRownania(granicaGorna.getText(),"math.");
+               ukrytyWzorCalki.setText(przeksztalcenieRownania(wpisanaCalka.getText(),"math."));
+                metodaProstokatowZNadmiarem();
+            }
+            case "Metoda trapezów (c. numeryczne)" -> {
+                liczbaPodprzedzialowCheck();
+                granicaDolnaPrzeksztalcona=przeksztalcenieRownania(granicaDolna.getText(),"math.");
+                granicaGornaPrzeksztalcona=przeksztalcenieRownania(granicaGorna.getText(),"math.");
+                ukrytyWzorCalki.setText(przeksztalcenieRownania(wpisanaCalka.getText(),"math."));
+                metodaTrapezow();
+            }
+            case "Metoda Simpsona (c.numeryczne)" ->{
+                liczbaPodprzedzialowCheck();
+                granicaDolnaPrzeksztalcona=przeksztalcenieRownania(granicaDolna.getText(),"math.");
+                granicaGornaPrzeksztalcona=przeksztalcenieRownania(granicaGorna.getText(),"math.");
+               ukrytyWzorCalki.setText(przeksztalcenieRownania(wpisanaCalka.getText(),"math."));
+                metodaSimpsona();
+            }
+            case "Metoda analityczna" ->{
+                liczbaPodprzedzialow.clear();
+                granicaDolnaPrzeksztalcona=przeksztalcenieRownania(granicaDolna.getText(),"sympy.");
+                granicaGornaPrzeksztalcona=przeksztalcenieRownania(granicaGorna.getText(),"sympy.");
+                ukrytyWzorCalki.setText(przeksztalcenieRownania(wpisanaCalka.getText(),"sympy."));
+                metodaAnalityczna();
+            }
+            default -> JOptionPane.showMessageDialog(null,"Proszę wybrać metodę całkowania.","Alert",JOptionPane.WARNING_MESSAGE);
         }
+        }
+
 
     }
 
-    public String przeksztalcenieRownania(String wzor){
+    public String przeksztalcenieRownania(String wzor, String lib){
         PythonInterpreter interpreter=new PythonInterpreter();
         // wartoscCalki.setText(wpisanaCalka.getText());
 
@@ -195,7 +233,11 @@ public class kalkulatorCalka implements Initializable {
                          wykladnik+=wzor.charAt(j);
                      }
                  }
-                 wzor= wzor.replace("^["+wykladnik+"]", "**"+wykladnik);
+                 wzor= wzor.replace("^["+wykladnik+"]", "**("+wykladnik+")");
+             }
+
+             if(wzor.charAt(i)=='∞'){
+                 wzor= wzor.replace("∞", "sympy.oo");
              }
 
          }
@@ -220,7 +262,7 @@ public class kalkulatorCalka implements Initializable {
                  wzor=wzor.replace("sqrt["+stopienPierwiastka+","+liczbaPierwiastkowana+"]",liczbaPierwiastkowana+"**(1./("+stopienPierwiastka+"))");
             }
             else if(wzor.charAt(i)=='π'){
-                 wzor=wzor.replace("π","math.pi");
+                 wzor=wzor.replace("π",lib+"pi");
             }
             else if(wzor.charAt(i)=='!'){
                 String liczbaSilni="";
@@ -268,7 +310,7 @@ public class kalkulatorCalka implements Initializable {
                     }
                 }
 
-                 wzor=wzor.replace("log["+podstawaLogarytm+"]["+liczbaLogarytm+"]","math.log10("+liczbaLogarytm+")/math.log10("+podstawaLogarytm+")");
+                 wzor=wzor.replace("log["+podstawaLogarytm+"]["+liczbaLogarytm+"]","sympy.log("+liczbaLogarytm+","+podstawaLogarytm+")");
 
                // interpreter.exec("import math \nq=float(math.log10("+liczbaLogarytm+")/math.log10("+podstawaLogarytm+"))");
               //  System.out.println("calosc "+interpreter.get("q"));
@@ -289,27 +331,30 @@ public class kalkulatorCalka implements Initializable {
                  StringBuilder str = new StringBuilder(wzor);
                  str.setCharAt(k,')');
                  wzor=String.valueOf(str);
-                 wzor=wzor.replace("ln[","math.log(");
+                 wzor=wzor.replace("ln[",lib+"log(");
 
             }
-            else  if(((wzor.charAt(i)=='c' && wzor.charAt(i+1)=='o' && wzor.charAt(i+2)=='s') ||
-                     (wzor.charAt(i)=='s' && wzor.charAt(i+1)=='i' && wzor.charAt(i+2)=='n') ||
-                     (wzor.charAt(i)=='t' && wzor.charAt(i+1)=='a' && wzor.charAt(i+2)=='n') ||
-                     (wzor.charAt(i)=='c' && wzor.charAt(i+1)=='o' && wzor.charAt(i+2)=='t')) ||
-                     (wzor.charAt(i)=='a' && (wzor.charAt(i+1)=='s' || wzor.charAt(i+1)=='c' || wzor.charAt(i+1)=='t') && (wzor.charAt(i+2)=='i' || wzor.charAt(i+2)=='o' || wzor.charAt(i+2)=='a') && (wzor.charAt(i+3)=='n' || wzor.charAt(i+3)=='s' || wzor.charAt(i+3)=='t'))){
+           else  if(((wzor.charAt(i)=='c' && wzor.charAt(i+1)=='o' && wzor.charAt(i+2)=='s'  && wzor.charAt(i+3)=='[') ||
+                     (wzor.charAt(i)=='s' && wzor.charAt(i+1)=='i' && wzor.charAt(i+2)=='n'  && wzor.charAt(i+3)=='[') ||
+                     (wzor.charAt(i)=='t' && wzor.charAt(i+1)=='a' && wzor.charAt(i+2)=='n'  && wzor.charAt(i+3)=='[') ||
+                     (wzor.charAt(i)=='c' && wzor.charAt(i+1)=='o' && wzor.charAt(i+2)=='t'  && wzor.charAt(i+3)=='[')) ||
+                     (wzor.charAt(i)=='a' && (wzor.charAt(i+1)=='s' || wzor.charAt(i+1)=='c' || wzor.charAt(i+1)=='t') && (wzor.charAt(i+2)=='i' || wzor.charAt(i+2)=='o' || wzor.charAt(i+2)=='a') && (wzor.charAt(i+3)=='n' || wzor.charAt(i+3)=='s' || wzor.charAt(i+3)=='t') &&  wzor.charAt(i+4)=='[')){
                 kat="";
 
-                 for(int j=i; j<wzor.length();j++){
-                     if(wzor.charAt(j)==']'){
-                         kat+="]";
-                         break;
-                     }else{
-                         kat+=wzor.charAt(j);
-                     }
-                 }
-                 wzor=wzor.replace(kat,"("+funkcjeTrygonometryczne(kat)+")");
-                 System.out.println(wzor);
+
+                    for(int j=i; j<wzor.length();j++){
+                        if(wzor.charAt(j)==']'){
+                            kat+="]";
+                            break;
+                        }else{
+                            kat+=wzor.charAt(j);
+                        }
+                    }
+                    wzor=wzor.replace(kat,funkcjeTrygonometryczne(kat));
+                    System.out.println(wzor);
+
              }
+
 
         }
 
@@ -319,6 +364,8 @@ public class kalkulatorCalka implements Initializable {
     }
 
     public String funkcjeTrygonometryczne(String kat){
+
+
         String  nowyKat = "";
 
         StringBuilder str;
@@ -346,24 +393,7 @@ public class kalkulatorCalka implements Initializable {
             }
 
         }
-
-        return wynikFunkcjiTryg(str2);
-    }
-
-   public String wynikFunkcjiTryg(String kat){
-        String wynik="";
-
-        try(Jep jep = new Jep() {}){
-            jep.exec("""
-                    import sympy
-                    import math
-                    x=round(float("""+kat+"""
-                    ),15)
-                    """);
-            wynik = String.valueOf(jep.getValue("x"));
-        }
-return wynik;
-
+        return str2;
     }
 
     public static Long silnia(int i){
@@ -372,6 +402,8 @@ return wynik;
     }
 
     public String zmianaRownania(String wzor){
+
+
 
         for(int i=0; i<wzor.length();i++){
 
@@ -502,7 +534,6 @@ return wynik;
         return wzor;
     }
 
-
     public char kodowanieIndeksGorny(String wykladnik){
         char unicode = 0;
         switch (wykladnik) {
@@ -578,9 +609,13 @@ return wynik;
     }
 
     public void metodaProstokatowZNiedomiarem(){
-        try(PythonInterpreter interpreter = new PythonInterpreter()){
-            interpreter.exec("""
+        try(Jep jep = new Jep() {}) {
+
+            jep.exec("""
                     import math
+                    import sympy
+                        
+                    x=sympy.Symbol('x')
                     def f(x):
                     \treturn\040"""+ukrytyWzorCalki.getText()+
                     """
@@ -600,18 +635,22 @@ return wynik;
                     ,""" + liczbaPodprzedzialow.getText() + """
                     ))
                     """);
-            interpreter.exec("print(c)");
+            jep.exec("print(c)");
 
-            wynikCalka.setText(String.valueOf(interpreter.get("c")));
+            wynikCalka.setText(String.valueOf(jep.getValue("c")));
         }catch (Exception e){
             System.out.println("EXCEPTION: "+e);
         }
     }
 
     public void metodaProstokatowZNadmiarem(){
-        try(PythonInterpreter interpreter = new PythonInterpreter()){
-            interpreter.exec("""
+        try(Jep jep = new Jep() {}) {
+
+            jep.exec("""
                     import math
+                    import sympy
+                        
+                    x=sympy.Symbol('x')
                     def f(x):
                     \treturn\040"""+ukrytyWzorCalki.getText()+
                     """
@@ -631,18 +670,22 @@ return wynik;
                     ,""" + liczbaPodprzedzialow.getText() + """
                     ))
                     """);
-            interpreter.exec("print(c)");
+            jep.exec("print(c)");
 
-            wynikCalka.setText(String.valueOf(interpreter.get("c")));
+            wynikCalka.setText(String.valueOf(jep.getValue("c")));
         }catch (Exception e){
             System.out.println("EXCEPTION: "+e);
         }
     }
 
     public void metodaTrapezow(){
-        try(PythonInterpreter interpreter = new PythonInterpreter()){
-            interpreter.exec("""
+        try(Jep jep = new Jep() {}) {
+
+            jep.exec("""
                     import math
+                    import sympy
+                        
+                    x=sympy.Symbol('x')
                     def f(x):
                     \treturn\040"""+ukrytyWzorCalki.getText()+
                     """
@@ -664,20 +707,23 @@ return wynik;
                     ,""" + liczbaPodprzedzialow.getText() + """
                     ))"""
             );
-            interpreter.exec("print(c)");
+            jep.exec("print(c)");
 
-            wynikCalka.setText(String.valueOf(interpreter.get("c")));
+            wynikCalka.setText(String.valueOf(jep.getValue("c")));
         }catch (Exception e){
             System.out.println("EXCEPTION: "+e);
         }
     }
 
     public void metodaSimpsona() {
-        try (PythonInterpreter interpreter = new PythonInterpreter()) {
-
+try(Jep jep = new Jep() {}) {
 /// a - dolna granica calkowania, b- gorna granica calkowania , n - liczba podprzedziałów
-                interpreter.exec("""
+                jep.exec("""
                         import math
+                        import sympy
+                        
+                        x=sympy.Symbol('x')
+                        
                         def f(x):
                         \treturn\040""" + ukrytyWzorCalki.getText() +
                         """
@@ -701,18 +747,44 @@ return wynik;
                         ,""" + liczbaPodprzedzialow.getText() + """
                         ))"""
                 );
-                interpreter.exec("print(c)");
+                jep.exec("print(c)");
 
-                wynikCalka.setText(String.valueOf(interpreter.get("c")));
+    wynikCalka.setText(String.valueOf(jep.getValue("c")));
 
                 //   interpreter.exec("d=float(16**(1./(1./4)))");
                 //       interpreter.exec("print(d)");
-            }catch (Exception e){
+
+        }catch (Exception e){
             System.out.println("EXCEPTION: "+e);
         }
 
         }
 
+        public void metodaAnalityczna() {
+                try (Jep jep = new Jep() {}) {
+                    jep.exec("""
+                            import sympy
+                            import math
+                            x=sympy.Symbol('x')
+                            
+                            wynik=sympy.integrate(""" +ukrytyWzorCalki.getText()+ """
+                            ,(x,""" +granicaDolnaPrzeksztalcona + """
+                            ,""" + granicaGornaPrzeksztalcona + """
+                            ))
+                            
+                            """);
+                    System.out.println(jep.getValue("wynik"));
+                    // wynikCalka.setText(String.valueOf(jep.getValue("wynik")));
+                    jep.exec("""
+                            c=float(wynik)
+                            """);
+                   wynikCalka.setText(String.valueOf(jep.getValue("c")));
+                } catch (JepException e) {
+                    System.out.println("EXCEPTION: " + e);
+                    e.printStackTrace();
+                }
+
+        }
     public void piOnAction(ActionEvent event){
         switch (pressedField) {
             case "GRANICA_GORNA" -> granicaGorna.setText(granicaGorna.getText() + "π");
@@ -924,4 +996,5 @@ return wynik;
             JOptionPane.showMessageDialog(null,komunikat,"Alert",JOptionPane.WARNING_MESSAGE);
         }
     }
+
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 
 <AnchorPane prefHeight="696.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.kalkulator.kalkulatorCalka">
    <children>
@@ -50,7 +51,7 @@
                   <Button layoutX="257.0" layoutY="226.0" mnemonicParsing="false" onAction="#atanOnAction" prefHeight="31.0" prefWidth="76.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="atan(x)" />
                   <Button layoutX="172.0" layoutY="266.0" mnemonicParsing="false" onAction="#acosOnAction" prefHeight="31.0" prefWidth="76.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="acos(x)" />
                   <Button layoutX="257.0" layoutY="266.0" mnemonicParsing="false" onAction="#acotOnAction" prefHeight="31.0" prefWidth="76.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="acot(x)" />
-                  <Button layoutX="222.0" layoutY="115.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="&#x221e;" onAction="#nieskonczonoscOnAction" />
+                  <Button layoutX="222.0" layoutY="115.0" mnemonicParsing="false" onAction="#nieskonczonoscOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../../../css/guzikNaukowy.css" text="∞" />
       
                </children>
             </Pane>
@@ -64,10 +65,11 @@
             <TextField fx:id="wpisanaCalka" layoutX="431.0" layoutY="7.0" onMouseClicked="#calkaPressed" prefHeight="66.0" prefWidth="287.0" />
             <Label fx:id="granicaGornaWzor" layoutX="56.0" layoutY="163.0" prefHeight="30.0" prefWidth="60.0" />
             <Label fx:id="granicaDolnaWzor" layoutX="56.0" layoutY="310.0" prefHeight="25.0" prefWidth="60.0" />
-            <TextField fx:id="ukrytyWzorCalki" editable="false" layoutX="431.0" layoutY="84.0" prefHeight="35.0" prefWidth="287.0" />
+            <TextField fx:id="ukrytyWzorCalki" layoutX="431.0" layoutY="84.0" prefHeight="35.0" prefWidth="287.0" />
          </children></Pane>
       <ChoiceBox fx:id="metodaCalkowania" layoutX="800.0" layoutY="240.0" prefWidth="150.0" />
       <RadioButton fx:id="radianyButton" layoutX="806.0" layoutY="315.0" mnemonicParsing="false" text="Radiany" />
       <RadioButton fx:id="stopnieButton" layoutX="806.0" layoutY="348.0" mnemonicParsing="false" text="Stopnie" />
+      <WebView fx:id="webView" layoutX="387.0" layoutY="374.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

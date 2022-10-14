@@ -29,13 +29,14 @@ public class Unicode {
             case "n" -> unicode = '\u207F';
             case "t" -> unicode = '\u1D57';
             case "o" -> unicode = '\u1D52';
-            // case "(" -> unicode = '\u207D';
-            // case ")" -> unicode = '\u207E';
-            //   case "[" -> unicode = '\u207D';
-            //   case "]" -> unicode = '\u207E';
+            case "+" -> unicode = '\u207A';
+            case "(" -> unicode = '\u207D';
+            case ")" -> unicode = '\u207E';
+            case "[" -> unicode = '\u207D';
+            case "]" -> unicode = '\u207E';
             case "s" -> unicode = '\u02E2';
-            // case "x" -> unicode = '\u036F';
-            // case "pi" -> unicode = '\u209C';
+            case "x" -> unicode = '\u02E3';
+            case "π" -> unicode = '\u2DEB';
 
         }
         return unicode;
@@ -57,15 +58,16 @@ public class Unicode {
             case "/" -> unicode = '\u2E1D';
             case "." -> unicode = '\u002C';
             case "-" -> unicode = '\u208B';
-            // case "(" -> unicode = '\u208D';
-            // case ")" -> unicode = '\u208E';
-            //  case "[" -> unicode = '\u208D';
-            //   case "]" -> unicode = '\u208E';
+            case "+" -> unicode = '\u208A';
+            case "(" -> unicode = '\u208D';
+            case ")" -> unicode = '\u208E';
+            case "[" -> unicode = '\u208D';
+            case "]" -> unicode = '\u208E';
             case "a" -> unicode = '\u2090';
-            //  case "c" -> unicode = '\u1D9C';
+            case "c" -> unicode = '\u1DFF';
             case "e" -> unicode = '\u2091';
             // case "g" -> unicode = '\u1DA2';
-            //case "i" -> unicode = '\u1DA4';
+            case "i" -> unicode = '\u1D62';
             // case "pi" -> unicode = '\u209C';
             case "l" -> unicode = '\u2097';
             case "n" -> unicode = '\u2099';

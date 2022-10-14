@@ -34,7 +34,7 @@ public class MetodyCalkowania {
         return wynik;
     }
 
-    public String metodaSimpsona(String wzor, String gornaGranica, String dolnaGranica, String liczbaPodprzedzialow) {
+    public String metodaSimpsona(String wzor, String dolnaGranica,String gornaGranica, String liczbaPodprzedzialow) {
         String wynik = "";
         try (Jep jep = new Jep() {}) {
 /// a - dolna granica calkowania, b- gorna granica calkowania , n - liczba podprzedziałów
@@ -74,7 +74,7 @@ public class MetodyCalkowania {
         return wynik;
     }
 
-    public String metodaTrapezow(String wzor, String gornaGranica, String dolnaGranica, String liczbaPodprzedzialow) {
+    public String metodaTrapezow(String wzor,String dolnaGranica, String gornaGranica, String liczbaPodprzedzialow) {
         String wynik = "";
         try (Jep jep = new Jep() {}) {
             jep.exec("""
@@ -111,7 +111,7 @@ public class MetodyCalkowania {
         return wynik;
     }
 
-    public String metodaProstokatowZNiedomiarem(String wzor, String gornaGranica, String dolnaGranica, String liczbaPodprzedzialow) {
+    public String metodaProstokatowZNiedomiarem(String wzor, String dolnaGranica,String gornaGranica, String liczbaPodprzedzialow) {
         String wynik = "";
         try (Jep jep = new Jep() {}) {
             jep.exec("""
@@ -146,7 +146,7 @@ public class MetodyCalkowania {
         return wynik;
     }
 
-    public String metodaProstokatowZNadmiarem(String wzor, String gornaGranica, String dolnaGranica, String liczbaPodprzedzialow) {
+    public String metodaProstokatowZNadmiarem(String wzor,String dolnaGranica, String gornaGranica, String liczbaPodprzedzialow) {
         String wynik = "";
         try (Jep jep = new Jep() {}) {
             jep.exec("""

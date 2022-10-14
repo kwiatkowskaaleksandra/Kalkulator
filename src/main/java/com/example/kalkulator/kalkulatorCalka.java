@@ -13,10 +13,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import org.python.util.PythonInterpreter;
 
 import javax.swing.*;
+import java.awt.font.TextAttribute;
 import java.net.URL;
+import java.text.AttributedString;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,13 +51,15 @@ public class kalkulatorCalka implements Initializable {
     public RadioButton radianyButton;
     @FXML
     public RadioButton stopnieButton;
+    @FXML
+    public WebView webView;
 
     static String granicaGornaPrzeksztalcona = null;
     static String granicaDolnaPrzeksztalcona = null;
 
 
     private static String pressedField = String.valueOf(KilknietePole.CALKA);
-    Unicode unicode;
+    Unicode unicode = new Unicode();
 
     public void ChoiceBoxMetodaCalk() {
         ObservableList rodzajMetodyCalkowania = FXCollections.observableArrayList();
@@ -137,7 +143,6 @@ public class kalkulatorCalka implements Initializable {
     }
 
     public void wynikOnAction() {
-
         MetodyCalkowania metodyCalkowania = new MetodyCalkowania();
 
         if (!graniceCheck()) {
@@ -303,15 +308,16 @@ public class kalkulatorCalka implements Initializable {
                     }
                 }
 
+                if(podstawaLogarytm.matches("(.*)sin(.*)") || podstawaLogarytm.matches("(.*)cos(.*)") || podstawaLogarytm.matches("(.*)tan(.*)") || podstawaLogarytm.matches("(.*)cot(.*)")){
+                    podstawaLogarytm+="]";
+                    liczbaLogarytm=liczbaLogarytm.replace("[","");
+                }
+                if(liczbaLogarytm.matches("(.*)sin(.*)") || liczbaLogarytm.matches("(.*)cos(.*)") || liczbaLogarytm.matches("(.*)tan(.*)") || liczbaLogarytm.matches("(.*)cot(.*)")){
+                    liczbaLogarytm+="]";
+                }
                 wzor = wzor.replace("log[" + podstawaLogarytm + "][" + liczbaLogarytm + "]", "sympy.log(" + liczbaLogarytm + "," + podstawaLogarytm + ")");
 
-                // interpreter.exec("import math \nq=float(math.log10("+liczbaLogarytm+")/math.log10("+podstawaLogarytm+"))");
-                //  System.out.println("calosc "+interpreter.get("q"));
-
-
-            } else if (wzor.charAt(i) == 'l' && wzor.charAt(i + 1) == 'n') {
-                // calka=calka.replace("ln","math.log");
-
+            } else if (wzor.charAt(i) == 'l' && wzor.charAt(i + 1) == 'n' && wzor.charAt(i+2)=='[') {
                 int k = 0;
                 for (int j = i; j < wzor.length(); j++) {
                     if (wzor.charAt(j) == ']') {
@@ -341,7 +347,12 @@ public class kalkulatorCalka implements Initializable {
                         kat += wzor.charAt(j);
                     }
                 }
-                wzor = wzor.replace(kat, funkcjeTrygonometryczne(kat));
+
+                if(kat.charAt(kat.length()-1)!=']'){
+                    kat += "]";
+                }
+
+                wzor = wzor.replace(kat, "("+funkcjeTrygonometryczne(kat)+")");
                 System.out.println(wzor);
             }
         }
@@ -374,7 +385,6 @@ public class kalkulatorCalka implements Initializable {
                 str2 = str2.replace("]", "))");
                 str2 = str2.replace("[", "(math.radians(");
             }
-
         }
         return str2;
     }
@@ -385,8 +395,6 @@ public class kalkulatorCalka implements Initializable {
     }
 
     public String zmianaRownania(String wzor) {
-
-
         for (int i = 0; i < wzor.length(); i++) {
 
             if (wzor.charAt(i) == 'l' && wzor.charAt(i + 1) == 'n' && wzor.charAt(i + 2) == '[') {
@@ -441,16 +449,25 @@ public class kalkulatorCalka implements Initializable {
                     }
                 }
 
-                for (int j = 0; j < podstawaLog.length(); j++) {
-                    podstawaLogKodowana += unicode.kodowanieIndeksDolny(String.valueOf(podstawaLog.charAt(j)));
-                }
-
                 for (int j = k + 2; j < wzor.length(); j++) {
                     if (wzor.charAt(j) == ']') {
                         break;
                     } else {
                         liczbaLog += wzor.charAt(j);
                     }
+                }
+
+                if(podstawaLog.matches("(.*)sin(.*)") || podstawaLog.matches("(.*)cos(.*)") || podstawaLog.matches("(.*)tan(.*)") || podstawaLog.matches("(.*)cot(.*)")){
+                    podstawaLog+="]";
+                    liczbaLog=liczbaLog.replace("[","");
+                }
+
+                if(liczbaLog.matches("(.*)sin(.*)") || liczbaLog.matches("(.*)cos(.*)") || liczbaLog.matches("(.*)tan(.*)") || liczbaLog.matches("(.*)cot(.*)")){
+                    liczbaLog+="]";
+                }
+
+                for (int j = 0; j < podstawaLog.length(); j++) {
+                    podstawaLogKodowana += unicode.kodowanieIndeksDolny(String.valueOf(podstawaLog.charAt(j)));
                 }
 
                 wzor = wzor.replace("log[" + podstawaLog + "][" + liczbaLog + "]", "log" + podstawaLogKodowana + liczbaLog);

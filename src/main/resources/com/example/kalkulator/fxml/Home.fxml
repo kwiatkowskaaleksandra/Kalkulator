@@ -11,13 +11,13 @@
          <children>
             <ImageView fitHeight="625.0" fitWidth="614.0" layoutX="-4.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../image/logo.PNG" />
+                  <Image url="@../image/logo.PNG" />
                </image></ImageView>
-            <Button fx:id="kNaukowy" layoutX="204.0" layoutY="373.0" mnemonicParsing="false" onAction="#KalkulatorNaukowyOnAction" prefHeight="50.0" prefWidth="268.0" style="-fx-background-radius: 20;" styleClass="bodybg" stylesheets="@../../../css/home.css" text="Kalkulator naukowy">
+            <Button fx:id="kNaukowy" layoutX="204.0" layoutY="373.0" mnemonicParsing="false" onAction="#KalkulatorNaukowyOnAction" prefHeight="50.0" prefWidth="268.0" style="-fx-background-radius: 20;" styleClass="bodybg" stylesheets="@../css/home.css" text="Kalkulator naukowy">
                <font>
                   <Font name="Courier New Bold" size="21.0" />
                </font></Button>
-            <Button layoutX="204.0" layoutY="426.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="268.0" style="-fx-background-radius: 20;" styleClass="bodybg" stylesheets="@../../../css/home.css" text="Kalkulator całek">
+            <Button fx:id="kCalek" layoutX="204.0" layoutY="426.0" mnemonicParsing="false" onAction="#KalkulatorCalekOnAction" prefHeight="50.0" prefWidth="268.0" style="-fx-background-radius: 20;" styleClass="bodybg" stylesheets="@../css/home.css" text="Kalkulator całek">
                <font>
                   <Font name="Courier New Bold" size="21.0" />
                </font></Button>

@@ -1,0 +1,38 @@
+.menuItem{
+    -fx-font-family: Yu Gothic Medium ;
+    -fx-font-size: 13;
+    -fx-border-color: grey;
+}
+
+.menu{
+    -fx-font-family: Yu Gothic Medium ;
+    -fx-font-size: 13;
+    -fx-border-color: grey;
+}
+
+.menuBar{
+    -fx-background-color: grey;
+    -fx-base: black;
+    -fx-text-fill: white;
+    -fx-border-color: grey;
+}
+
+.menu:hover, .menu:showing{
+    -fx-background-color: rgb(63,63,63);
+}
+
+.menuItem:hover{
+    -fx-background-color: rgb(63,63,63);
+}
+
+.menuItem:focused{
+    -fx-background-color: rgb(63,63,63);;
+}
+
+.menu:focused{
+    -fx-background-color: rgb(63,63,63);;
+}
+
+.menuBar:focused{
+    -fx-background-color: rgb(63,63,63);;
+}

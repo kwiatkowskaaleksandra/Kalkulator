@@ -1,0 +1,8 @@
+.textField{
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: black;
+    -fx-font-family: Yu Gothic Medium ;
+    -fx-font-size: 13;
+}

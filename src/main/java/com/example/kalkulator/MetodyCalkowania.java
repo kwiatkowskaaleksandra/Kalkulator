@@ -22,11 +22,25 @@ public class MetodyCalkowania {
                     ))
                                                 
                     """);
-            System.out.println(jep.getValue("wynik"));
-            jep.exec("""
+            System.out.println(jep.getValue("wynik")+"   wyn");
+            if(wzor.contains("x")){
+                String w = String.valueOf(jep.getValue("wynik"));
+                jep.exec("""
+                    from sympy import *
+                    pi = sympy.pi
+                    oo = sympy.oo
+                    c=float("""+w+"""
+                    )
+                    """);
+                wynik = String.valueOf(jep.getValue("c"));
+            }else{
+                jep.exec("""
                     c=float(wynik)
                     """);
-            wynik = String.valueOf(jep.getValue("c"));
+                wynik = String.valueOf(jep.getValue("c"));
+            }
+
+
         } catch (JepException e) {
             System.out.println("EXCEPTION: " + e);
             e.printStackTrace();

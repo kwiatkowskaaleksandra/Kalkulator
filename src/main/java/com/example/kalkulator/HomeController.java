@@ -21,9 +21,9 @@ public class HomeController {
         try{
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorNaukowy.fxml")));
             Stage menuStage = new Stage();
-            menuStage.initStyle(StageStyle.UTILITY);
-            menuStage.setScene(new Scene(root, 600, 800.0D));
-            menuStage.setResizable(false);
+            menuStage.initStyle(StageStyle.DECORATED);
+            menuStage.setScene(new Scene(root, 930, 600));
+            menuStage.setTitle("Kalkulator Naukowy");
             menuStage.show();
         }catch (Exception e){
             e.printStackTrace();
@@ -38,7 +38,7 @@ public class HomeController {
         try{
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorCalka.fxml")));
             Stage menuStage = new Stage();
-            menuStage.initStyle(StageStyle.UTILITY);
+            menuStage.initStyle(StageStyle.DECORATED);
             menuStage.setScene(new Scene(root, 930, 600));
             menuStage.setTitle("Kalkulator Całek");
             menuStage.setResizable(false);

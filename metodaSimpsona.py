@@ -1,21 +1,29 @@
-def simpson(function, a, b, n):
-x=[a]
-y=[]
-h=(b-a)/n
-wynik=0
+import math
+import sympy
 
-for i in range(1,n):
-	x.append(x[0]+(i*h))
+def f(x):
+	return 4**(sympy.sin(6))
+	
+def silnia(n):
+	s=1
+	for i in range(2,n+1):
+		s*=i
+	return s
 
-for i in range(0,n):
-	y.append(f(x[i]))
-		if i==0 or i==n:
-			wynik+=y[i]
+def simpson(a, b, n):
+	x1=0.0
+	x2=0.0
+	x0=f(a)+f(b)
+	h=(b-a)/n
+	wynik=0.0
+	
+	for i in range(1,n):
+		x=(a+(i*h))
+		if i%2==0:
+			x2+=f(x)
 		else:
-			if i%2==0:
-				wynik += 2*y[i]
-			else:
-				wynik += 4*y[i]
-				
-wynik *= h/3
-return wynik
+			x1+=f(x)
+	wynik=h*(x0+2*x2+4*x1)/3
+	return wynik
+
+print(float(simpson(8,2,4)))

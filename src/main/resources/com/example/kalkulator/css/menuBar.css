@@ -26,13 +26,13 @@
 }
 
 .menuItem:focused{
-    -fx-background-color: rgb(63,63,63);;
+    -fx-background-color: rgb(63,63,63);
 }
 
 .menu:focused{
-    -fx-background-color: rgb(63,63,63);;
+    -fx-background-color: rgb(63,63,63);
 }
 
 .menuBar:focused{
-    -fx-background-color: rgb(63,63,63);;
+    -fx-background-color: rgb(63,63,63);
 }

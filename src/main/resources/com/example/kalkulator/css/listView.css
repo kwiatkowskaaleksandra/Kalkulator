@@ -1,0 +1,12 @@
+.list-cell{
+    -fx-font: 15 "Yu Gothic Medium";
+    -fx-text-fill: white;
+    -fx-background-color: grey;
+    -fx-border-color: rgb(81,81,81);
+}
+
+.list-cell:filled:hover{
+    -fx-background-color: rgb(81,81,81);
+    -fx-border-color: WHITE;
+    -fx-border-width: 0px 4px 0px 0px;
+}

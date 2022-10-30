@@ -4,23 +4,29 @@ package com.example.kalkulator;/*
  */
 
 
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import javax.swing.*;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class kalkulatorCalka implements Initializable {
 
@@ -43,34 +49,49 @@ public class kalkulatorCalka implements Initializable {
     @FXML
     public WebView webView;
     @FXML
-    public RadioMenuItem radianItem;
+    public Button kalkulatorNaukowyButton;
     @FXML
-    public RadioMenuItem stopnieItem;
+    public CheckBox pochodnaCheckBox;
     @FXML
-    public RadioMenuItem mAnalitycznaItem;
+    public ChoiceBox<String> jednostkaChoiceBox;
     @FXML
-    public RadioMenuItem mSimpsonaItem;
+    public ChoiceBox<String> metodaChoiceBox;
     @FXML
-    public RadioMenuItem mTrapezowItem;
+    public Button pomocButton;
     @FXML
-    public RadioMenuItem mProstokataNadomItem;
+    public Button historiaButton;
     @FXML
-    public RadioMenuItem mProstokataNiedomItem;
+    public VBox vBoxHistoria;
     @FXML
-    public MenuBar menuBar;
-
-
+    public VBox vBoxMenu;
+    @FXML
+    public ImageView wroc;
+    @FXML
+    public ListView<String> listViewHistoria;
+    @FXML
+    public Label menu;
+    @FXML
+    public Label menuZamknij;
+    @FXML
+    public ImageView zamknij;
+    @FXML
+    public AnchorPane slider;
+    double x,y;
     static String granicaGornaPrzeksztalcona = null;
     static String granicaDolnaPrzeksztalcona = null;
 
     private static String pressedField = String.valueOf(KilknietePole.CALKA);
     public static String pressedJed = String.valueOf(Jednostka.STOPNIE);
+    public static String rodzaj;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mAnalitycznaItem.setSelected(true);
+      //  mAnalitycznaItem.setSelected(true);
       //  radianItem.setSelected(true);
         webView.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
+        menuBoczne();
+        choiceBoxJednostka();
+        choiceBoxMetodaCalkowania();
     }
 
     public void liczbaPodprzedzialowCheck() {
@@ -122,7 +143,7 @@ public class kalkulatorCalka implements Initializable {
                 }
             }
             if (granicaGorna.getText().matches("(.*)∞") || granicaDolna.getText().matches("(.*)∞")) {
-                if (!mAnalitycznaItem.isSelected()) {
+                if (!metodaChoiceBox.getValue().equals("Metoda analityczna")) {
                     komunikat = "Granice nieskończoności mogą być jedynie użyte przy całkowaniu metodą analityczną.";
                     er = true;
                     throw new Exception(komunikat);
@@ -133,7 +154,7 @@ public class kalkulatorCalka implements Initializable {
                     granicaGorna.getText().matches("(.*)cos(.*)") || granicaGorna.getText().matches("(.*)sin(.*)") || granicaGorna.getText().matches("(.*)tan(.*)") || granicaGorna.getText().matches("(.*)cot(.*)") ||
             granicaDolna.getText().matches("(.*)cos(.*)") || granicaDolna.getText().matches("(.*)sin(.*)") || granicaDolna.getText().matches("(.*)tan(.*)") || granicaDolna.getText().matches("(.*)cot(.*)"))
             {
-                if(!radianItem.isSelected() && !stopnieItem.isSelected()){
+                if(jednostkaChoiceBox.getValue().equals("Jednostka")){
                     komunikat="Proszę wybrać jedną jednostkę: stopnie lub radiany.";
                     er=true;
                     throw new Exception(komunikat);
@@ -151,9 +172,9 @@ public class kalkulatorCalka implements Initializable {
         WebEngine webEngine = webView.getEngine();
         if (!graniceCheck()) {
 
-            if(stopnieItem.isSelected()){
+            if(jednostkaChoiceBox.getValue().equals("Stopnie")){
                 pressedJed= String.valueOf(Jednostka.STOPNIE);
-            }else if(radianItem.isSelected()){
+            }else if(jednostkaChoiceBox.getValue().equals("Radiany")){
                 pressedJed=String.valueOf(Jednostka.RADIANY);
             }
 
@@ -161,30 +182,30 @@ public class kalkulatorCalka implements Initializable {
             granicaDolnaWzor.setText(przeksztalcenie.zmianaRownania(granicaDolna.getText()));
 
             webEngine.loadContent("<p>("+przeksztalcenie.zmianaRownania(wpisanaCalka.getText())+")dx</p>","text/html");
-            if(mProstokataNiedomItem.isSelected()){
+            if(metodaChoiceBox.getValue().equals("Metoda prostokątów z niedomiarem")){
                 liczbaPodprzedzialowCheck();
                 wynikPrzeksztalcenie(przeksztalcenie);
                 wynikCalka.setText(metodyCalkowania.metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-            }else if(mProstokataNadomItem.isSelected()){
+            }else if(metodaChoiceBox.getValue().equals("Metoda prostokątów z nadmiarem")){
                 liczbaPodprzedzialowCheck();
                 wynikPrzeksztalcenie(przeksztalcenie);
                 wynikCalka.setText(metodyCalkowania.metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-            }else if(mTrapezowItem.isSelected()){
+            }else if(metodaChoiceBox.getValue().equals("Metoda trapezów")){
                 liczbaPodprzedzialowCheck();
                 wynikPrzeksztalcenie(przeksztalcenie);
                 wynikCalka.setText(metodyCalkowania.metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-            }else if(mSimpsonaItem.isSelected()){
+            }else if(metodaChoiceBox.getValue().equals("Metoda Simpsona")){
                 liczbaPodprzedzialowCheck();
                 wynikPrzeksztalcenie(przeksztalcenie);
                 wynikCalka.setText(metodyCalkowania.metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-            }else if(mAnalitycznaItem.isSelected()){
+            }else if(metodaChoiceBox.getValue().equals("Metoda analityczna")){
                 liczbaPodprzedzialow.clear();
                 wynikPrzeksztalcenie(przeksztalcenie);
                 wynikCalka.setText(metodyCalkowania.metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona));
             }else{
                 JOptionPane.showMessageDialog(null, "Proszę wybrać metodę całkowania.", "Alert", JOptionPane.WARNING_MESSAGE);
             }
-
+            listViewHistoria.getItems().addAll(wpisanaCalka.getText());
         }
     }
 
@@ -193,11 +214,9 @@ public class kalkulatorCalka implements Initializable {
         granicaGornaPrzeksztalcona = przeksztalcenie.przeksztalcenieRownania(granicaGorna.getText(), "math.",pressedJed);
         ukrytyWzorCalki.setText(przeksztalcenie.przeksztalcenieRownania(wpisanaCalka.getText(), "math.",pressedJed));
         if(Objects.equals(przeksztalcenie.pressedJednostka, "RADIANY")){
-            stopnieItem.setSelected(false);
-            radianItem.setSelected(true);
+            jednostkaChoiceBox.setValue("Radiany");
         }else if(Objects.equals(przeksztalcenie.pressedJednostka,"STOPNIE")){
-            stopnieItem.setSelected(true);
-            radianItem.setSelected(false);
+            jednostkaChoiceBox.setValue("Stopnie");
         }
     }
 
@@ -414,34 +433,103 @@ public class kalkulatorCalka implements Initializable {
         }
     }
 
-    public void menuGlowneItemOnAction() {
-        Stage stage = (Stage) menuBar.getScene().getWindow();
-        stage.close();
+    public void choiceBoxJednostka(){
+        String a ="Jednostka";
+        String b ="Radiany";
+        String c ="Stopnie";
+        jednostkaChoiceBox.getItems().addAll(b,c);
+        jednostkaChoiceBox.setValue(a);
+    }
 
-        try{
-            Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/Home.fxml")));
-            Stage menuStage = new Stage();
-            menuStage.initStyle(StageStyle.DECORATED);
-            menuStage.setScene(new Scene(root, 606,614));
-            menuStage.setTitle("Kalkulator");
-            menuStage.setResizable(false);
-            menuStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-        }
+    public void choiceBoxMetodaCalkowania(){
+        String a ="Metoda całkowania";
+        String b ="Metoda analityczna";
+        String c ="Metoda prostokątów z nadmiarem";
+        String d ="Metoda prostokątów z niedomiarem";
+        String e ="Metoda trapezów";
+        String f ="Metoda Simpsona";
+        metodaChoiceBox.getItems().addAll(b,c,d,e,f);
+        metodaChoiceBox.setValue(a);
+    }
+
+    public void menuBoczne(){
+        zamknij.setOnMouseClicked(event-> System.exit(0));
+
+        slider.setTranslateX(222);
+        menu.setOnMouseClicked(event->{
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.4));
+            slide.setNode(slider);
+
+            slide.setToX(222);
+            slide.play();
+
+            slider.setTranslateX(0);
+
+            slide.setOnFinished((ActionEvent e)->{
+                menu.setVisible(false);
+                menuZamknij.setVisible(true);
+            });
+        });
+
+        menuZamknij.setOnMouseClicked(event->{
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.4));
+            slide.setNode(slider);
+
+            slide.setToX(0);
+            slide.play();
+
+            slider.setTranslateX(222);
+
+            slide.setOnFinished((ActionEvent e)->{
+                menu.setVisible(true);
+                menuZamknij.setVisible(false);
+            });
+        });
+
+        vBoxHistoria.setTranslateX(222);
+        historiaButton.setOnMouseClicked(event->{
+            vBoxHistoria.setVisible(true);
+            TranslateTransition transition=new TranslateTransition(Duration.seconds(0.4),vBoxHistoria);
+            transition.setToX(0);
+            transition.play();
+        });
+
+        wroc.setOnMouseClicked(event->{
+            TranslateTransition transition=new TranslateTransition(Duration.seconds(0.4),vBoxHistoria);
+            transition.setToX(222);
+            transition.play();
+            //vBoxMenu.setVisible(true);
+            transition.setOnFinished((ActionEvent e)-> vBoxHistoria.setVisible(false));
+        });
     }
 
     public void kalkulatorNaukowyOnAction() {
-        Stage stage = (Stage) menuBar.getScene().getWindow();
+        Stage stage = (Stage) kalkulatorNaukowyButton.getScene().getWindow();
         stage.close();
 
         try{
             Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorNaukowy.fxml")));
             Stage menuStage = new Stage();
-            menuStage.initStyle(StageStyle.DECORATED);
-            menuStage.setScene(new Scene(root, 930, 600));
-            menuStage.setTitle("Kalkulator Naukowy");
+            menuStage.setTitle("Kalkulator naukowy");
+            menuStage.initStyle(StageStyle.UNDECORATED);
+            root.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    x=menuStage.getX()-event.getSceneX();
+                    y=menuStage.getY()-event.getSceneY();
+                }
+            });
+
+            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    menuStage.setX(event.getSceneX()+x);
+                    menuStage.setY(event.getSceneY()+y);
+                }
+            });
+            menuStage.setScene(new Scene(root, 972, 600));
             menuStage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -449,8 +537,37 @@ public class kalkulatorCalka implements Initializable {
         }
     }
 
-    public void zamknijOnAction() {
-        Stage stage = (Stage) menuBar.getScene().getWindow();
-        stage.close();
+
+
+    public void pomocOnAction() {
+        rodzaj="Kalkulator całek";
+        try{
+            Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/pomoc.fxml")));
+            Stage menuStage = new Stage();
+            menuStage.setTitle("Pomoc");
+            menuStage.initStyle(StageStyle.UNDECORATED);
+
+            root.setOnMousePressed(event -> {
+                x=menuStage.getX()-event.getSceneX();
+                y=menuStage.getY()-event.getSceneY();
+            });
+
+            root.setOnMouseDragged(event -> {
+                menuStage.setX(event.getSceneX()+x);
+                menuStage.setY(event.getSceneY()+y);
+            });
+
+            menuStage.setScene(new Scene(root, 500, 600));
+            menuStage.setX(1400);
+            menuStage.setY(300);
+            menuStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    public void historiaOnMouseClicked() {
+        listViewHistoria.setOnMouseClicked(event2-> wpisanaCalka.setText( listViewHistoria.getSelectionModel().getSelectedItem()));
     }
 }

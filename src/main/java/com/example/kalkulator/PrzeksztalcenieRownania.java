@@ -93,7 +93,6 @@ public class PrzeksztalcenieRownania {
                         wykladnik += wzor.charAt(j);
                     }
                 }
-                System.out.println(wykladnik);
                 wzor = wzor.replace("^[" + wykladnik + "]", "<sup>"+wykladnik+"</sup>");
 
             } else if ((((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's') ||
@@ -112,8 +111,10 @@ public class PrzeksztalcenieRownania {
                     }
                 }
 
+                if(kat.matches("(.*)^(.*)")){
+                    kat += "]";
+                }
                 String nowyKat = kat.replaceFirst("\\[", "(");
-
                 StringBuilder str = new StringBuilder(nowyKat);
                 int lastIndex = nowyKat.lastIndexOf("]");
                 str.setCharAt(lastIndex, ')');

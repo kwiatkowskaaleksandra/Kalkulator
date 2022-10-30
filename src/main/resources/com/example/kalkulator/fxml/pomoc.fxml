@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="480.0" style="-fx-border-color: grey;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.kalkulator.Pomoc">
+   <children>
+      <VBox layoutY="6.0" prefHeight="600.0" prefWidth="480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="41.0" prefWidth="480.0" style="-fx-background-color: grey;">
+               <children>
+                  <ImageView fx:id="zamknij" fitHeight="22.0" fitWidth="22.0" layoutX="474.0" layoutY="3.0" onMouseClicked="#zamknijOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/exit.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="8.0" layoutY="8.0" prefHeight="25.0" prefWidth="86.0" text="Pomoc" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/pomoc.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="Corbel Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <TextArea fx:id="textAreaPomoc" editable="false" prefHeight="600.0" prefWidth="480.0" wrapText="true">
+               <font>
+                  <Font name="Corbel" size="15.0" />
+               </font>
+            </TextArea>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -56,7 +56,7 @@ public class MetodyCalkowania {
                     import math
                     import sympy
                                             
-                    x=sympy.Symbol('x')            
+                    x=sympy.Symbol('x')
                     def f(x):
                     \treturn\040""" + wzor +
                     """

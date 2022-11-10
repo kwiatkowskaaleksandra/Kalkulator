@@ -3,6 +3,9 @@ package com.example.kalkulator;/*
  * @author kola
  */
 
+import org.python.modules._locale._locale;
+
+import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,20 +16,36 @@ public class PrzeksztalcenieRownania {
         for (int i = 0; i < wzor.length(); i++) {
 
             if (wzor.charAt(i) == 'l' && wzor.charAt(i + 1) == 'n' && wzor.charAt(i + 2) == '[') {
-                String liczba = "";
-                for (int j = i + 3; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
+
+                int ileOtwierajacych = 0, ileZamykajacych = 0;
+                String liczba="";
+
+                for(int j=i+2; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        liczba+=wzor.charAt(j);
+                    }else {
+                        liczba+="]";
                         break;
-                    } else {
-                        liczba += wzor.charAt(j);
                     }
                 }
 
-                wzor = wzor.replace("ln[" + liczba + "]", "ln(" + liczba + ")");
+                String nowaLiczba=liczba.replaceFirst("\\[","(");
+                StringBuilder str = new StringBuilder(nowaLiczba);
+                str.setCharAt(str.lastIndexOf("]"),')');
+                nowaLiczba=String.valueOf(str);
+
+                wzor = wzor.replace("ln"+liczba,   "ln"+nowaLiczba);
 
             } else if (wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'q' && wzor.charAt(i + 2) == 'r' && wzor.charAt(i + 3) == 't') {
                 String stopienPierwiastka = "",  pierwiastek = "";
                 int k = 0;
+                int ileOtwierajacych=1, ileZamykajacych=0;
 
                 for (int j = i + 5; j < wzor.length(); j++) {
                     if (wzor.charAt(j) == ',') {
@@ -38,49 +57,61 @@ public class PrzeksztalcenieRownania {
                 }
 
                 for (int j = k + 1; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
-                        break;
-                    } else {
-                        pierwiastek += wzor.charAt(j);
+                    if (wzor.charAt(j) == '[') {
+                        ileOtwierajacych++;
+                    } else if(wzor.charAt(j)==']') {
+                        ileZamykajacych++;
                     }
+                    if(ileOtwierajacych>=1 && ileOtwierajacych!=ileZamykajacych){
+                        pierwiastek += wzor.charAt(j);
+                    }else break;
                 }
 
-                if(pierwiastek.matches("(.*)\\[(.*)")){
-                    pierwiastek+="]";
-                }
                 wzor = wzor.replace("sqrt[" + stopienPierwiastka + "," + pierwiastek + "]", "<sup>"+stopienPierwiastka + "</sup>&#8730;(" + pierwiastek+")");
 
             } else if (wzor.charAt(i) == 'l' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 'g' && wzor.charAt(i + 3) == '[') {
-                String podstawaLog = "", liczbaLog = "";
+                String podstawaLogarytm = "", liczbaLogarytm = "";
                 int k = 0;
+                int ileOtwierajacych = 0, ileZamykajacych = 0;
 
-                for (int j = i + 4; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
-                        k = j;
+                for(int j=i+3; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        podstawaLogarytm+=wzor.charAt(j);
+                    }else {
+                        podstawaLogarytm+="]";
+                        k=j;
                         break;
-                    } else {
-                        podstawaLog += wzor.charAt(j);
                     }
                 }
+                String nowaPodstawaLogarytm=podstawaLogarytm.replaceFirst("\\[","(");
+                StringBuilder str = new StringBuilder(nowaPodstawaLogarytm);
+                str.setCharAt(str.lastIndexOf("]"),')');
+                nowaPodstawaLogarytm=String.valueOf(str);
 
-                for (int j = k + 2; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
+                ileOtwierajacych = 0;
+                ileZamykajacych = 0;
+                for(int j=k+1; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        liczbaLogarytm+=wzor.charAt(j);
+                    }else {
                         break;
-                    } else {
-                        liczbaLog += wzor.charAt(j);
                     }
                 }
+                String nowaLiczbaLogarytm=liczbaLogarytm.replaceFirst("\\[","(");
 
-                if(podstawaLog.matches("(.*)sin(.*)") || podstawaLog.matches("(.*)cos(.*)") || podstawaLog.matches("(.*)tan(.*)") || podstawaLog.matches("(.*)cot(.*)")){
-                    podstawaLog+="]";
-                    liczbaLog=liczbaLog.replace("[","");
-                }
-
-                if(liczbaLog.matches("(.*)sin(.*)") || liczbaLog.matches("(.*)cos(.*)") || liczbaLog.matches("(.*)tan(.*)") || liczbaLog.matches("(.*)cot(.*)")){
-                    liczbaLog+="]";
-                }
-
-                wzor = wzor.replace("log[" + podstawaLog + "][" + liczbaLog + "]", "log<sub>" + podstawaLog+"</sub>" + liczbaLog);
+                wzor = wzor.replace("log" + podstawaLogarytm +  liczbaLogarytm + "]", "log<sub>" + nowaPodstawaLogarytm+"</sub>" + nowaLiczbaLogarytm+")");
 
             } else if (wzor.charAt(i) == '^') {
                 String wykladnik = "";
@@ -95,24 +126,29 @@ public class PrzeksztalcenieRownania {
                 }
                 wzor = wzor.replace("^[" + wykladnik + "]", "<sup>"+wykladnik+"</sup>");
 
-            } else if ((((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's') ||
-                    (wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'i' && wzor.charAt(i + 2) == 'n') ||
-                    (wzor.charAt(i) == 't' && wzor.charAt(i + 1) == 'a' && wzor.charAt(i + 2) == 'n') ||
-                    (wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 't')) ||
-                    (wzor.charAt(i) == 'a' && (wzor.charAt(i + 1) == 's' || wzor.charAt(i + 1) == 'c' || wzor.charAt(i + 1) == 't') && (wzor.charAt(i + 2) == 'i' || wzor.charAt(i + 2) == 'o' || wzor.charAt(i + 2) == 'a') && (wzor.charAt(i + 3) == 'n' || wzor.charAt(i + 3) == 's' || wzor.charAt(i + 3) == 't')))) {
+            }  else if (((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's' && wzor.charAt(i + 3) == '[') ||
+                    (wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'i' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '[') ||
+                    (wzor.charAt(i) == 't' && wzor.charAt(i + 1) == 'a' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '[') ||
+                    (wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 't' && wzor.charAt(i + 3) == '[')) ||
+                    (wzor.charAt(i) == 'a' && (wzor.charAt(i + 1) == 's' || wzor.charAt(i + 1) == 'c' || wzor.charAt(i + 1) == 't') && (wzor.charAt(i + 2) == 'i' || wzor.charAt(i + 2) == 'o' || wzor.charAt(i + 2) == 'a') && (wzor.charAt(i + 3) == 'n' || wzor.charAt(i + 3) == 's' || wzor.charAt(i + 3) == 't') && wzor.charAt(i + 4) == '[')) {
                 String kat = "";
 
-                for (int j = i; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
-                        kat += "]";
-                        break;
-                    } else {
-                        kat += wzor.charAt(j);
-                    }
-                }
+                int ileOtwierajacych = 0, ileZamykajacych = 0;
 
-                if(kat.matches("(.*)^(.*)")){
-                    kat += "]";
+                for(int j=i; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        kat+=wzor.charAt(j);
+                    }else {
+                        kat+="]";
+                        break;
+                    }
+
                 }
                 String nowyKat = kat.replaceFirst("\\[", "(");
                 StringBuilder str = new StringBuilder(nowyKat);
@@ -120,7 +156,6 @@ public class PrzeksztalcenieRownania {
                 str.setCharAt(lastIndex, ')');
                 nowyKat = String.valueOf(str);
                 wzor = wzor.replace(kat, nowyKat);
-
             }
         }
         return wzor;
@@ -128,6 +163,7 @@ public class PrzeksztalcenieRownania {
 
 
     public String przeksztalcenieRownania(String wzor, String lib, String jednostka) {
+        try{
         Pattern kropka = Pattern.compile(".");
         String licznik = "";
         String kat;
@@ -170,13 +206,18 @@ public class PrzeksztalcenieRownania {
                 wzor = wzor.replace("∞", "sympy.oo");
             }
 
+            if(wzor.charAt(i)== '%'){
+                wzor = wzor.replace("%","/100");
+            }
+
         }
 
         for (int i = 0; i < wzor.length(); i++) {
 
-            if (wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'q' && wzor.charAt(i + 2) == 'r' && wzor.charAt(i + 3) == 't') {
+            if (wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'q' && wzor.charAt(i + 2) == 'r' && wzor.charAt(i + 3) == 't' && wzor.charAt(i+4)=='[') {
                 String stopienPierwiastka = "", liczbaPierwiastkowana = "";
                 int k = 0;
+                int ileOtwierajacych=1, ileZamykajacych=0;
 
                 for (int j = i + 5; j < wzor.length(); j++) {
                     if (wzor.charAt(j) == ',') {
@@ -184,12 +225,22 @@ public class PrzeksztalcenieRownania {
                         break;
                     } else stopienPierwiastka += wzor.charAt(j);
                 }
-                for (int j = k + 1; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
+
+                for(int j=k+1;j<wzor.length();j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych>=1 && ileOtwierajacych!=ileZamykajacych){
+                        liczbaPierwiastkowana+=wzor.charAt(j);
+                    }else{
                         break;
-                    } else liczbaPierwiastkowana += wzor.charAt(j);
+                    }
                 }
-                wzor = wzor.replace("sqrt[" + stopienPierwiastka + "," + liczbaPierwiastkowana + "]", "("+liczbaPierwiastkowana + ")**(1./(" + stopienPierwiastka + "))");
+
+                wzor = wzor.replace("sqrt[" + stopienPierwiastka + "," + liczbaPierwiastkowana +"]", "("+liczbaPierwiastkowana + ")**(1./(" + stopienPierwiastka + "))");
             } else if (wzor.charAt(i) == 'π') {
                 wzor = wzor.replace("π", lib + "pi");
             } else if (wzor.charAt(i) == '!') {
@@ -218,75 +269,126 @@ public class PrzeksztalcenieRownania {
 
                 String podstawaLogarytm = "", liczbaLogarytm = "";
                 int k = 0;
+                int ileOtwierajacych = 0, ileZamykajacych = 0;
 
-                for (int j = i + 4; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
-                        k = j;
+                for(int j=i+3; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        podstawaLogarytm+=wzor.charAt(j);
+                    }else {
+                        podstawaLogarytm+="]";
+                        k=j;
                         break;
-                    } else {
-                        podstawaLogarytm += wzor.charAt(j);
                     }
                 }
+                String nowaPodstawaLogarytm=podstawaLogarytm.replaceFirst("\\[","");
+                StringBuilder str = new StringBuilder(nowaPodstawaLogarytm);
+                str.setCharAt(str.lastIndexOf("]"),')');
+                nowaPodstawaLogarytm=String.valueOf(str);
 
-                for (int j = k + 2; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
+                ileOtwierajacych = 0;
+                ileZamykajacych = 0;
+                for(int j=k+1; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        liczbaLogarytm+=wzor.charAt(j);
+                    }else {
                         break;
-                    } else {
-                        liczbaLogarytm += wzor.charAt(j);
                     }
                 }
+                String nowaLiczbaLogarytm=liczbaLogarytm.replaceFirst("\\[","(");
 
-                if(podstawaLogarytm.matches("(.*)sin(.*)") || podstawaLogarytm.matches("(.*)cos(.*)") || podstawaLogarytm.matches("(.*)tan(.*)") || podstawaLogarytm.matches("(.*)cot(.*)")){
-                    podstawaLogarytm+="]";
-                    liczbaLogarytm=liczbaLogarytm.replace("[","");
-                }
-                if(liczbaLogarytm.matches("(.*)sin(.*)") || liczbaLogarytm.matches("(.*)cos(.*)") || liczbaLogarytm.matches("(.*)tan(.*)") || liczbaLogarytm.matches("(.*)cot(.*)")){
-                    liczbaLogarytm+="]";
-                }
-                wzor = wzor.replace("log[" + podstawaLogarytm + "][" + liczbaLogarytm + "]", "sympy.log(" + liczbaLogarytm + "," + podstawaLogarytm + ")");
+                wzor = wzor.replace( "log"+podstawaLogarytm +  liczbaLogarytm+"]", "sympy.log" + nowaLiczbaLogarytm + "," + nowaPodstawaLogarytm + "");
 
             } else if (wzor.charAt(i) == 'l' && wzor.charAt(i + 1) == 'n' && wzor.charAt(i+2)=='[') {
-                int k = 0;
-                for (int j = i; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
-                        k = j;
+                int ileOtwierajacych = 0, ileZamykajacych = 0;
+                String liczba="";
+
+                for(int j=i+2; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
+                    }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        liczba+=wzor.charAt(j);
+                    }else {
+                        liczba+="]";
                         break;
                     }
                 }
 
-                StringBuilder str = new StringBuilder(wzor);
-                str.setCharAt(k, ')');
-                wzor = String.valueOf(str);
-                wzor = wzor.replace("ln[", lib + "log(");
+                String nowaLiczba=liczba.replaceFirst("\\[","(");
+                StringBuilder str = new StringBuilder(nowaLiczba);
+                str.setCharAt(str.lastIndexOf("]"),')');
+                nowaLiczba=String.valueOf(str);
 
-            } else if (((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's' && wzor.charAt(i + 3) == '[') ||
+                wzor = wzor.replace("ln"+liczba,   "sympy.log"+nowaLiczba);
+            } else if ((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's' && wzor.charAt(i + 3) == '[') ||
                     (wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'i' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '[') ||
                     (wzor.charAt(i) == 't' && wzor.charAt(i + 1) == 'a' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '[') ||
-                    (wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 't' && wzor.charAt(i + 3) == '[')) ||
-                    (wzor.charAt(i) == 'a' && (wzor.charAt(i + 1) == 's' || wzor.charAt(i + 1) == 'c' || wzor.charAt(i + 1) == 't') && (wzor.charAt(i + 2) == 'i' || wzor.charAt(i + 2) == 'o' || wzor.charAt(i + 2) == 'a') && (wzor.charAt(i + 3) == 'n' || wzor.charAt(i + 3) == 's' || wzor.charAt(i + 3) == 't') && wzor.charAt(i + 4) == '[')) {
+                    (wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 't' && wzor.charAt(i + 3) == '[')) {
                 kat = "";
+                int ileOtwierajacych = 0, ileZamykajacych = 0;
 
-
-                for (int j = i; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == ']') {
-                        kat += "]";
-                        break;
-                    } else {
-                        kat += wzor.charAt(j);
+                for(int j=i; j<wzor.length(); j++){
+                    if(wzor.charAt(j)=='['){
+                        ileOtwierajacych++;
                     }
+                    if(wzor.charAt(j)==']'){
+                        ileZamykajacych++;
+                    }
+                    if(ileOtwierajacych==0 || ileOtwierajacych!=ileZamykajacych ){
+                        kat+=wzor.charAt(j);
+                    }else {
+                        kat+="]";
+                        break;
+                    }
+
                 }
 
-                if(kat.charAt(kat.length()-1)!=']'){
-                    kat += "]";
-                }
-
-                wzor = wzor.replace(kat, "("+funkcjeTrygonometryczne(kat,jednostka)+")");
+                StringBuilder str;
+                StringBuilder strLib = null;
+String nowyKat="";
                 System.out.println(wzor);
+                if(i-1>=0 && wzor.charAt(i-1)=='a'){
+                    str = new StringBuilder(kat);
+                    strLib = new StringBuilder("a");
+                    strLib.append(str);
+                    kat= String.valueOf(strLib);
 
+                    str = new StringBuilder(kat);
+                    strLib = new StringBuilder("sympy.");
+                    strLib.append(str);
+                    nowyKat= String.valueOf(strLib);
+                }else {
+                    str = new StringBuilder(kat);
+                    strLib = new StringBuilder("sympy.");
+                    strLib.append(str);
+                    nowyKat= String.valueOf(strLib);
+                }
+                wzor = wzor.replace(kat, nowyKat);
+                wzor = wzor.replace(nowyKat, "("+funkcjeTrygonometryczne(nowyKat,jednostka)+")");
             }
+        }
+
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Błąd działania. "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wzor;
     }
+
 
     public String funkcjeTrygonometryczne(String kat, String jednostka) {
         String nowyKat;
@@ -297,28 +399,37 @@ public class PrzeksztalcenieRownania {
         if (kat.contains("π")) {
             nowyKat = kat.replace("π", "sympy.pi");
             str = new StringBuilder(nowyKat);
-            strLib = new StringBuilder("sympy.");
-            strLib.append(str);
-            str2 = String.valueOf(strLib);
-            str2 = str2.replace("]", ")");
-            str2 = str2.replace("[", "(");
+          //  strLib = new StringBuilder("sympy.");
+           // strLib.append(str);
+            str2 = String.valueOf(str);
+            StringBuilder stringBuilder = new StringBuilder(str2);
+            stringBuilder.setCharAt(str2.lastIndexOf("]"),')');
+            str2 = String.valueOf(stringBuilder);
+            str2 = str2.replaceFirst( "\\[","(");
         } else {
             str = new StringBuilder(kat);
-            strLib = new StringBuilder("sympy.");
-            strLib.append(str);
-            str2 = String.valueOf(strLib);
+          //  strLib = new StringBuilder("sympy.");
+          //  strLib.append(str);
+            str2 = String.valueOf(str);
             if (jednostka.equals(String.valueOf(Jednostka.RADIANY))) {
-                str2 = str2.replace("]", ")");
-                str2 = str2.replace("[", "(");
+                StringBuilder stringBuilder = new StringBuilder(str2);
+                stringBuilder.setCharAt(str2.lastIndexOf("]"),')');
+                str2 = String.valueOf(stringBuilder);
+                str2 = str2.replaceFirst( "\\[","(");
             } else if (jednostka.equals(String.valueOf(Jednostka.STOPNIE))) {
                 if(kat.contains("x")){
                     zmianaJednostki(false,true);
-                    str2 = str2.replace("]", ")");
-                    str2 = str2.replace("[", "(");
+                    StringBuilder stringBuilder = new StringBuilder(str2);
+                    stringBuilder.setCharAt(str2.lastIndexOf("]"),')');
+                    str2 = String.valueOf(stringBuilder);
+                    str2 = str2.replaceFirst( "\\[","(");
                 }else {
                     zmianaJednostki(true,false);
-                    str2 = str2.replace("]", "))");
-                    str2 = str2.replace("[", "(math.radians(");
+                    StringBuilder stringBuilder = new StringBuilder(str2);
+                    stringBuilder.setCharAt(str2.lastIndexOf("]"),')');
+                    stringBuilder.append(")");
+                    str2 = String.valueOf(stringBuilder);
+                    str2 = str2.replaceFirst( "\\[","(math.radians(");
                 }
             }
         }

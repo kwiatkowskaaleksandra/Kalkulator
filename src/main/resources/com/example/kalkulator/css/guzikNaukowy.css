@@ -6,3 +6,13 @@
     -fx-font-family: Monospaced Regular ;
     -fx-font-size: 13;
 }
+
+.btnCyfry{
+    -fx-background-color: grey;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: rgb(63,63,63);
+    -fx-font-family: Monospaced Regular ;
+    -fx-font-size: 13;
+    -fx-text-fill: white;
+}

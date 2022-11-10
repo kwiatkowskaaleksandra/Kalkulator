@@ -6,6 +6,8 @@ package com.example.kalkulator;/*
 import jep.Jep;
 import jep.JepException;
 
+import javax.swing.*;
+
 public class MetodyCalkowania {
 
     public String metodaAnalityczna(String wzor, String gornaGranica, String dolnaGranica) {
@@ -44,6 +46,7 @@ public class MetodyCalkowania {
         } catch (JepException e) {
             System.out.println("EXCEPTION: " + e);
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Błąd: "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wynik;
     }
@@ -84,6 +87,7 @@ public class MetodyCalkowania {
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
+            JOptionPane.showMessageDialog(null, "Błąd: "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wynik;
     }
@@ -121,6 +125,7 @@ public class MetodyCalkowania {
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
+            JOptionPane.showMessageDialog(null, "Błąd: "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wynik;
     }
@@ -156,6 +161,7 @@ public class MetodyCalkowania {
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
+            JOptionPane.showMessageDialog(null, "Błąd: "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wynik;
     }
@@ -191,6 +197,7 @@ public class MetodyCalkowania {
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
+            JOptionPane.showMessageDialog(null, "Błąd: "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wynik;
     }

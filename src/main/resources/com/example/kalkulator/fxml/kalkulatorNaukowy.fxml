@@ -1,30 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.web.WebView?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 
-<AnchorPane prefHeight="602.0" prefWidth="975.0" style="-fx-background-color: white; -fx-border-color: grey;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.kalkulator.kalkulatorNaukowy">
+<AnchorPane prefHeight="653.0" prefWidth="1035.0" style="-fx-background-color: white; -fx-border-color: grey;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.kalkulator.kalkulatorNaukowy">
     <children>
         <BorderPane layoutX="236.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
@@ -32,7 +18,7 @@
                     <children>
                         <Pane layoutX="7.0" layoutY="-49.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <ImageView fx:id="zamknij" fitHeight="22.0" fitWidth="22.0" layoutX="935.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="zamknij" fitHeight="22.0" fitWidth="22.0" layoutX="994.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../image/exit.png" />
                                     </image>
@@ -41,7 +27,7 @@
                         </Pane>
                         <Pane layoutX="2.0" layoutY="27.0" prefHeight="40.0" prefWidth="972.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                             <children>
-                                <Label fx:id="menu" contentDisplay="RIGHT" layoutX="880.0" layoutY="9.0" prefHeight="22.0" prefWidth="79.0" text="MENU" textFill="#b7b7b7" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="840.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="9.0">
+                                <Label fx:id="menu" contentDisplay="RIGHT" layoutX="940.0" layoutY="9.0" prefHeight="22.0" prefWidth="79.0" text="MENU" textFill="#b7b7b7" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="840.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="9.0">
                                     <font>
                                         <Font name="Corbel" size="17.0" />
                                     </font>
@@ -53,7 +39,7 @@
                                         </ImageView>
                                     </graphic>
                                 </Label>
-                                <Label fx:id="menuZamknij" contentDisplay="RIGHT" layoutX="880.0" layoutY="9.0" prefHeight="22.0" prefWidth="79.0" text="MENU" textFill="#b7b7b7" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="840.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="9.0">
+                                <Label fx:id="menuZamknij" contentDisplay="RIGHT" layoutX="940.0" layoutY="9.0" prefHeight="22.0" prefWidth="79.0" text="MENU" textFill="#b7b7b7" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="840.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="9.0">
                                     <font>
                                         <Font name="Corbel Bold" size="17.0" />
                                     </font>
@@ -65,6 +51,11 @@
                                         </ImageView>
                                     </graphic>
                                 </Label>
+                        <Label layoutX="14.0" layoutY="7.0" text="Kalkulator naukowy">
+                           <font>
+                              <Font name="Corbel Bold" size="21.0" />
+                           </font>
+                        </Label>
                             </children>
                         </Pane>
                     </children>
@@ -87,7 +78,7 @@
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                                <CheckBox fx:id="pochodnaCheckBox" mnemonicParsing="false" prefHeight="25.0" prefWidth="223.0" styleClass="buttonMenu" text="Pochodna" textAlignment="CENTER" textFill="WHITE">
+                                <CheckBox fx:id="pochodnaCheckBox" mnemonicParsing="false" onAction="#xDisable" prefHeight="25.0" prefWidth="223.0" styleClass="buttonMenu" text="Pochodna" textAlignment="CENTER" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets />
                                     </VBox.margin>
@@ -157,9 +148,9 @@
                 </AnchorPane>
             </right>
             <center>
-                <AnchorPane prefHeight="535.0" prefWidth="910.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                <AnchorPane prefHeight="583.0" prefWidth="808.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                     <HBox fillHeight="false" prefHeight="171.0" prefWidth="750.0">
-                        <TextField fx:id="wpisaneDzialanie" layoutX="380.0" layoutY="15.0" prefHeight="71.0" prefWidth="485.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <TextField fx:id="wpisaneDzialanie" layoutX="380.0" layoutY="15.0" onMouseClicked="#clickedOnAction" prefHeight="71.0" prefWidth="485.0" styleClass="textField" stylesheets="@../css/textField.css">
                             <effect>
                                 <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
                                     <color>
@@ -171,14 +162,15 @@
                                 <Font name="Yu Gothic Medium" size="13.0" />
                             </font>
                         </TextField>
+                  <Button mnemonicParsing="false" onAction="#wykres" text="Button" visible="false" />
                         <padding>
                             <Insets left="20.0" top="50.0" />
                         </padding>
                     </HBox>
-                    <HBox layoutY="171.0" prefHeight="126.0" prefWidth="750.0">
-                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="71.0" prefWidth="329.0" styleClass="textField" stylesheets="@../css/textField.css">
+                    <HBox layoutY="150.0" prefHeight="147.0" prefWidth="808.0">
+                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="77.0" prefWidth="365.0" styleClass="textField" stylesheets="@../css/textField.css">
                             <children>
-                                <WebView fx:id="webView" layoutX="2.0" layoutY="9.0" prefHeight="52.0" prefWidth="323.0" />
+                                <WebView fx:id="webView" layoutX="5.0" layoutY="9.0" prefHeight="71.0" prefWidth="348.0" />
                             </children>
                             <effect>
                                 <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
@@ -201,9 +193,9 @@
                             <HBox.margin>
                                 <Insets left="20.0" top="40.0" />
                             </HBox.margin></Label>
-                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="71.0" prefWidth="329.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="77.0" prefWidth="374.0" styleClass="textField" stylesheets="@../css/textField.css">
                             <children>
-                                <WebView fx:id="webView2" layoutX="2.0" layoutY="9.0" prefHeight="52.0" prefWidth="323.0" />
+                                <WebView fx:id="webView2" layoutX="2.0" layoutY="9.0" prefHeight="72.0" prefWidth="366.0" />
                             </children>
                             <effect>
                                 <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
@@ -223,16 +215,18 @@
                             <Insets />
                         </VBox.margin>
                     </HBox>
-                    <GridPane alignment="TOP_CENTER" layoutX="14.0" layoutY="324.0" prefHeight="196.0" prefWidth="646.0">
+                    <GridPane alignment="TOP_CENTER" layoutX="7.0" layoutY="355.0" prefHeight="199.0" prefWidth="802.0">
                         <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="20.0" prefWidth="110.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="20.0" prefWidth="80.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="20.0" prefWidth="80.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="20.0" prefWidth="80.0" />
                         </columnConstraints>
                         <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -241,24 +235,23 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         </rowConstraints>
                         <children>
-                            <Button mnemonicParsing="false" onAction="#piOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="π" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <Button mnemonicParsing="false" onAction="#piOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="π" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                             <Button mnemonicParsing="false" onAction="#minusOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="−" GridPane.rowIndex="1" />
                             <Button mnemonicParsing="false" onAction="#nawiasPrawyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text=")" GridPane.columnIndex="2" />
                             <Button mnemonicParsing="false" onAction="#plusOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="+" />
                             <Button mnemonicParsing="false" onAction="#nawiastLewyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="(" GridPane.columnIndex="1" />
                             <Button mnemonicParsing="false" onAction="#pierwiastekStopniaNOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="ⁿ√" GridPane.columnIndex="4" />
                             <Button mnemonicParsing="false" onAction="#pierwiastekKwadratowyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="√" GridPane.columnIndex="3" />
-                            <Button mnemonicParsing="false" onAction="#nieskonczonoscOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="∞" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                            <Button mnemonicParsing="false" onAction="#wynikOnAction" prefHeight="30.0" prefWidth="200.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="=" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                            <Button mnemonicParsing="false" onAction="#wynikOnAction" prefHeight="30.0" prefWidth="87.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="=" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                             <Button mnemonicParsing="false" onAction="#potegaKwadratowaOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="x²" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                             <Button mnemonicParsing="false" onAction="#potegaStopniaNOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="xⁿ" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                            <Button mnemonicParsing="false" onAction="#logarytmNaturalnyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="ln" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                            <Button mnemonicParsing="false" onAction="#logarytmOnAction" prefHeight="30.0" prefWidth="48.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" text="logₙm" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <Button mnemonicParsing="false" onAction="#logarytmNaturalnyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="ln" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                            <Button mnemonicParsing="false" onAction="#logarytmOnAction" prefHeight="30.0" prefWidth="48.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" text="logₙm" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <font>
                                     <Font name="Monospaced Regular" size="11.0" />
                                 </font>
                             </Button>
-                            <Button mnemonicParsing="false" onAction="#eulerOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="e" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                            <Button mnemonicParsing="false" onAction="#eulerOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="e" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                             <Button mnemonicParsing="false" onAction="#razyOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="×" GridPane.rowIndex="2" />
                             <Button mnemonicParsing="false" onAction="#dzielenieOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="÷" GridPane.rowIndex="3" />
                             <Button mnemonicParsing="false" onAction="#silniaOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="n!" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -270,11 +263,52 @@
                             <Button mnemonicParsing="false" onAction="#cotOnAction" prefHeight="31.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="cot(x)" GridPane.columnIndex="6" GridPane.rowIndex="3" />
                             <Button mnemonicParsing="false" onAction="#tanOnAction" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="tan(x)" GridPane.columnIndex="6" GridPane.rowIndex="2" />
                             <Button mnemonicParsing="false" onAction="#cosOnAction" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="cos(x)" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                     <Button mnemonicParsing="false" onAction="#procentOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="\%" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                     <Button mnemonicParsing="false" onAction="#kropkaOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="." GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     <Button mnemonicParsing="false" onAction="#przecinekOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="," GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                     <Button disable="true" mnemonicParsing="false" onAction="#xOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="x" GridPane.columnIndex="3" GridPane.rowIndex="3" fx:id="xID" />
+                     <Button mnemonicParsing="false" onAction="#usunCaloscOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="C" GridPane.columnIndex="9" />
+                     <Button mnemonicParsing="false" onAction="#usunOstatnieOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/guzikNaukowy.css" text="⮨" GridPane.columnIndex="9" GridPane.rowIndex="1" />
                         </children>
                         <VBox.margin>
                             <Insets right="350.0" />
                         </VBox.margin>
+                  <padding>
+                     <Insets left="-80.0" />
+                  </padding>
                     </GridPane>
+               <GridPane alignment="CENTER" layoutX="7.0" layoutY="307.0" prefHeight="30.0" prefWidth="802.0">
+                 <columnConstraints>
+                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                   <children>
+                       <Button fx:id="zeroOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="0" />
+                       <Button fx:id="jedenOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="1" GridPane.columnIndex="1" />
+                       <Button fx:id="dwaOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="2" GridPane.columnIndex="2" />
+                       <Button fx:id="trzyOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="3" GridPane.columnIndex="3" />
+                       <Button fx:id="czteryOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="4" GridPane.columnIndex="4" />
+                       <Button fx:id="piecOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="5" GridPane.columnIndex="5" />
+                       <Button fx:id="szescOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="6" GridPane.columnIndex="6" />
+                       <Button fx:id="siedemOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="7" GridPane.columnIndex="7" />
+                       <Button fx:id="osiemOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="8" GridPane.columnIndex="8" />
+                       <Button fx:id="dziewiecOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/guzikNaukowy.css" text="9" GridPane.columnIndex="9" />
+                   </children>
+                  <padding>
+                     <Insets left="-90.0" />
+                  </padding>
+               </GridPane>
                 </AnchorPane>
             </center>
         </BorderPane>

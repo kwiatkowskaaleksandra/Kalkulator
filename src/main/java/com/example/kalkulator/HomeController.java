@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -35,7 +36,10 @@ public class HomeController {
                 menuStage.setX(event.getSceneX()+x);
                 menuStage.setY(event.getSceneY()+y);
             });
-            menuStage.setScene(new Scene(root, 972, 600));
+
+
+
+            menuStage.setScene(new Scene(root, 1035, 653));
             menuStage.show();
         }catch (Exception e){
             e.printStackTrace();
@@ -61,7 +65,7 @@ public class HomeController {
                 menuStage.setX(event.getSceneX()+x);
                 menuStage.setY(event.getSceneY()+y);
             });
-            menuStage.setScene(new Scene(root, 972, 600));
+            menuStage.setScene(new Scene(root, 1035, 653));
             menuStage.setResizable(false);
             menuStage.show();
         }catch (Exception e){

@@ -1,4 +1,5 @@
 package com.example.kalkulator;
+
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -19,9 +22,12 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import jep.Jep;
 import org.python.core.PyException;
+
+import javax.swing.*;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 public class kalkulatorNaukowy implements Initializable {
 
     @FXML
@@ -30,9 +36,6 @@ public class kalkulatorNaukowy implements Initializable {
     public WebView webView;
     @FXML
     public WebView webView2;
-    static String przeksztalconeWpisaneDzialanie =null;
-    static String wzorFunkcji =null;
-    public static String pressedJed = String.valueOf(Jednostka.STOPNIE);
     @FXML
     public Label menu;
     @FXML
@@ -55,60 +58,122 @@ public class kalkulatorNaukowy implements Initializable {
     public VBox vBoxHistoria;
     @FXML
     public VBox vBoxMenu;
+    @FXML
     public ImageView wroc;
+    @FXML
     public ListView<String> listViewHistoria;
-    double x,y;
+    @FXML
+    public Button xID;
+    @FXML
+    public Button zeroOnAction;
+    @FXML
+    public Button jedenOnAction;
+    @FXML
+    public Button dwaOnAction;
+    @FXML
+    public Button trzyOnAction;
+    @FXML
+    public Button czteryOnAction;
+    @FXML
+    public Button piecOnAction;
+    @FXML
+    public Button szescOnAction;
+    @FXML
+    public Button siedemOnAction;
+    @FXML
+    public Button osiemOnAction;
+    @FXML
+    public Button dziewiecOnAction;
+    double x, y;
+    static String przeksztalconeWpisaneDzialanie = null;
+    static String wzorFunkcji = null;
+    public static String pressedJed = String.valueOf(Jednostka.STOPNIE);
+    public static int clickedWpisaneDzialanie = 0;
 
     public void wynikOnAction() throws PyException {
         WebEngine webEngine = webView.getEngine();
         WebEngine webEngine2 = webView2.getEngine();
 
         PrzeksztalcenieRownania przeksztalcenieRownania = new PrzeksztalcenieRownania();
-        if(jednostkaChoiceBox.getValue().equals("Stopnie")){
-            pressedJed= String.valueOf(Jednostka.STOPNIE);
-        }else if(jednostkaChoiceBox.getValue().equals("Radiany")){
-            pressedJed=String.valueOf(Jednostka.RADIANY);
+        if (jednostkaChoiceBox.getValue().equals("Stopnie")) {
+            pressedJed = String.valueOf(Jednostka.STOPNIE);
+        } else if (jednostkaChoiceBox.getValue().equals("Radiany")) {
+            pressedJed = String.valueOf(Jednostka.RADIANY);
         }
-        przeksztalconeWpisaneDzialanie=przeksztalcenieRownania.przeksztalcenieRownania(wpisaneDzialanie.getText(),"math.",pressedJed);
+        przeksztalconeWpisaneDzialanie = przeksztalcenieRownania.przeksztalcenieRownania(wpisaneDzialanie.getText(), "math.", pressedJed);
 
-
-        if(pochodnaCheckBox.isSelected()){
-            webEngine.loadContent("<p>("+przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText())+")'</p>","text/html");
-            webEngine2.loadContent("<p>"+przeksztalcenieRownania.zmianaRownania(wynikKalkulatoraPochodna(przeksztalconeWpisaneDzialanie))+"</p>", "text/html");
-        }else{
-            webEngine.loadContent("<p>"+przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText())+"</p>","text/html");
-            webEngine2.loadContent("<p>"+przeksztalcenieRownania.zmianaRownania(wynikKalkulatora(przeksztalconeWpisaneDzialanie))+"</p>", "text/html");
+        if (!wpisaneDzialanieCheck(wpisaneDzialanie.getText())) {
+            if (pochodnaCheckBox.isSelected()) {
+                webEngine.loadContent("<p scroll=\"no\">(" + przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText()) + ")'</p>", "text/html");
+                webEngine2.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.zmianaRownania(wynikKalkulatoraPochodna(przeksztalconeWpisaneDzialanie)) + "</p>", "text/html");
+            } else {
+                webEngine.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText()) + "</p>", "text/html");
+                webEngine2.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.zmianaRownania(wynikKalkulatora(przeksztalconeWpisaneDzialanie)) + "</p>", "text/html");
+            }
+            listViewHistoria.getItems().addAll(wpisaneDzialanie.getText());
         }
-        listViewHistoria.getItems().addAll(wpisaneDzialanie.getText());
-
     }
 
-    public void wykres(){
-        WebEngine webEngine2 = webView2.getEngine();
-        try(Jep jep = new Jep() {} ){
+    public boolean wpisaneDzialanieCheck(String dzialanie) {
+        boolean blad = false;
+        String komunikat = "";
+        try {
+
+            if(dzialanie.isEmpty()){
+                komunikat = "Proszę wpisać działanie.";
+                blad = true;
+                throw new Exception(komunikat);
+            }
+
+            if (dzialanie.matches("(.*)\\?(.*)")) {
+                komunikat = "Błędnie wpisane działanie. W miejsce '?' należy wpisać wartość liczbową.";
+                blad = true;
+                throw new Exception(komunikat);
+            }
+
+            if (!pochodnaCheckBox.isSelected() && dzialanie.matches("(.*)x(.*)")) {
+                komunikat = "Błędnie wpisane działanie. Zmienna 'x' może zostać użyta tylko podczas obliczania pochodnej. \nNależy przejść do menu i zaznaczyć odpowiednią funkcję lub poprawić wpisane działanie.";
+                blad = true;
+                throw new Exception(komunikat);
+            }
+
+            if (jednostkaChoiceBox.getValue().equals("Jednostka") && (dzialanie.matches("(.*)cos(.*)") || dzialanie.matches("(.*)sin(.*)") || dzialanie.matches("(.*)tan(.*)") || dzialanie.matches("(.*)cot(.*)")) && !pochodnaCheckBox.isSelected()) {
+                komunikat = "Przy korzystaniu z funkcji trygonometrycznych należy wybrać jednostkę w jakiej został podany kąt: stopnie lub radiany.\nNależy przejść do menu i w zakładce 'Jednostka' wybrać odpowiednią opcję.";
+                blad = true;
+                throw new Exception(komunikat);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
+        }
+        return blad;
+    }
+    public void wykres() throws PyException {
+        try (Jep jep = new Jep() {}) {
             jep.exec("""
-                    from numpy import *
+                    import numpy as np
                     import matplotlib.pyplot as plt
-                    
-                    a=linspace(-4,2,6)
+                                        
+                    a=np.linspace(-4,2,6)
                     b=a*2
                     plt.plot(a,b)
                     plt.show()
-                    """);
-
-            // wzorFunkcji=String.valueOf(jep.getValue("c"));
-            //System.out.println(wzorFunkcji);
-            //webEngine2.loadContent("<p>"+przeksztalcenieRownania.zmianaRownania(wzorFunkcji)+"</p>", "text/html");
-
-
-        }catch (Exception e) {
+                    print(a)
+                    del a
+                    del b
+                    """
+            );
+        } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
         }
     }
+
+    public void wykresJava(){
+
+    }
+
     public String wynikKalkulatoraPochodna(String wzor) {
-        String wynik = "";
-        try (Jep jep = new Jep() {
-        }) {
+        try (Jep jep = new Jep() {}) {
             jep.exec("""
                     import math
                     import sympy
@@ -120,174 +185,67 @@ public class kalkulatorNaukowy implements Initializable {
             System.out.println(wzorFunkcji);
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
+            JOptionPane.showMessageDialog(null, "Błąd działania. "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wzorFunkcji;
     }
 
-    public String wynikKalkulatora(String wzor){
-        String wynik="";
-        try(Jep jep = new Jep() {} ){
+    public String wynikKalkulatora(String wzor) {
+        String wynik = "";
+        try (Jep jep = new Jep() {}) {
             jep.exec("""
                     import math
                     import sympy
-                    c=float("""+wzor+"""
-                    )
+                    c=round(float(""" + wzor + """
+                    ),15)
                     """);
-            wynik=String.valueOf(jep.getValue("c"));
-        }catch (Exception e) {
-            System.out.println("EXCEPTION: " + e);
-        }
-        return  wynik;
-    }
-
-    public void piOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"π");
-    }
-
-    public void plusOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"+");
-    }
-
-    public void minusOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"-");
-    }
-
-    public void razyOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"*");
-    }
-
-    public void dzielenieOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"/");
-    }
-
-    public void nawiastLewyOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"(");
-    }
-
-    public void nawiasPrawyOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+")");
-    }
-
-    public void silniaOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"!");
-    }
-
-    public void eulerOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"e");
-    }
-
-    public void logarytmOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"log[?][?]");
-    }
-
-    public void logarytmNaturalnyOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"ln[?]");
-    }
-
-    public void pierwiastekKwadratowyOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"sqrt[2,?]");
-    }
-
-    public void pierwiastekStopniaNOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"sqrt[?,?]");
-    }
-
-    public void potegaStopniaNOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"^[?]");
-    }
-
-    public void potegaKwadratowaOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"^[2]");
-    }
-
-    public void sinOnAction(){
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"sin[?]");
-    }
-
-    public void cosOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"cos[?]");
-    }
-
-    public void tanOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"tan[?]");
-    }
-
-    public void cotOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"cot[?]");
-    }
-
-    public void asinOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"asin[?]");
-    }
-
-    public void atanOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"atan[?]");
-    }
-
-    public void acosOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"acos[?]");
-    }
-
-    public void acotOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"acot[?]");
-    }
-
-    public void nieskonczonoscOnAction() {
-        wpisaneDzialanie.setText(wpisaneDzialanie.getText()+"∞");
-    }
-
-    public void kalkulatorCalkaOnAction() {
-        Stage stage = (Stage) kalkulatorCalkaButton.getScene().getWindow();
-        stage.close();
-
-        try{
-            Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorCalka.fxml")));
-            Stage menuStage = new Stage();
-            menuStage.setTitle("Kalkulator całek");
-            menuStage.initStyle(StageStyle.UNDECORATED);
-
-            root.setOnMousePressed(event -> {
-                x=menuStage.getX()-event.getSceneX();
-                y=menuStage.getY()-event.getSceneY();
-            });
-
-            root.setOnMouseDragged(event -> {
-                menuStage.setX(event.getSceneX()+x);
-                menuStage.setY(event.getSceneY()+y);
-            });
-
-            menuStage.setScene(new Scene(root, 972, 600));
-            menuStage.show();
+            wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
+            System.out.println("EXCEPTION: " + e);
+            JOptionPane.showMessageDialog(null, "Błąd działania. "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
+        return wynik;
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //webView.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
+        webView.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
+        webView2.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
 
         menuBoczne();
         choiceBoxJednostka();
+        cyfryOnAction();
+        EventHandler<KeyEvent> handler = new EventHandler<>() {
+            private boolean willConsume = false;
 
+            @Override
+            public void handle(KeyEvent event) {
+                if (willConsume) {
+                    event.consume();
+                }
+
+                if (event.getCode() == KeyCode.B || event.getCode() == KeyCode.D || event.getCode() == KeyCode.F || event.getCode() == KeyCode.H || event.getCode() == KeyCode.J || event.getCode() == KeyCode.K || event.getCode() == KeyCode.M ||
+                        event.getCode() == KeyCode.P || event.getCode() == KeyCode.U || event.getCode() == KeyCode.V || event.getCode() == KeyCode.W || event.getCode() == KeyCode.Y || event.getCode() == KeyCode.Z) {
+                    if (event.getEventType() == KeyEvent.KEY_PRESSED) {
+                        willConsume = true;
+                    } else if (event.getEventType() == KeyEvent.KEY_RELEASED) {
+                        willConsume = false;
+                    }
+                }
+                clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+            }
+        };
+        wpisaneDzialanie.addEventFilter(KeyEvent.ANY, handler);
+        EventHandler<MouseEvent> mouseEvent = event -> clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        wpisaneDzialanie.addEventFilter(MouseEvent.ANY,mouseEvent);
 
     }
 
-    public void choiceBoxJednostka(){
-        String a ="Jednostka";
-        String b ="Radiany";
-        String c ="Stopnie";
-        jednostkaChoiceBox.getItems().addAll(b,c);
-        jednostkaChoiceBox.setValue(a);
-    }
-
-    public void menuBoczne(){
-        zamknij.setOnMouseClicked(event-> System.exit(0));
+    public void menuBoczne() {
+        zamknij.setOnMouseClicked(event -> System.exit(0));
 
         slider.setTranslateX(222);
-        menu.setOnMouseClicked(event->{
+        menu.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
@@ -297,13 +255,13 @@ public class kalkulatorNaukowy implements Initializable {
 
             slider.setTranslateX(0);
 
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 menu.setVisible(false);
                 menuZamknij.setVisible(true);
             });
         });
 
-        menuZamknij.setOnMouseClicked(event->{
+        menuZamknij.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
@@ -313,50 +271,109 @@ public class kalkulatorNaukowy implements Initializable {
 
             slider.setTranslateX(222);
 
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 menu.setVisible(true);
                 menuZamknij.setVisible(false);
             });
         });
 
         vBoxHistoria.setTranslateX(222);
-        historiaButton.setOnMouseClicked(event->{
+        historiaButton.setOnMouseClicked(event -> {
             vBoxHistoria.setVisible(true);
-            TranslateTransition transition=new TranslateTransition(Duration.seconds(0.4),vBoxHistoria);
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), vBoxHistoria);
             transition.setToX(0);
             transition.play();
         });
 
-        wroc.setOnMouseClicked(event->{
-            TranslateTransition transition=new TranslateTransition(Duration.seconds(0.4),vBoxHistoria);
+        wroc.setOnMouseClicked(event -> {
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), vBoxHistoria);
             transition.setToX(222);
             transition.play();
             //vBoxMenu.setVisible(true);
-            transition.setOnFinished((ActionEvent e)-> vBoxHistoria.setVisible(false));
+            transition.setOnFinished((ActionEvent e) -> vBoxHistoria.setVisible(false));
         });
     }
 
+    public void choiceBoxJednostka() {
+        String a = "Jednostka";
+        String b = "Radiany";
+        String c = "Stopnie";
+        jednostkaChoiceBox.getItems().addAll(b, c);
+        jednostkaChoiceBox.setValue(a);
+    }
+
+    public void cyfryOnAction() {
+        zeroOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "0");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        jedenOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "1");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        dwaOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "2");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        trzyOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "3");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        czteryOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "4");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        piecOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "5");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        szescOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "6");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        siedemOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "7");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        osiemOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "8");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+
+        dziewiecOnAction.setOnAction(actionEvent -> {
+            wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "9");
+            clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+        });
+    }
 
     public void pomocOnAction() {
-        kalkulatorCalka.rodzaj="Kalkulator naukowy";
-     try{
-            Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/pomoc.fxml")));
+        kalkulatorCalka.rodzaj = "Kalkulator naukowy";
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/pomoc.fxml")));
             Stage menuStage = new Stage();
             menuStage.setTitle("Pomoc");
             menuStage.initStyle(StageStyle.UNDECORATED);
 
             root.setOnMousePressed(event -> {
-                x=menuStage.getX()-event.getSceneX();
-                y=menuStage.getY()-event.getSceneY();
+                x = menuStage.getX() - event.getSceneX();
+                y = menuStage.getY() - event.getSceneY();
             });
 
             root.setOnMouseDragged(event -> {
-                menuStage.setX(event.getSceneX()+x);
-                menuStage.setY(event.getSceneY()+y);
+                menuStage.setX(event.getSceneX() + x);
+                menuStage.setY(event.getSceneY() + y);
             });
 
-            menuStage.setScene(new Scene(root, 500, 600));
-            menuStage.setX(1400);
+            menuStage.setScene(new Scene(root, 600, 600));
+            menuStage.setX(1200);
             menuStage.setY(300);
             menuStage.show();
         } catch (Exception e) {
@@ -365,7 +382,195 @@ public class kalkulatorNaukowy implements Initializable {
         }
     }
 
-    public void historiaOnMouseClicked() {
-        listViewHistoria.setOnMouseClicked(event2-> wpisaneDzialanie.setText( listViewHistoria.getSelectionModel().getSelectedItem()));
+    public void kalkulatorCalkaOnAction() {
+        Stage stage = (Stage) kalkulatorCalkaButton.getScene().getWindow();
+        stage.close();
+
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorCalka.fxml")));
+            Stage menuStage = new Stage();
+            menuStage.setTitle("Kalkulator całek");
+            menuStage.initStyle(StageStyle.UNDECORATED);
+
+            root.setOnMousePressed(event -> {
+                x = menuStage.getX() - event.getSceneX();
+                y = menuStage.getY() - event.getSceneY();
+            });
+
+            root.setOnMouseDragged(event -> {
+                menuStage.setX(event.getSceneX() + x);
+                menuStage.setY(event.getSceneY() + y);
+            });
+
+            menuStage.setScene(new Scene(root, 1035, 653));
+            menuStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
+
+    public void historiaOnMouseClicked() {
+        listViewHistoria.setOnMouseClicked(event2 -> wpisaneDzialanie.setText(listViewHistoria.getSelectionModel().getSelectedItem()));
+    }
+
+    public void piOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "π");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void plusOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "+");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void minusOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "-");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void razyOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "*");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void dzielenieOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "/");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void nawiastLewyOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "(");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void nawiasPrawyOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, ")");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void silniaOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "!");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void eulerOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "e");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void logarytmOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "log[?][?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void logarytmNaturalnyOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "ln[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void pierwiastekKwadratowyOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "sqrt[2,?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void pierwiastekStopniaNOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "sqrt[?,?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void potegaStopniaNOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "^[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void potegaKwadratowaOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "^[2]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void sinOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "sin[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void cosOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "cos[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void tanOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "tan[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void cotOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "cot[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void asinOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "asin[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void atanOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "atan[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void acosOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "acos[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void acotOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "acot[?]");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void procentOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "%");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void kropkaOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, ".");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void przecinekOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, ",");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void xOnAction() {
+        wpisaneDzialanie.insertText(clickedWpisaneDzialanie, "x");
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
+    public void usunCaloscOnAction() {
+        wpisaneDzialanie.clear();
+        webView.getEngine().load("");
+        webView2.getEngine().load("");
+    }
+
+    public void usunOstatnieOnAction() {
+        if (wpisaneDzialanie.getLength() > 0) {
+            wpisaneDzialanie.setText(wpisaneDzialanie.getText(0, wpisaneDzialanie.getLength() - 1));
+        }
+    }
+
+    public void xDisable() {
+        if (pochodnaCheckBox.isSelected()) {
+            xID.setDisable(false);
+        } else {
+            xID.setDisable(true);
+        }
+    }
+
+    public void clickedOnAction() {
+        clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
+    }
+
 }

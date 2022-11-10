@@ -6,5 +6,6 @@ package com.example.kalkulator;/*
 public enum KilknietePole {
     GRANICA_DOLNA,
     GRANICA_GORNA,
-    CALKA
+    CALKA,
+    LICZBA_PODPRZEDZIALOW
 }

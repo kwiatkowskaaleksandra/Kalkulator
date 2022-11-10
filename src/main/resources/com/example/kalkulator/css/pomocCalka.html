@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="treeView.css">
+    <meta charset="UTF-8">
+</head>
+<html lang="pl">
+<body class="pomoc">
+<ul class="tree">
+    <li>
+        <details>
+            <summary>Menu<br>Zawiera niezbędne ustawienia. Znajduję się po prawej stronie w formie menu rozwijanego. Aby zamknąć menu należy kliknąć w przycisk „MENU”.</summary>
+            <ul>
+                <li>
+                    <details>
+                        <summary>Kalkulator naukowy</summary>
+                        <ul>
+                            <li>Powoduje zamknięcie bieżącego okna i przejście do kalkulatora naukowego.</li>
+                        </ul>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>Jednostka</summary>
+                        <ul>
+                            <li>Należy wybrać jednostkę w jakiej został podany kąt: radiany lub stopnie (wymagane tylko podczas używania funkcji trygonometrycznych).</li>
+                        </ul>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>Metoda całkowania</summary>
+                        <ul>
+                            <li>Przed wyświetleniem wyniku należy wybrać odpowiednią metodą całkowania.
+                                <ul>
+                                    <li>
+                                        <details>
+                                            <summary>Metody numeryczne</summary>
+                                            <ul>
+                                                <li>Metoda prostokątów z niedomiarem</li>
+                                            </ul>
+                                            <ul>
+                                                <li>Metoda prostokątów z nadmiarem</li>
+                                            </ul>
+                                            <ul>
+                                                <li>Metoda trapezów</li>
+                                            </ul>
+                                            <ul>
+                                                <li>Metoda Simpsona</li>
+                                            </ul>
+                                        </details>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <details>
+                                            <summary>Metoda analityczna</summary>
+                                        </details>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>Pomoc</summary>
+                        <ul>
+                            <li>Instrukcja obsługi.</li>
+                        </ul>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>Historia</summary>
+                        <ul>
+                            <li>Zawiera ostatnie wpisane działania do kalkulatora. Historia usuwa się po całkowitym zamknięciu aplikacji. Aby wykorzystać dane działanie z historii, należy kliknąć na wybrane pole i zostanie ono umieszczone w oknie przeznaczonym do wpisania działań.</li>
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary>Jak korzystać z kalkulatora naukowego ?</summary>
+            <ul>
+                <li>
+                    Górna granica całkowania - pole przeznaczone do wpisania górnej granicy całki. Pole nie może pozostać puste.
+                </li>
+                <li>
+                    Dolna granica całkowania - pole przeznaczone do wpisania dolnej granicy całki. Pole nie może pozostać puste.
+                </li>
+                <li>
+                    Liczba podprzedziałów - pole przeznaczone do wpisania liczby podprzedziałów. Wymagane tylko podczas wykorzystywania metod numerycznych.
+                </li>
+                <li>
+                    Wzór - pole w które należy wpisać wzór całki.
+                </li>
+            </ul>
+            <table class="tabelka">
+                <thead>
+                <tr>
+                    <th>Przycisk</th>
+                    <th>Zastosowanie</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <kdb>0</kdb>
+                        <kdb>1</kdb>
+                        <kdb>2</kdb><br>
+                        <kdb>3</kdb>
+                        <kdb>4</kdb>
+                        <kdb>5</kdb><br>
+                        <kdb>6</kdb>
+                        <kdb>7</kdb>
+                        <kdb>8</kdb>
+                        <kdb>9</kdb>
+                    </td>
+                    <td>Wprowadzanie liczb.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>+</kdb>
+                        <kdb>-</kdb>
+                        <br>
+                        <kdb>*</kdb>
+                        <kdb>/</kdb>
+                    </td>
+                    <td>Wykonywanie podstawowych działań matematycznych (dodawanie, odejmowanie, mnożenie, dzielenie):<br>
+                        <kdb>8 - 6 = </kdb>
+                        2
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>=</kdb>
+                    </td>
+                    <td>Otrzymanie wyniku obliczeń.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>C</kdb>
+                    </td>
+                    <td>Usunięcie całego wpisanego działania i wyniku.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>⮨</kdb>
+                    </td>
+                    <td>Usunięcie ostatniego wprowadzonego znaku.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>(</kdb>
+                        <kdb>)</kdb>
+                    </td>
+                    <td>Wprowadzanie nawiasów:<br>
+                        <kdb>( 3 - 1 ) * 3 =</kdb>
+                        6
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>.</kdb>
+                    </td>
+                    <td>Oddzielenie części ułamkowej ułamka dziesiętnego:<br>
+                        <kdb>1.3 + 0.6 =</kdb>
+                        1.9
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>x<sup>2</sup></kdb>
+                        <kdb>x<sup>n</sup></kdb>
+                    </td>
+                    <td>Potęgowanie:<br>
+                        <kdb>3<sup>2</sup> =</kdb>
+                        9 <br>Sposób wpisania potęgi bez użycia przycisku:
+                        <kdb>3^[2]</kdb>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>&#8730;x</kdb>
+                        <kdb><sup>n</sup>&#8730;x</kdb>
+                    </td>
+                    <td>Obliczanie pierwiastka z liczby:<br>
+                        <kdb><sup>4</sup>&#8730;256 = </kdb>
+                        4 <br>Sposób wpisania pierwiastka bez użycia przycisku:
+                        <kdb>sqrt[4,256]</kdb>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>,</kdb>
+                    </td>
+                    <td>Oddzielenie argumentów funkcji:<br>
+                        <kdb>sqrt[2 , 81]</kdb>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>log<sub>n</sub>m</kdb>
+                    </td>
+                    <td>Obliczanie logarytmu z liczby <i>m</i> o podstawie <i>n</i>:<br>
+                        <kdb>log<sub>4</sub>64 = </kdb>
+                        3 <br>Sposób wpisania logarytmu bez użycia przycisku:
+                        <kdb>log[4][64]</kdb>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>ln</kdb>
+                    </td>
+                    <td>Obliczanie logarytmu naturalnego:<br>
+                        <kdb>ln(e) =</kdb>
+                        1 <br>Sposób wpisania logarytmu naturalnego bez użycia przycisku:
+                        <kdb>ln[e]</kdb>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>e</kdb>
+                    </td>
+                    <td>Wprowadzenie stałej matematycznej <b><i>e</i></b></td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>π</kdb>
+                    </td>
+                    <td>Wprowadzenie stałej matematycznej <b><i>π</i></b></td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>x</kdb>
+                    </td>
+                    <td>Wprowadzenie zmiennej <i>x</i> </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>∞</kdb>
+                    </td>
+                    <td>Wprowadzenie symbolu nieskończoności. Może on zostać użyty jedynie w polach przeznaczonych do podania granic całkowania przy wykorzystaniu metody analitycznej.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>n!</kdb>
+                    </td>
+                    <td>Obliczanie silni liczby <i>n</i>: <br>
+                        <kdb>6 ! = </kdb>
+                        720
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>sin(x)</kdb>
+                        <br>
+                        <kdb>cos(x)</kdb>
+                        <br>
+                        <kdb>tan(x)</kdb>
+                        <br>
+                        <kdb>cot(x)</kdb>
+                        <br></td>
+                    <td>Obliczanie funkcji trygonometrycznych: sinusa, cosinusa, tangensa, kotangensa kąta <i>x</i> <br>Sposób wpisania funkcji trygonometrycznej bez użycia przycisku: <br>
+                        <kdb>sin[90]</kdb>
+                        <br>
+                        <kdb>cos[π]</kdb>
+                        <br>
+                        <kdb>tan[π/2]</kdb>
+                        <br>
+                        <kdb>cot[30]</kdb>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <kdb>asin(x)</kdb>
+                        <br>
+                        <kdb>acos(x)</kdb>
+                        <br>
+                        <kdb>atan(x)</kdb>
+                        <br>
+                        <kdb>acot(x)</kdb>
+                        <br></td>
+                    <td>Obliczanie odwrotności funkcji trygonometrycznych: arcus sinus, arcus cosinus, arcus tangens, arcus kotangens kąta <i>x</i> <br>Sposób wpisania funkcji trygonometrycznej bez użycia przycisku: <br>
+                        <kdb>asin[1]</kdb>
+                        <br>
+                        <kdb>acos[0.5]</kdb>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </details>
+    </li>
+</ul>
+</body>
+</html>

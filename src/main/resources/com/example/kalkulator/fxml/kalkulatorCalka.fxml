@@ -132,7 +132,51 @@
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                            </children></VBox>
+                                <AnchorPane prefHeight="25.0" prefWidth="222.0">
+                                    <children>
+                                        <Label fx:id="wykresOtworz" layoutY="2.0" prefHeight="25.0" prefWidth="222.0" styleClass="buttonMenu" text="Wykres" textFill="WHITE">
+                                            <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../image/wykres.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                            <padding>
+                                                <Insets left="10.0" />
+                                            </padding>
+                                        </Label>
+                                        <Label fx:id="wykresZamknij" layoutY="2.0" prefHeight="25.0" prefWidth="222.0" styleClass="buttonMenu" text="Wykres" textFill="WHITE">
+                                            <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../image/wykres.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                            <padding>
+                                                <Insets left="10.0" />
+                                            </padding>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <Pane fx:id="paneWykres" prefHeight="145.0" prefWidth="222.0">
+                                    <children>
+                                        <Label layoutX="14.0" layoutY="12.0" styleClass="labelMenu" text="x min" textFill="WHITE" />
+                                        <Label layoutX="12.0" layoutY="47.0" styleClass="labelMenu" text="x max" textFill="WHITE" />
+                                        <Button layoutX="20.0" layoutY="102.0" mnemonicParsing="false" onAction="#wykres" styleClass="buttonWykres" text="Rysuj" textFill="WHITE" />
+                                        <Spinner layoutX="58.0" layoutY="10.0" prefHeight="25.0" prefWidth="90.0" fx:id="xMinSpinner" />
+                                        <Spinner layoutX="59.0" layoutY="45.0" prefHeight="25.0" prefWidth="90.0" fx:id="xMaxSpinner" />
+                                    </children>
+                                    <padding>
+                                        <Insets left="12.0" />
+                                    </padding>
+                                    <VBox.margin>
+                                        <Insets left="35.0" />
+                                    </VBox.margin>
+                                </Pane>
+                            </children>
+                        </VBox>
                         <VBox fx:id="vBoxHistoria" layoutY="22.0" prefHeight="512.0" prefWidth="222.0" visible="false">
                             <children>
                                 <ImageView fx:id="wroc" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
@@ -153,7 +197,6 @@
                                 </ScrollPane>
                             </children>
                         </VBox>
-
                     </children>
                 </AnchorPane>
             </right>
@@ -295,9 +338,9 @@
                             <HBox.margin>
                                 <Insets left="-48.0" />
                             </HBox.margin></Label>
-                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="70.0" prefWidth="403.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="80.0" prefWidth="328.0" styleClass="textField" stylesheets="@../css/textField.css">
                             <children>
-                                <WebView fx:id="webView" layoutX="4.0" layoutY="10.0" prefHeight="63.0" prefWidth="394.0" />
+                                <WebView fx:id="webView" layoutX="4.0" layoutY="10.0" prefHeight="63.0" prefWidth="318.0" />
                             </children>
                             <effect>
                                 <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
@@ -317,20 +360,44 @@
                             <HBox.margin>
                                 <Insets bottom="50.0" top="70.0" />
                             </HBox.margin></Label>
-                        <TextField fx:id="wynikCalka" editable="false" layoutX="552.0" layoutY="64.0" prefHeight="80.0" prefWidth="288.0" styleClass="textField" stylesheets="@../css/textField.css">
-                            <effect>
-                                <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
-                                    <color>
-                                        <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
-                                    </color>
-                                </DropShadow>
-                            </effect>
-                            <font>
-                                <Font name="Yu Gothic Medium" size="14.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets bottom="70.0" top="40.0" />
-                            </HBox.margin></TextField>
+                  <Pane layoutX="57.0" layoutY="50.0" prefHeight="80.0" prefWidth="211.0" styleClass="textField" stylesheets="@../css/textField.css">
+                     <children>
+                        <WebView fx:id="webView1" layoutX="4.0" layoutY="10.0" prefHeight="63.0" prefWidth="201.0" />
+                     </children>
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                           <color>
+                              <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <HBox.margin>
+                        <Insets bottom="70.0" top="40.0" />
+                     </HBox.margin>
+                  </Pane>
+                  <Label alignment="TOP_CENTER" layoutX="460.0" layoutY="80.0" prefHeight="20.0" prefWidth="25.0" text="=">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="50.0" top="70.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="wynikCalka" editable="false" layoutX="485.0" layoutY="50.0" prefHeight="83.0" prefWidth="172.0" styleClass="textField" stylesheets="@../css/textField.css">
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                           <color>
+                              <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     <font>
+                        <Font name="Yu Gothic Medium" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="70.0" top="40.0" />
+                     </HBox.margin>
+                  </TextField>
                     </HBox>
                     <GridPane alignment="TOP_CENTER" layoutX="7.0" layoutY="370.0" prefHeight="199.0" prefWidth="802.0">
                         <columnConstraints>

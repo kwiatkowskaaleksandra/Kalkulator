@@ -3,8 +3,6 @@ package com.example.kalkulator;/*
  * @author kola
  */
 
-import org.python.modules._locale._locale;
-
 import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -203,7 +201,7 @@ public class PrzeksztalcenieRownania {
             }
 
             if (wzor.charAt(i) == '∞') {
-                wzor = wzor.replace("∞", "sympy.oo");
+                wzor = wzor.replace("∞", lib+"oo");
             }
 
             if(wzor.charAt(i)== '%'){
@@ -308,7 +306,7 @@ public class PrzeksztalcenieRownania {
                 }
                 String nowaLiczbaLogarytm=liczbaLogarytm.replaceFirst("\\[","(");
 
-                wzor = wzor.replace( "log"+podstawaLogarytm +  liczbaLogarytm+"]", "sympy.log" + nowaLiczbaLogarytm + "," + nowaPodstawaLogarytm + "");
+                wzor = wzor.replace( "log"+podstawaLogarytm +  liczbaLogarytm+"]", lib+"log" + nowaLiczbaLogarytm + "," + nowaPodstawaLogarytm + "");
 
             } else if (wzor.charAt(i) == 'l' && wzor.charAt(i + 1) == 'n' && wzor.charAt(i+2)=='[') {
                 int ileOtwierajacych = 0, ileZamykajacych = 0;
@@ -334,7 +332,7 @@ public class PrzeksztalcenieRownania {
                 str.setCharAt(str.lastIndexOf("]"),')');
                 nowaLiczba=String.valueOf(str);
 
-                wzor = wzor.replace("ln"+liczba,   "sympy.log"+nowaLiczba);
+                wzor = wzor.replace("ln"+liczba,   lib+"log"+nowaLiczba);
             } else if ((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's' && wzor.charAt(i + 3) == '[') ||
                     (wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'i' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '[') ||
                     (wzor.charAt(i) == 't' && wzor.charAt(i + 1) == 'a' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '[') ||
@@ -355,12 +353,11 @@ public class PrzeksztalcenieRownania {
                         kat+="]";
                         break;
                     }
-
                 }
 
                 StringBuilder str;
-                StringBuilder strLib = null;
-String nowyKat="";
+                StringBuilder strLib;
+                String nowyKat="";
                 System.out.println(wzor);
                 if(i-1>=0 && wzor.charAt(i-1)=='a'){
                     str = new StringBuilder(kat);
@@ -382,7 +379,6 @@ String nowyKat="";
                 wzor = wzor.replace(nowyKat, "("+funkcjeTrygonometryczne(nowyKat,jednostka)+")");
             }
         }
-
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Błąd działania. "+e, "Alert", JOptionPane.WARNING_MESSAGE);
         }
@@ -394,13 +390,10 @@ String nowyKat="";
         String nowyKat;
         String str2;
         StringBuilder str;
-        StringBuilder strLib;
 
         if (kat.contains("π")) {
             nowyKat = kat.replace("π", "sympy.pi");
             str = new StringBuilder(nowyKat);
-          //  strLib = new StringBuilder("sympy.");
-           // strLib.append(str);
             str2 = String.valueOf(str);
             StringBuilder stringBuilder = new StringBuilder(str2);
             stringBuilder.setCharAt(str2.lastIndexOf("]"),')');
@@ -408,8 +401,6 @@ String nowyKat="";
             str2 = str2.replaceFirst( "\\[","(");
         } else {
             str = new StringBuilder(kat);
-          //  strLib = new StringBuilder("sympy.");
-          //  strLib.append(str);
             str2 = String.valueOf(str);
             if (jednostka.equals(String.valueOf(Jednostka.RADIANY))) {
                 StringBuilder stringBuilder = new StringBuilder(str2);
@@ -449,4 +440,26 @@ String nowyKat="";
         else return i * silnia(i - 1);
     }
 
+    public String przeksztalcenieWyniku(String wzor){
+        for (int i = 0; i < wzor.length(); i++) {
+
+           if (wzor.charAt(i) == '*' && wzor.charAt(i+1)=='*') {
+                String wykladnik = "";
+
+                for (int j = i + 2; j < wzor.length(); j++) {
+                    if (wzor.charAt(j) == '/') {
+                        break;
+                    } else {
+                        wykladnik += wzor.charAt(j);
+                    }
+                }
+                wzor = wzor.replace("**" + wykladnik, "<sup>"+wykladnik+"</sup>");
+            }
+
+           if(wzor.charAt(i)=='l' && wzor.charAt(i+1)=='o' &&  wzor.charAt(i+2)=='g'){
+               wzor=wzor.replace("log","ln");
+           }
+        }
+        return wzor;
+    }
 }

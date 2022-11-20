@@ -9,22 +9,26 @@ import jep.JepException;
 import javax.swing.*;
 
 public class MetodyCalkowania {
+    public static String wzorCalki;
 
     public String metodaAnalityczna(String wzor, String gornaGranica, String dolnaGranica) {
         String wynik = "";
         try (Jep jep = new Jep() {}) {
+            System.out.println(wzor);
             jep.exec("""
                     import sympy
                     import math
                     x=sympy.Symbol('x')
-                                                
+                    
                     wynik=sympy.integrate(""" + wzor + """
                     ,(x,""" + gornaGranica + """
                     ,""" + dolnaGranica + """
                     ))
-                                                
+                    
+                    wzorNieozn=sympy.integrate(""" + wzor + """
+                    )
                     """);
-            System.out.println(jep.getValue("wynik")+"   wyn");
+            wzorCalki=String.valueOf(jep.getValue("wzorNieozn"));
             if(wzor.contains("x")){
                 String w = String.valueOf(jep.getValue("wynik"));
                 jep.exec("""
@@ -34,14 +38,12 @@ public class MetodyCalkowania {
                     c=float("""+w+"""
                     )
                     """);
-                wynik = String.valueOf(jep.getValue("c"));
             }else{
                 jep.exec("""
                     c=float(wynik)
                     """);
-                wynik = String.valueOf(jep.getValue("c"));
             }
-
+            wynik = String.valueOf(jep.getValue("c"));
 
         } catch (JepException e) {
             System.out.println("EXCEPTION: " + e);
@@ -81,8 +83,12 @@ public class MetodyCalkowania {
                             c=float(simpson(""" + dolnaGranica + """
                     ,""" + gornaGranica + """
                     ,""" + liczbaPodprzedzialow + """
-                    ))"""
+                    ))
+                    wzorNieozn=sympy.integrate(""" + wzor + """
+                    )
+                    """
             );
+            wzorCalki=String.valueOf(jep.getValue("wzorNieozn"));
             jep.exec("print(c)");
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
@@ -119,9 +125,12 @@ public class MetodyCalkowania {
                             c=float(trapez(""" + dolnaGranica + """
                     ,""" + gornaGranica + """
                     ,""" + liczbaPodprzedzialow + """
-                    ))"""
+                    ))
+                    wzorNieozn=sympy.integrate(""" + wzor + """
+                    )
+                    """
             );
-            jep.exec("print(c)");
+            wzorCalki=String.valueOf(jep.getValue("wzorNieozn"));
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
@@ -156,8 +165,10 @@ public class MetodyCalkowania {
                     ,""" + gornaGranica + """
                     ,""" + liczbaPodprzedzialow + """
                     ))
+                    wzorNieozn=sympy.integrate(""" + wzor + """
+                    )
                     """);
-            jep.exec("print(c)");
+            wzorCalki=String.valueOf(jep.getValue("wzorNieozn"));
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
@@ -192,8 +203,10 @@ public class MetodyCalkowania {
                     ,""" + gornaGranica + """
                     ,""" + liczbaPodprzedzialow + """
                     ))
+                    wzorNieozn=sympy.integrate(""" + wzor + """
+                    )
                     """);
-            jep.exec("print(c)");
+            wzorCalki=String.valueOf(jep.getValue("wzorNieozn"));
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);

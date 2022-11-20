@@ -11,6 +11,7 @@ module com.example.kalkulator {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+    requires JMathPlot;
     requires jython.slim;
     requires jep;
     requires java.desktop;

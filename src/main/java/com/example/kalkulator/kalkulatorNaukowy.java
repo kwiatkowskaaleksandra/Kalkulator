@@ -8,10 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -31,7 +31,8 @@ import org.python.core.PyException;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.*;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 
 public class kalkulatorNaukowy implements Initializable {
@@ -97,9 +98,9 @@ public class kalkulatorNaukowy implements Initializable {
     @FXML
     public Pane paneWykres;
     @FXML
-    public Spinner <Integer> xMinSpinner;
+    public Spinner<Integer> xMinSpinner;
     @FXML
-    public Spinner <Integer> xMaxSpinner;
+    public Spinner<Integer> xMaxSpinner;
     double x, y;
     static String przeksztalconeWpisaneDzialanie = null;
     static String wzorFunkcji = null;
@@ -118,24 +119,26 @@ public class kalkulatorNaukowy implements Initializable {
         }
         przeksztalconeWpisaneDzialanie = przeksztalcenieRownania.przeksztalcenieRownania(wpisaneDzialanie.getText(), "sympy.", pressedJed);
 
-        if (!wpisaneDzialanieCheck(wpisaneDzialanie.getText())) {
-            if (pochodnaCheckBox.isSelected()) {
-                webEngine.loadContent("<p scroll=\"no\">(" + przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText()) + ")'</p>", "text/html");
-                webEngine2.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.przeksztalcenieWyniku(wynikKalkulatoraPochodna(przeksztalconeWpisaneDzialanie)) + "</p>", "text/html");
-            } else {
+        if (wpisaneDzialanieCheck(wpisaneDzialanie.getText(),pochodnaCheckBox.isSelected(),jednostkaChoiceBox.getValue())) {
+            if (!pochodnaCheckBox.isSelected() && !wynikKalkulatora(przeksztalconeWpisaneDzialanie).equals("")) {
                 webEngine.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText()) + "</p>", "text/html");
                 webEngine2.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.przeksztalcenieWyniku(wynikKalkulatora(przeksztalconeWpisaneDzialanie)) + "</p>", "text/html");
             }
+            if (pochodnaCheckBox.isSelected() && !wynikKalkulatoraPochodna(przeksztalconeWpisaneDzialanie).equals("")) {
+                webEngine.loadContent("<p scroll=\"no\">(" + przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText()) + ")'</p>", "text/html");
+                webEngine2.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.przeksztalcenieWyniku(wynikKalkulatoraPochodna(przeksztalconeWpisaneDzialanie)) + "</p>", "text/html");
+            }
             listViewHistoria.getItems().addAll(wpisaneDzialanie.getText());
         }
+
     }
 
-    public boolean wpisaneDzialanieCheck(String dzialanie) {
+    public boolean wpisaneDzialanieCheck(String dzialanie, boolean pochodna, String jednostka) {
         boolean blad = false;
         String komunikat = "";
         try {
 
-            if(dzialanie.isEmpty()){
+            if (dzialanie.isEmpty()) {
                 komunikat = "Proszę wpisać działanie.";
                 blad = true;
                 throw new Exception(komunikat);
@@ -147,13 +150,13 @@ public class kalkulatorNaukowy implements Initializable {
                 throw new Exception(komunikat);
             }
 
-            if (!pochodnaCheckBox.isSelected() && dzialanie.matches("(.*)x(.*)")) {
+            if (!pochodna && dzialanie.matches("(.*)x(.*)")) {
                 komunikat = "Błędnie wpisane działanie. Zmienna 'x' może zostać użyta tylko podczas obliczania pochodnej. \nNależy przejść do menu i zaznaczyć odpowiednią funkcję lub poprawić wpisane działanie.";
                 blad = true;
                 throw new Exception(komunikat);
             }
 
-            if (jednostkaChoiceBox.getValue().equals("Jednostka") && (dzialanie.matches("(.*)cos(.*)") || dzialanie.matches("(.*)sin(.*)") || dzialanie.matches("(.*)tan(.*)") || dzialanie.matches("(.*)cot(.*)")) && !pochodnaCheckBox.isSelected()) {
+            if (jednostka.equals("Jednostka") && (dzialanie.matches("(.*)cos(.*)") || dzialanie.matches("(.*)sin(.*)") || dzialanie.matches("(.*)tan(.*)") || dzialanie.matches("(.*)cot(.*)")) && !pochodna) {
                 komunikat = "Przy korzystaniu z funkcji trygonometrycznych należy wybrać jednostkę w jakiej został podany kąt: stopnie lub radiany.\nNależy przejść do menu i w zakładce 'Jednostka' wybrać odpowiednią opcję.";
                 blad = true;
                 throw new Exception(komunikat);
@@ -162,10 +165,11 @@ public class kalkulatorNaukowy implements Initializable {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
         }
-        return blad;
+        return !blad;
     }
 
-    public void menuWykres(){
+
+    public void menuWykres() {
         paneWykres.setTranslateX(222);
         wykresOtworz.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
@@ -174,7 +178,7 @@ public class kalkulatorNaukowy implements Initializable {
             slide.setToX(222);
             slide.play();
             paneWykres.setTranslateX(0);
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 wykresOtworz.setVisible(false);
                 wykresZamknij.setVisible(true);
             });
@@ -187,68 +191,91 @@ public class kalkulatorNaukowy implements Initializable {
             slide.setToX(0);
             slide.play();
             paneWykres.setTranslateX(222);
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 wykresOtworz.setVisible(true);
                 wykresZamknij.setVisible(false);
             });
         });
 
-        SpinnerValueFactory<Integer> valueFactoryMin = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999,9999);
+        SpinnerValueFactory<Integer> valueFactoryMin = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999, 9999);
         valueFactoryMin.setValue(-4);
         xMinSpinner.setValueFactory(valueFactoryMin);
-        SpinnerValueFactory<Integer> valueFactoryMax = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999,9999);
+        SpinnerValueFactory<Integer> valueFactoryMax = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999, 9999);
         valueFactoryMax.setValue(4);
         xMaxSpinner.setValueFactory(valueFactoryMax);
     }
 
-    public boolean wykresCheck() throws Exception {
-        boolean err=false;
-        String komunikat="";
-        try{
-        if(wpisaneDzialanie.getText().matches("(.*)ln(.*)") || wpisaneDzialanie.getText().matches("(.*)log(.*)") || wzorFunkcji.matches("(.*)ln(.*)") || wzorFunkcji.matches("(.*)sqrt(.*)")){
-            if(xMaxSpinner.getValue()<0 || xMinSpinner.getValue()<0){
-                komunikat = "Funkcja logarytmiczna nie może przyjmować ujemnych argumentów.";
+    public boolean wykresCheck(String dzialanie,int max , int min, String wzorWynik) {
+        boolean err = false;
+        String komunikat = "";
+        try {
+            if (dzialanie.isEmpty()) {
+                komunikat = "Aby wyświetlić wykres należy najpierw wpisać funkcję.";
                 err = true;
                 throw new Exception(komunikat);
             }
-        }
-        }catch (Exception e) {
+
+            if (dzialanie.matches("(.*)ln(.*)") || dzialanie.matches("(.*)log(.*)") || dzialanie.matches("(.*)sqrt(.*)")) {
+                if (max < 0 || min < 0) {
+                    komunikat = "Funkcja nie może przyjmować ujemnych argumentów.";
+                    err = true;
+                    throw new Exception(komunikat);
+                }
+            }
+            if (wzorWynik != null) {
+                if (wzorWynik.matches("(.*)ln(.*)") || wzorWynik.matches("(.*)sqrt(.*)")) {
+                    if (max < 0 || min < 0) {
+                        komunikat = "Funkcja nie może przyjmować ujemnych argumentów.";
+                        err = true;
+                        throw new Exception(komunikat);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return err;
     }
 
-
-    public void wykres() throws Exception {
+    public void wykres() {
         wykresFunkcji wykres = new wykresFunkcji();
-        Plot2DPanel plotPanel = new Plot2DPanel();
 
-        if(!wykresCheck()) {
-            double[] x = wykres.listaX(wpisaneDzialanie.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue());
-            double[] y = wykres.listaY(wpisaneDzialanie.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue(), x);
+        if (!wykresCheck(wpisaneDzialanie.getText(),xMaxSpinner.getValue(),xMinSpinner.getValue(),wzorFunkcji)) {
+            try {
+                Plot2DPanel plotPanel = new Plot2DPanel();
+                double[] x = wykres.listaX(wpisaneDzialanie.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue());
+                double[] y = wykres.listaY(wpisaneDzialanie.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue(), x);
 
-            plotPanel.addLegend("SOUTH");
-            plotPanel.addLinePlot("f(x)", Color.BLUE, x, y);
+                plotPanel.addLegend("SOUTH");
+                plotPanel.addLinePlot("f(x)", Color.BLUE, x, y);
 
-            if (pochodnaCheckBox.isSelected() && !przeksztalconeWpisaneDzialanie.isEmpty()) {
-                String przeksztalconaFunckja = wzorFunkcji;
-                if(przeksztalconaFunckja.matches("(.*)log(.*)")){
-                    przeksztalconaFunckja=przeksztalconaFunckja.replace("log","sympy.log");
+                if (pochodnaCheckBox.isSelected() && !przeksztalconeWpisaneDzialanie.isEmpty()) {
+                    String przeksztalconaFunckja = wzorFunkcji;
+                    if (przeksztalconaFunckja.matches("(.*)log(.*)")) {
+                        przeksztalconaFunckja = przeksztalconaFunckja.replace("log", "sympy.log");
+                    }
+                    double[] xP = wykres.listaX(przeksztalconaFunckja, xMaxSpinner.getValue(), xMinSpinner.getValue());
+                    double[] yP = wykres.listaY(przeksztalconaFunckja, xMaxSpinner.getValue(), xMinSpinner.getValue(), xP);
+                    plotPanel.addLinePlot("f'(x))", Color.GREEN, xP, yP);
                 }
-                double[] xP = wykres.listaX(przeksztalconaFunckja, xMaxSpinner.getValue(), xMinSpinner.getValue());
-                double[] yP = wykres.listaY(przeksztalconaFunckja, xMaxSpinner.getValue(), xMinSpinner.getValue(), xP);
-                plotPanel.addLinePlot("f'(x))", Color.GREEN, xP, yP);
-            }
 
-            JFrame frame = new JFrame("Wykres");
-            frame.setContentPane(plotPanel);
-            frame.setSize(700, 700);
-            frame.setVisible(true);
+                JFrame frame = new JFrame("Wykres");
+                frame.setContentPane(plotPanel);
+                frame.setSize(700, 700);
+                frame.setVisible(true);
+            } catch (Exception w) {
+                System.out.println("exx" + w);
+            }
         }
     }
 
     public String wynikKalkulatoraPochodna(String wzor) {
-        try (Jep jep = new Jep() {}) {
+        if(!wzor.matches("(.*)x(.*)")){
+            wzorFunkcji="0";
+        }else{
+        try (Jep jep = new Jep() {
+        }) {
             jep.exec("""
                     import math
                     import sympy
@@ -260,13 +287,15 @@ public class kalkulatorNaukowy implements Initializable {
             System.out.println(wzorFunkcji);
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
-            JOptionPane.showMessageDialog(null, "Błąd działania. "+e, "Alert", JOptionPane.WARNING_MESSAGE);
+            wzorFunkcji = "";
+            JOptionPane.showMessageDialog(null, "Błąd działania.", "Alert", JOptionPane.WARNING_MESSAGE);
+        }
         }
         return wzorFunkcji;
     }
 
     public String wynikKalkulatora(String wzor) {
-        String wynik = "";
+        String wynik;
         try (Jep jep = new Jep() {}) {
             jep.exec("""
                     import math
@@ -277,7 +306,8 @@ public class kalkulatorNaukowy implements Initializable {
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
-            JOptionPane.showMessageDialog(null, "Błąd działania. "+e, "Alert", JOptionPane.WARNING_MESSAGE);
+            wynik = "";
+            JOptionPane.showMessageDialog(null, "Błąd działania.", "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wynik;
     }
@@ -312,7 +342,7 @@ public class kalkulatorNaukowy implements Initializable {
         };
         wpisaneDzialanie.addEventFilter(KeyEvent.ANY, handler);
         EventHandler<MouseEvent> mouseEvent = event -> clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
-        wpisaneDzialanie.addEventFilter(MouseEvent.ANY,mouseEvent);
+        wpisaneDzialanie.addEventFilter(MouseEvent.ANY, mouseEvent);
 
     }
 
@@ -365,7 +395,6 @@ public class kalkulatorNaukowy implements Initializable {
             TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), vBoxHistoria);
             transition.setToX(222);
             transition.play();
-            //vBoxMenu.setVisible(true);
             transition.setOnFinished((ActionEvent e) -> vBoxHistoria.setVisible(false));
         });
     }
@@ -377,6 +406,7 @@ public class kalkulatorNaukowy implements Initializable {
         jednostkaChoiceBox.getItems().addAll(b, c);
         jednostkaChoiceBox.setValue(a);
     }
+
 
     public void cyfryOnAction() {
         zeroOnAction.setOnAction(actionEvent -> {
@@ -453,8 +483,7 @@ public class kalkulatorNaukowy implements Initializable {
             menuStage.setY(300);
             menuStage.show();
         } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
+            System.out.println("Exception: "+e);
         }
     }
 
@@ -625,10 +654,12 @@ public class kalkulatorNaukowy implements Initializable {
         clickedWpisaneDzialanie = wpisaneDzialanie.getCaretPosition();
     }
 
+
     public void usunCaloscOnAction() {
         wpisaneDzialanie.clear();
         webView.getEngine().load("");
         webView2.getEngine().load("");
+        clickedWpisaneDzialanie = 0;
     }
 
     public void usunOstatnieOnAction() {
@@ -639,11 +670,7 @@ public class kalkulatorNaukowy implements Initializable {
     }
 
     public void xDisable() {
-        if (pochodnaCheckBox.isSelected()) {
-            xID.setDisable(false);
-        } else {
-            xID.setDisable(true);
-        }
+        xID.setDisable(!pochodnaCheckBox.isSelected());
     }
 
     public void clickedOnAction() {

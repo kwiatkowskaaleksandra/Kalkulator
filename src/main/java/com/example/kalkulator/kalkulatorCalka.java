@@ -12,10 +12,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -109,19 +109,19 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
     @FXML
     public Pane paneWykres;
     @FXML
-    public Spinner <Integer> xMinSpinner;
+    public Spinner<Integer> xMinSpinner;
     @FXML
-    public Spinner <Integer> xMaxSpinner;
+    public Spinner<Integer> xMaxSpinner;
     @FXML
     public WebView webView1;
-    double x,y;
+    double x, y;
     static String granicaGornaPrzeksztalcona = null;
     static String granicaDolnaPrzeksztalcona = null;
     private static String pressedField = String.valueOf(KilknietePole.CALKA);
     public static String pressedJed = String.valueOf(Jednostka.STOPNIE);
     public static int clickedWpisanaCalka = 0;
     public static int clickedWpisanaGranicaDolna = 0;
-    public static int clickedWpisanaGranicaGorna  = 0;
+    public static int clickedWpisanaGranicaGorna = 0;
     public static int clickedLiczbaPrzedzialow = 0;
     public static String rodzaj;
 
@@ -135,6 +135,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         cyfryOnAction();
         EventHandler<KeyEvent> handler = new EventHandler<>() {
             private boolean willConsume = false;
+
             @Override
             public void handle(KeyEvent event) {
                 if (willConsume) {
@@ -156,9 +157,9 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             }
         };
         wpisanaCalka.addEventFilter(KeyEvent.ANY, handler);
-        granicaGorna.addEventFilter(KeyEvent.ANY,handler);
-        granicaDolna.addEventFilter(KeyEvent.ANY,handler);
-        liczbaPodprzedzialow.addEventFilter(KeyEvent.ANY,handler);
+        granicaGorna.addEventFilter(KeyEvent.ANY, handler);
+        granicaDolna.addEventFilter(KeyEvent.ANY, handler);
+        liczbaPodprzedzialow.addEventFilter(KeyEvent.ANY, handler);
 
         EventHandler<MouseEvent> mouseEvent = event -> {
             clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
@@ -166,21 +167,21 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
         };
-        wpisanaCalka.addEventFilter(MouseEvent.ANY,mouseEvent);
-        granicaGorna.addEventFilter(MouseEvent.ANY,mouseEvent);
-        granicaDolna.addEventFilter(MouseEvent.ANY,mouseEvent);
-        liczbaPodprzedzialow.addEventFilter(MouseEvent.ANY,mouseEvent);
+        wpisanaCalka.addEventFilter(MouseEvent.ANY, mouseEvent);
+        granicaGorna.addEventFilter(MouseEvent.ANY, mouseEvent);
+        granicaDolna.addEventFilter(MouseEvent.ANY, mouseEvent);
+        liczbaPodprzedzialow.addEventFilter(MouseEvent.ANY, mouseEvent);
     }
 
-    public boolean liczbaPodprzedzialowCheck() {
+    public boolean liczbaPodprzedzialowCheck(String liczbaPodprzedzialow) {
         String komunikat = "";
         boolean blad = false;
         try {
-            if (liczbaPodprzedzialow.getText().isEmpty()) {
+            if (liczbaPodprzedzialow.isEmpty()) {
                 komunikat = "Liczba podprzedziałów nie może pozostać pusta.";
-                blad= true;
+                blad = true;
                 throw new Exception(komunikat);
-            } else if (!liczbaPodprzedzialow.getText().matches("[0-9]+")) {
+            } else if (!liczbaPodprzedzialow.matches("[0-9]+")) {
                 komunikat = "Liczba podprzedziałów nie może zawierać liter i znaków specjalnych. Należy podać liczbę naturalną.";
                 blad = true;
                 throw new Exception(komunikat);
@@ -191,7 +192,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         return !blad;
     }
 
-    public void menuWykres(){
+    public void menuWykres() {
         paneWykres.setTranslateX(222);
         wykresOtworz.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
@@ -200,7 +201,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             slide.setToX(222);
             slide.play();
             paneWykres.setTranslateX(0);
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 wykresOtworz.setVisible(false);
                 wykresZamknij.setVisible(true);
             });
@@ -213,41 +214,42 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             slide.setToX(0);
             slide.play();
             paneWykres.setTranslateX(222);
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 wykresOtworz.setVisible(true);
                 wykresZamknij.setVisible(false);
             });
         });
 
-        SpinnerValueFactory<Integer> valueFactoryMin = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999,9999);
+        SpinnerValueFactory<Integer> valueFactoryMin = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999, 9999);
         valueFactoryMin.setValue(-4);
         xMinSpinner.setValueFactory(valueFactoryMin);
-        SpinnerValueFactory<Integer> valueFactoryMax = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999,9999);
+        SpinnerValueFactory<Integer> valueFactoryMax = new SpinnerValueFactory.IntegerSpinnerValueFactory(-9999, 9999);
         valueFactoryMax.setValue(4);
         xMaxSpinner.setValueFactory(valueFactoryMax);
     }
 
-    public boolean wykresCheck() throws Exception {
-        boolean err=false;
-        String komunikat="";
-        try{
-            if(wpisanaCalka.getText().matches("(.*)ln(.*)") || wpisanaCalka.getText().matches("(.*)log(.*)") || wpisanaCalka.getText().matches("(.*)ln(.*)") || wpisanaCalka.getText().matches("(.*)sqrt(.*)")){
-                if(xMaxSpinner.getValue()<0 || xMinSpinner.getValue()<0){
-                    komunikat = "Funkcja logarytmiczna nie może przyjmować ujemnych argumentów.";
+    public boolean wykresCheck(String dzialanie,int max , int min) {
+        boolean err = false;
+        String komunikat = "";
+        try {
+            if (dzialanie.matches("(.*)ln(.*)") || dzialanie.matches("(.*)log(.*)") || dzialanie.matches("(.*)sqrt(.*)")) {
+                if (max < 0 ||min < 0) {
+                    komunikat = "Funkcja nie może przyjmować ujemnych argumentów.";
                     err = true;
                     throw new Exception(komunikat);
                 }
-                }
-        }catch (Exception e) {
+            }
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
         }
-        return err;
+        return !err;
     }
 
-    public void wykres() throws Exception {
-        Plot2DPanel plotPanel = new Plot2DPanel();
+    @FXML
+    public void wykres() {
         wykresFunkcji wykres = new wykresFunkcji();
-        if(!wykresCheck()) {
+        if (wykresCheck(wpisanaCalka.getText(),xMaxSpinner.getValue(),xMinSpinner.getValue())) {
+            Plot2DPanel plotPanel = new Plot2DPanel();
             double[] x = wykres.listaX(wpisanaCalka.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue());
             double[] y = wykres.listaY(wpisanaCalka.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue(), x);
 
@@ -256,8 +258,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
 
             if (!wynikCalka.getText().isEmpty()) {
                 String przeksztalconaFunckja = wzorCalki;
-                if(przeksztalconaFunckja.matches("(.*)log(.*)")){
-                    przeksztalconaFunckja=przeksztalconaFunckja.replace("log","sympy.log");
+                if (przeksztalconaFunckja.matches("(.*)log(.*)")) {
+                    przeksztalconaFunckja = przeksztalconaFunckja.replace("log", "sympy.log");
                 }
                 double[] xP = wykres.listaX(przeksztalconaFunckja, xMaxSpinner.getValue(), xMinSpinner.getValue());
                 double[] yP = wykres.listaY(przeksztalconaFunckja, xMaxSpinner.getValue(), xMinSpinner.getValue(), xP);
@@ -271,59 +273,52 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         }
     }
 
-    public boolean wpisanaCalkaGraniceCheck() {
+    public boolean wpisanaCalkaGraniceCheck(String grDolna, String grGorna, String wzor, String metoda, String jednostka) {
         String komunikat = "";
         boolean blad = false;
         try {
-            if (granicaDolna.getText().matches("[0-9]+")) {
-                granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
-            }
-            if (granicaGorna.getText().matches("[0-9]+")) {
-                granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
-            }
 
-            if (granicaDolna.getText().isEmpty() || granicaGorna.getText().isEmpty()) {
+            if (grDolna.isEmpty() || grGorna.isEmpty()) {
                 komunikat = "Granica całki nie może pozostać pusta.";
-                blad=true;
+                blad = true;
                 throw new Exception(komunikat);
             }
-            if(wpisanaCalka.getText().isEmpty()){
+            if (wzor.isEmpty()) {
                 komunikat = "Wzór całki nie może pozostać pusty.";
-                blad=true;
+                blad = true;
                 throw new Exception(komunikat);
             }
-            if (granicaDolna.getText().matches("(.*)∞(.*)")) {
-                if (!granicaDolna.getText().equals("-∞") && !granicaDolna.getText().equals("+∞")) {
+            if (grDolna.matches("(.*)∞(.*)")) {
+                if (!grDolna.equals("-∞") && !grDolna.equals("+∞")) {
                     komunikat = "Błędna wartość dolnej granicy.";
                     blad = true;
                     throw new Exception(komunikat);
                 }
             }
-            if (granicaGorna.getText().matches("(.*)∞(.*)")) {
-                if (!granicaGorna.getText().equals("-∞") && !granicaGorna.getText().equals("+∞")) {
+            if (grGorna.matches("(.*)∞(.*)")) {
+                if (!grGorna.equals("-∞") && !grGorna.equals("+∞")) {
                     komunikat = "Błędna wartość górnej granicy.";
                     blad = true;
                     throw new Exception(komunikat);
                 }
             }
-            if (granicaGorna.getText().matches("(.*)∞") || granicaDolna.getText().matches("(.*)∞")) {
-                if (!metodaChoiceBox.getValue().equals("Metoda analityczna")) {
+            if (grGorna.matches("(.*)∞") || grDolna.matches("(.*)∞")) {
+                if (!metoda.equals("Metoda analityczna")) {
                     komunikat = "Granice nieskończoności mogą być jedynie użyte przy całkowaniu metodą analityczną.";
                     blad = true;
                     throw new Exception(komunikat);
                 }
             }
-            if(wpisanaCalka.getText().matches("(.*)cos(.*)") || wpisanaCalka.getText().matches("(.*)sin(.*)") || wpisanaCalka.getText().matches("(.*)tan(.*)") || wpisanaCalka.getText().matches("(.*)cot(.*)") ||
-                    granicaGorna.getText().matches("(.*)cos(.*)") || granicaGorna.getText().matches("(.*)sin(.*)") || granicaGorna.getText().matches("(.*)tan(.*)") || granicaGorna.getText().matches("(.*)cot(.*)") ||
-            granicaDolna.getText().matches("(.*)cos(.*)") || granicaDolna.getText().matches("(.*)sin(.*)") || granicaDolna.getText().matches("(.*)tan(.*)") || granicaDolna.getText().matches("(.*)cot(.*)"))
-            {
-                if(jednostkaChoiceBox.getValue().equals("Jednostka")){
-                    komunikat="Proszę wybrać jedną jednostkę: stopnie lub radiany.";
-                    blad=true;
+            if (wzor.matches("(.*)cos(.*)") || wzor.matches("(.*)sin(.*)") || wzor.matches("(.*)tan(.*)") || wzor.matches("(.*)cot(.*)") ||
+                    grGorna.matches("(.*)cos(.*)") || grGorna.matches("(.*)sin(.*)") || grGorna.matches("(.*)tan(.*)") || grGorna.matches("(.*)cot(.*)") ||
+                    grDolna.matches("(.*)cos(.*)") || grDolna.matches("(.*)sin(.*)") || grDolna.matches("(.*)tan(.*)") || grDolna.matches("(.*)cot(.*)")) {
+                if (jednostka.equals("Jednostka")) {
+                    komunikat = "Proszę wybrać jedną jednostkę: stopnie lub radiany.";
+                    blad = true;
                     throw new Exception(komunikat);
                 }
             }
-            if(wpisanaCalka.getText().matches("(.*)\\?(.*)") || granicaDolna.getText().matches("(.*)\\?(.*)") || granicaGorna.getText().matches("(.*)\\?(.*)")){
+            if (wzor.matches("(.*)\\?(.*)") || grDolna.matches("(.*)\\?(.*)") ||grGorna.matches("(.*)\\?(.*)")) {
                 komunikat = "Błędnie wpisane działanie. W miejsce '?' należy wpisać wartość liczbową.";
                 blad = true;
                 throw new Exception(komunikat);
@@ -331,67 +326,84 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
         }
-        return blad;
+        return !blad;
     }
 
     public void wynikOnAction() {
         PrzeksztalcenieRownania przeksztalcenie = new PrzeksztalcenieRownania();
         WebEngine webEngine = webView.getEngine();
         WebEngine webEngine1 = webView1.getEngine();
-        if (!wpisanaCalkaGraniceCheck()) {
-            if(jednostkaChoiceBox.getValue().equals("Stopnie")){
-                pressedJed= String.valueOf(Jednostka.STOPNIE);
-            }else if(jednostkaChoiceBox.getValue().equals("Radiany")){
-                pressedJed=String.valueOf(Jednostka.RADIANY);
+        if (wpisanaCalkaGraniceCheck(granicaDolna.getText(), granicaGorna.getText(), wpisanaCalka.getText(), metodaChoiceBox.getValue(), jednostkaChoiceBox.getValue())) {
+            if (granicaDolna.getText().matches("[0-9]+")) {
+                granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
+            }
+            if (granicaGorna.getText().matches("[0-9]+")) {
+                granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
+            }
+
+            if (jednostkaChoiceBox.getValue().equals("Stopnie")) {
+                pressedJed = String.valueOf(Jednostka.STOPNIE);
+            } else if (jednostkaChoiceBox.getValue().equals("Radiany")) {
+                pressedJed = String.valueOf(Jednostka.RADIANY);
             }
 
             granicaGornaWzor.setText(przeksztalcenie.zmianaRownania(granicaGorna.getText()));
             granicaDolnaWzor.setText(przeksztalcenie.zmianaRownania(granicaDolna.getText()));
 
-            webEngine.loadContent("<p scroll=\"no\">("+przeksztalcenie.zmianaRownania(wpisanaCalka.getText())+")dx</p>","text/html");
-            if(metodaChoiceBox.getValue().equals("Metoda prostokątów z niedomiarem")){
-                if(liczbaPodprzedzialowCheck()){
+            webEngine.loadContent("<p scroll=\"no\">(" + przeksztalcenie.zmianaRownania(wpisanaCalka.getText()) + ")dx</p>", "text/html");
+            if (metodaChoiceBox.getValue().equals("Metoda prostokątów z niedomiarem")) {
+                if (liczbaPodprzedzialowCheck(liczbaPodprzedzialow.getText())) {
                     wynikPrzeksztalcenie(przeksztalcenie);
-                    wynikCalka.setText(metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                    webEngine1.loadContent("<p scroll=\"no\">["+przeksztalcenie.przeksztalcenieWyniku(wzorCalki)+"]<sup style=\"position: relative; left: 3px;font-size: 12px;\">"+granicaGornaPrzeksztalcona+"</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">"+granicaDolnaPrzeksztalcona+"</sub></p>","text/html");
+                    if (!metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
+                        wynikCalka.setText(metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                    }
                 }
-            }else if(metodaChoiceBox.getValue().equals("Metoda prostokątów z nadmiarem")){
-                if(liczbaPodprzedzialowCheck()) {
+            } else if (metodaChoiceBox.getValue().equals("Metoda prostokątów z nadmiarem")) {
+                if (liczbaPodprzedzialowCheck(liczbaPodprzedzialow.getText())) {
                     wynikPrzeksztalcenie(przeksztalcenie);
-                    wynikCalka.setText(metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                    webEngine1.loadContent("<p scroll=\"no\">["+przeksztalcenie.przeksztalcenieWyniku(wzorCalki)+"]<sup style=\"position: relative; left: 3px;font-size: 12px;\">"+granicaGornaPrzeksztalcona+"</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">"+granicaDolnaPrzeksztalcona+"</sub></p>","text/html");
+                    if (!metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
+                        wynikCalka.setText(metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                    }
                 }
-            }else if(metodaChoiceBox.getValue().equals("Metoda trapezów")){
-                if(liczbaPodprzedzialowCheck()) {
+            } else if (metodaChoiceBox.getValue().equals("Metoda trapezów")) {
+                if (liczbaPodprzedzialowCheck(liczbaPodprzedzialow.getText())) {
                     wynikPrzeksztalcenie(przeksztalcenie);
-                    wynikCalka.setText(metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                    webEngine1.loadContent("<p scroll=\"no\">["+przeksztalcenie.przeksztalcenieWyniku(wzorCalki)+"]<sup style=\"position: relative; left: 3px;font-size: 12px;\">"+granicaGornaPrzeksztalcona+"</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">"+granicaDolnaPrzeksztalcona+"</sub></p>","text/html");
+                    if (!metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
+                        wynikCalka.setText(metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                    }
                 }
-            }else if(metodaChoiceBox.getValue().equals("Metoda Simpsona")){
-                if(liczbaPodprzedzialowCheck()) {
+            } else if (metodaChoiceBox.getValue().equals("Metoda Simpsona")) {
+                if (liczbaPodprzedzialowCheck(liczbaPodprzedzialow.getText())) {
                     wynikPrzeksztalcenie(przeksztalcenie);
-                    wynikCalka.setText(metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                    webEngine1.loadContent("<p scroll=\"no\">["+przeksztalcenie.przeksztalcenieWyniku(wzorCalki)+"]<sup style=\"position: relative; left: 3px;font-size: 12px;\">"+granicaGornaPrzeksztalcona+"</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">"+granicaDolnaPrzeksztalcona+"</sub></p>","text/html");
+                    if (!metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
+                        wynikCalka.setText(metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                    }
                 }
-            }else if(metodaChoiceBox.getValue().equals("Metoda analityczna")){
+            } else if (metodaChoiceBox.getValue().equals("Metoda analityczna")) {
                 liczbaPodprzedzialow.clear();
                 wynikPrzeksztalcenie(przeksztalcenie);
-                wynikCalka.setText(metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona));
-                webEngine1.loadContent("<p scroll=\"no\">["+przeksztalcenie.przeksztalcenieWyniku(wzorCalki)+"]<sup style=\"position: relative; left: 3px;font-size: 12px;\">"+granicaGornaPrzeksztalcona+"</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">"+granicaDolnaPrzeksztalcona+"</sub></p>","text/html");
-            }else{
+                if (!metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona).equals("")) {
+                    wynikCalka.setText(metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona));
+                    webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                }
+            } else {
                 JOptionPane.showMessageDialog(null, "Proszę wybrać metodę całkowania.", "Alert", JOptionPane.WARNING_MESSAGE);
             }
             listViewHistoria.getItems().addAll(wpisanaCalka.getText());
         }
     }
 
-    private void wynikPrzeksztalcenie(PrzeksztalcenieRownania przeksztalcenie) {
-        granicaDolnaPrzeksztalcona = przeksztalcenie.przeksztalcenieRownania(granicaDolna.getText(), "sympy.",pressedJed);
-        granicaGornaPrzeksztalcona = przeksztalcenie.przeksztalcenieRownania(granicaGorna.getText(), "sympy.",pressedJed);
-        ukrytyWzorCalki.setText(przeksztalcenie.przeksztalcenieRownania(wpisanaCalka.getText(), "sympy.",pressedJed));
-        if(Objects.equals(przeksztalcenie.pressedJednostka, "RADIANY")){
+    public void wynikPrzeksztalcenie(PrzeksztalcenieRownania przeksztalcenie) {
+        granicaDolnaPrzeksztalcona = przeksztalcenie.przeksztalcenieRownania(granicaDolna.getText(), "sympy.", pressedJed);
+        granicaGornaPrzeksztalcona = przeksztalcenie.przeksztalcenieRownania(granicaGorna.getText(), "sympy.", pressedJed);
+        ukrytyWzorCalki.setText(przeksztalcenie.przeksztalcenieRownania(wpisanaCalka.getText(), "sympy.", pressedJed));
+        if (Objects.equals(przeksztalcenie.pressedJednostka, "RADIANY")) {
             jednostkaChoiceBox.setValue("Radiany");
-        }else if(Objects.equals(przeksztalcenie.pressedJednostka,"STOPNIE")){
+        } else if (Objects.equals(przeksztalcenie.pressedJednostka, "STOPNIE")) {
             jednostkaChoiceBox.setValue("Stopnie");
         }
     }
@@ -407,8 +419,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "π");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "π");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "π");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -420,12 +432,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "+");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "+");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "+");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "+");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -437,12 +449,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "-");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
-                granicaDolna.insertText(clickedWpisanaGranicaDolna,"-");
+            case "GRANICA_DOLNA" -> {
+                granicaDolna.insertText(clickedWpisanaGranicaDolna, "-");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "-");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "-");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -454,12 +466,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "*");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "*");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->  {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "*");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "*");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -471,12 +483,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "/");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "/");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "/");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "/");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -488,12 +500,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "(");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "(");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->  {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "(");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "(");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -505,14 +517,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, ")");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, ")");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  ")");
-                clickedWpisanaCalka = wpisanaCalka.getCaretPosition();}
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, ")");
+                clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
+        }
     }
 
     public void silniaOnAction() {
@@ -521,12 +534,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "!");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "!");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "!");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "!");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -538,12 +551,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "e");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
-                granicaDolna.insertText(clickedWpisanaGranicaDolna,"e");
+            case "GRANICA_DOLNA" -> {
+                granicaDolna.insertText(clickedWpisanaGranicaDolna, "e");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "e");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "e");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -555,12 +568,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "log[?][?]");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "log[?][?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "log[?][?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "log[?][?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -572,12 +585,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "ln[?]");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "ln[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "ln[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "ln[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -589,12 +602,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "sqrt[2,?]");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "sqrt[2,?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "sqrt[2,?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "sqrt[2,?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -606,12 +619,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "^[?]");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "^[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->  {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "^[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "^[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -623,12 +636,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "sqrt[?,?]");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
-                granicaDolna.insertText(clickedWpisanaGranicaDolna,"sqrt[?,?]");
+            case "GRANICA_DOLNA" -> {
+                granicaDolna.insertText(clickedWpisanaGranicaDolna, "sqrt[?,?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "sqrt[?,?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "sqrt[?,?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -640,12 +653,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGorna.insertText(clickedWpisanaGranicaGorna, "^[2]");
                 clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
             }
-            case "GRANICA_DOLNA" ->  {
+            case "GRANICA_DOLNA" -> {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "^[2]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "^[2]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "^[2]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -661,8 +674,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "sin[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "sin[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "sin[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -678,7 +691,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "cos[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
+            case "CALKA" -> {
                 wpisanaCalka.insertText(clickedWpisanaCalka, "cos[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
@@ -695,8 +708,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "cot[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "cot[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "cot[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -712,8 +725,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "atan[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->  {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "atan[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "atan[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -729,8 +742,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "acos[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "acos[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "acos[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -746,8 +759,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "acot[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka , "acot[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "acot[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -763,8 +776,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaDolna.insertText(clickedWpisanaGranicaDolna, "asin[?]");
                 clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
             }
-            case "CALKA" ->   {
-                wpisanaCalka.insertText(clickedWpisanaCalka,  "asin[?]");
+            case "CALKA" -> {
+                wpisanaCalka.insertText(clickedWpisanaCalka, "asin[?]");
                 clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
             }
         }
@@ -809,14 +822,13 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         }
     }
 
-    //TO DO zapisuje sie tylko calka, a granice juz nie
     public void historiaOnMouseClicked() {
-        listViewHistoria.setOnMouseClicked(event2-> wpisanaCalka.setText( listViewHistoria.getSelectionModel().getSelectedItem()));
+        listViewHistoria.setOnMouseClicked(event2 -> wpisanaCalka.setText(listViewHistoria.getSelectionModel().getSelectedItem()));
     }
 
     public void cyfryOnAction() {
         zeroOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "0");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -829,15 +841,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "0");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"0");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "0");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         jedenOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "1");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -850,15 +862,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "1");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"1");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "1");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         dwaOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "2");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -871,15 +883,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "2");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"2");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "2");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         trzyOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "3");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -892,15 +904,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "3");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"3");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "3");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         czteryOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "4");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -913,15 +925,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "4");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"4");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "4");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         piecOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "5");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -934,15 +946,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "5");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"5");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "5");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         szescOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "6");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -955,15 +967,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "6");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"6");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "6");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         siedemOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "7");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -976,15 +988,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "7");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"7");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "7");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         osiemOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "8");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -997,15 +1009,15 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "8");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"8");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "8");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
 
         dziewiecOnAction.setOnAction(actionEvent -> {
-            switch (pressedField){
+            switch (pressedField) {
                 case "GRANICA_GORNA" -> {
                     granicaGorna.insertText(clickedWpisanaGranicaGorna, "9");
                     clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
@@ -1018,9 +1030,9 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.insertText(clickedWpisanaCalka, "9");
                     clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
-                case "LICZBA_PODPRZEDZIALOW" ->{
-                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow,"9");
-                    clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+                case "LICZBA_PODPRZEDZIALOW" -> {
+                    liczbaPodprzedzialow.insertText(clickedLiczbaPrzedzialow, "9");
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         });
@@ -1089,7 +1101,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
     }
 
     public void usunOstatnieOnAction() {
-        switch (pressedField){
+        switch (pressedField) {
             case "GRANICA_GORNA" -> {
                 if (granicaGorna.getLength() > 0) {
                     granicaGorna.setText(granicaGorna.getText(0, granicaGorna.getLength() - 1));
@@ -1105,7 +1117,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wpisanaCalka.setText(wpisanaCalka.getText(0, wpisanaCalka.getLength() - 1));
                 }
             }
-            case "LICZBA_PODPRZEDZIALOW" ->{
+            case "LICZBA_PODPRZEDZIALOW" -> {
                 if (liczbaPodprzedzialow.getLength() > 0) {
                     liczbaPodprzedzialow.setText(liczbaPodprzedzialow.getText(0, liczbaPodprzedzialow.getLength() - 1));
                 }
@@ -1115,12 +1127,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
 
     public void granicaDolnaPressed() {
         pressedField = String.valueOf(KilknietePole.GRANICA_DOLNA);
-        clickedWpisanaGranicaDolna=granicaDolna.getCaretPosition();
+        clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
     }
 
     public void calkaPressed() {
         pressedField = String.valueOf(KilknietePole.CALKA);
-        clickedWpisanaCalka=wpisanaCalka.getCaretPosition();
+        clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
     }
 
     public void granicaGornaPressed() {
@@ -1129,73 +1141,73 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
     }
 
     public void liczbaPodprzedzialowPressed() {
-        pressedField=String.valueOf(KilknietePole.LICZBA_PODPRZEDZIALOW);
-        clickedLiczbaPrzedzialow=liczbaPodprzedzialow.getCaretPosition();
+        pressedField = String.valueOf(KilknietePole.LICZBA_PODPRZEDZIALOW);
+        clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
     }
 
-    public void choiceBoxJednostka(){
-        String a ="Jednostka";
-        String b ="Radiany";
-        String c ="Stopnie";
-        jednostkaChoiceBox.getItems().addAll(b,c);
+    public void choiceBoxJednostka() {
+        String a = "Jednostka";
+        String b = "Radiany";
+        String c = "Stopnie";
+        jednostkaChoiceBox.getItems().addAll(b, c);
         jednostkaChoiceBox.setValue(a);
     }
 
-    public void choiceBoxMetodaCalkowania(){
-        String a ="Metoda całkowania";
-        String b ="Metoda analityczna";
-        String c ="Metoda prostokątów z nadmiarem";
-        String d ="Metoda prostokątów z niedomiarem";
-        String e ="Metoda trapezów";
-        String f ="Metoda Simpsona";
-        metodaChoiceBox.getItems().addAll(b,c,d,e,f);
+    public void choiceBoxMetodaCalkowania() {
+        String a = "Metoda całkowania";
+        String b = "Metoda analityczna";
+        String c = "Metoda prostokątów z nadmiarem";
+        String d = "Metoda prostokątów z niedomiarem";
+        String e = "Metoda trapezów";
+        String f = "Metoda Simpsona";
+        metodaChoiceBox.getItems().addAll(b, c, d, e, f);
         metodaChoiceBox.setValue(a);
     }
 
-    public void menuBoczne(){
+    public void menuBoczne() {
         menuWykres();
-        zamknij.setOnMouseClicked(event-> System.exit(0));
+        zamknij.setOnMouseClicked(event -> System.exit(0));
 
         slider.setTranslateX(222);
-        menu.setOnMouseClicked(event->{
+        menu.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
             slide.setToX(222);
             slide.play();
             slider.setTranslateX(0);
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 menu.setVisible(false);
                 menuZamknij.setVisible(true);
             });
         });
 
-        menuZamknij.setOnMouseClicked(event->{
+        menuZamknij.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
             slide.setToX(0);
             slide.play();
             slider.setTranslateX(222);
-            slide.setOnFinished((ActionEvent e)->{
+            slide.setOnFinished((ActionEvent e) -> {
                 menu.setVisible(true);
                 menuZamknij.setVisible(false);
             });
         });
 
         vBoxHistoria.setTranslateX(222);
-        historiaButton.setOnMouseClicked(event->{
+        historiaButton.setOnMouseClicked(event -> {
             vBoxHistoria.setVisible(true);
-            TranslateTransition transition=new TranslateTransition(Duration.seconds(0.4),vBoxHistoria);
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), vBoxHistoria);
             transition.setToX(0);
             transition.play();
         });
 
-        wroc.setOnMouseClicked(event->{
-            TranslateTransition transition=new TranslateTransition(Duration.seconds(0.4),vBoxHistoria);
+        wroc.setOnMouseClicked(event -> {
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.4), vBoxHistoria);
             transition.setToX(222);
             transition.play();
-            transition.setOnFinished((ActionEvent e)-> vBoxHistoria.setVisible(false));
+            transition.setOnFinished((ActionEvent e) -> vBoxHistoria.setVisible(false));
         });
     }
 
@@ -1203,8 +1215,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         Stage stage = (Stage) kalkulatorNaukowyButton.getScene().getWindow();
         stage.close();
 
-        try{
-            Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorNaukowy.fxml")));
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorNaukowy.fxml")));
             Stage menuStage = new Stage();
             menuStage.setTitle("Kalkulator naukowy");
             menuStage.initStyle(StageStyle.UNDECORATED);
@@ -1214,33 +1226,32 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             });
 
             root.setOnMouseDragged(event -> {
-                menuStage.setX(event.getSceneX()+x);
-                menuStage.setY(event.getSceneY()+y);
+                menuStage.setX(event.getSceneX() + x);
+                menuStage.setY(event.getSceneY() + y);
             });
             menuStage.setScene(new Scene(root, 1035, 653));
             menuStage.show();
         } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
+            System.out.println("Exception: "+e);
         }
     }
 
     public void pomocOnAction() {
-        rodzaj="Kalkulator całek";
-        try{
-            Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/pomoc.fxml")));
+        rodzaj = "Kalkulator całek";
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/pomoc.fxml")));
             Stage menuStage = new Stage();
             menuStage.setTitle("Pomoc");
             menuStage.initStyle(StageStyle.UNDECORATED);
 
             root.setOnMousePressed(event -> {
-                x=menuStage.getX()-event.getSceneX();
-                y=menuStage.getY()-event.getSceneY();
+                x = menuStage.getX() - event.getSceneX();
+                y = menuStage.getY() - event.getSceneY();
             });
 
             root.setOnMouseDragged(event -> {
-                menuStage.setX(event.getSceneX()+x);
-                menuStage.setY(event.getSceneY()+y);
+                menuStage.setX(event.getSceneX() + x);
+                menuStage.setY(event.getSceneY() + y);
             });
 
             menuStage.setScene(new Scene(root, 600, 600));
@@ -1248,8 +1259,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             menuStage.setY(300);
             menuStage.show();
         } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
+            System.out.println("Exception: "+e);
         }
     }
 

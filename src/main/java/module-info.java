@@ -2,6 +2,7 @@ module com.example.kalkulator {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
+    requires javafx.base;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
@@ -15,7 +16,7 @@ module com.example.kalkulator {
     requires jython.slim;
     requires jep;
     requires java.desktop;
-
+    requires javafx.graphics;
 
     opens com.example.kalkulator to javafx.fxml;
     exports com.example.kalkulator;

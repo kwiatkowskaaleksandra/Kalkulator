@@ -50,7 +50,7 @@ public class Pomoc implements Initializable {
             webEngine.load(Objects.requireNonNull(url2).toString());
 
             labelRodzajKalkulatora.setText(kalkulatorCalka.rodzaj);
-            labelOpis.setText("Kalkulator całek jest przeznaczony do obliczania całek oznaczonych metodami numerycznymi: prostokątów z nadmiarem, prostokątów z niedomiarem, trapezów, Simpsona oraz metodą analityczną. Aby poprawnie obliczyć całkę należy uzupełnić pola dotyczące granicy dolnej i górnej, wzór całki oraz w przypadku wykorzystywania metod numerycznych liczbę podprzedziałów.");
+            labelOpis.setText("Kalkulator całek jest przeznaczony do obliczania całek nieoznaczonych i oznaczonych. Całkę oznaczoną można wyznaczyć metodami numerycznymi: prostokątów z nadmiarem, prostokątów z niedomiarem, trapezów, Simpsona oraz metodą analityczną. Aby poprawnie obliczyć całkę oznaczoną należy uzupełnić pola dotyczące granicy dolnej i górnej, wzór całki oraz w przypadku wykorzystywania metod numerycznych liczbę podprzedziałów. Natomiast w przypadku całki nieoznaczonej należy wypełnić jedynie pole ze wzorem całki.");
         }
     }
 }

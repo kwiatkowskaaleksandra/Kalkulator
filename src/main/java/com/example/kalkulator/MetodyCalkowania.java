@@ -223,4 +223,29 @@ public class MetodyCalkowania {
         }
         return wynik;
     }
+
+    public String calkaNieoznaczona(String wzor) {
+        String wynik;
+        try (Jep jep = new Jep() {
+        }) {
+            System.out.println(wzor);
+            jep.exec("""
+                    import sympy
+                    import math
+                    x=sympy.Symbol('x')
+                               
+                    wzorNieozn=sympy.integrate(""" + wzor + """
+                    ,x)
+                    """);
+            wzorCalki = String.valueOf(jep.getValue("wzorNieozn"));
+
+            wynik = String.valueOf(jep.getValue("wzorNieozn"));
+
+        } catch (JepException e) {
+            System.out.println("EXCEPTION: " + e);
+            wynik = "";
+            JOptionPane.showMessageDialog(null, "Błąd działania.", "Alert", JOptionPane.WARNING_MESSAGE);
+        }
+        return wynik;
+    }
 }

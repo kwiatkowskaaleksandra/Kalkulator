@@ -43,6 +43,14 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
     @FXML
     public Label granicaGornaWzor;
     @FXML
+    public Label granicaDolnaLabel;
+    @FXML
+    public Label granicaGornaLabel;
+    @FXML
+    public Label wynikZnak;
+    @FXML
+    public Label liczbaPodprzedzialowLabel;
+    @FXML
     public TextField liczbaPodprzedzialow;
     @FXML
     public TextField granicaDolna;
@@ -171,6 +179,33 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         granicaGorna.addEventFilter(MouseEvent.ANY, mouseEvent);
         granicaDolna.addEventFilter(MouseEvent.ANY, mouseEvent);
         liczbaPodprzedzialow.addEventFilter(MouseEvent.ANY, mouseEvent);
+
+        metodaChoiceBox.setOnAction(actionEvent -> {
+            if(metodaChoiceBox.getValue().equals("Całka nieoznaczona")){
+                granicaGorna.setVisible(false);
+                granicaDolna.setVisible(false);
+                liczbaPodprzedzialow.setVisible(false);
+                granicaDolnaLabel.setVisible(false);
+                granicaGornaLabel.setVisible(false);
+                liczbaPodprzedzialowLabel.setVisible(false);
+                granicaDolnaWzor.setVisible(false);
+                granicaGornaWzor.setVisible(false);
+                wynikCalka.setVisible(false);
+                wynikZnak.setVisible(false);
+            }else{
+                granicaGorna.setVisible(true);
+                granicaDolna.setVisible(true);
+                liczbaPodprzedzialow.setVisible(true);
+                granicaDolnaLabel.setVisible(true);
+                granicaGornaLabel.setVisible(true);
+                liczbaPodprzedzialowLabel.setVisible(true);
+                granicaDolnaWzor.setVisible(true);
+                granicaGornaWzor.setVisible(true);
+                wynikCalka.setVisible(true);
+                wynikZnak.setVisible(true);
+            }
+        });
+
     }
 
     public boolean liczbaPodprzedzialowCheck(String liczbaPodprzedzialow) {
@@ -277,7 +312,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         String komunikat = "";
         boolean blad = false;
         try {
-
+if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             if (grDolna.isEmpty() || grGorna.isEmpty()) {
                 komunikat = "Granica całki nie może pozostać pusta.";
                 blad = true;
@@ -323,6 +358,20 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 blad = true;
                 throw new Exception(komunikat);
             }
+}else{
+    if (wzor.matches("(.*)cos(.*)") || wzor.matches("(.*)sin(.*)") || wzor.matches("(.*)tan(.*)") || wzor.matches("(.*)cot(.*)")) {
+        if (jednostka.equals("Jednostka")) {
+            komunikat = "Proszę wybrać jedną jednostkę: stopnie lub radiany.";
+            blad = true;
+            throw new Exception(komunikat);
+        }
+    }
+    if (wzor.matches("(.*)\\?(.*)")) {
+        komunikat = "Błędnie wpisane działanie. W miejsce '?' należy wpisać wartość liczbową.";
+        blad = true;
+        throw new Exception(komunikat);
+    }
+}
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
         }
@@ -390,6 +439,13 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wynikCalka.setText(metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona));
                     webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
                 }
+            } else if(metodaChoiceBox.getValue().equals("Całka nieoznaczona")){
+                wynikPrzeksztalcenie(przeksztalcenie);
+                if(!calkaNieoznaczona(ukrytyWzorCalki.getText()).equals("")){
+                    wynikCalka.setText(calkaNieoznaczona(ukrytyWzorCalki.getText()));
+                    webEngine1.loadContent("<p scroll=\"no\">" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "</p>", "text/html");
+                }
+
             } else {
                 JOptionPane.showMessageDialog(null, "Proszę wybrać metodę całkowania.", "Alert", JOptionPane.WARNING_MESSAGE);
             }
@@ -1160,7 +1216,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         String d = "Metoda prostokątów z niedomiarem";
         String e = "Metoda trapezów";
         String f = "Metoda Simpsona";
-        metodaChoiceBox.getItems().addAll(b, c, d, e, f);
+        String g = "Całka nieoznaczona";
+        metodaChoiceBox.getItems().addAll(b, c, d, e, f, g);
         metodaChoiceBox.setValue(a);
     }
 

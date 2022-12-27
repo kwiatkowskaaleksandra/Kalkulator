@@ -51,7 +51,7 @@
                                         </ImageView>
                                     </graphic>
                                 </Label>
-                                <Label layoutX="14.0" layoutY="7.0" text="Kalkulator całek oznaczonych">
+                                <Label layoutX="14.0" layoutY="7.0" text="Kalkulator całek">
                                     <font>
                                         <Font name="Corbel Bold" size="21.0" />
                                     </font>
@@ -204,10 +204,40 @@
                 <AnchorPane prefHeight="535.0" prefWidth="910.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                     <HBox prefHeight="173.0" prefWidth="811.0">
                         <children>
+                            <HBox prefHeight="195.0" prefWidth="516.0">
+                                <Label layoutX="376.0" layoutY="43.0" prefHeight="50.0" prefWidth="51.0" text="Wzór:">
+                                    <font>
+                                        <Font name="Yu Gothic Medium" size="13.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="5.0" top="10.0" />
+                                    </HBox.margin></Label>
+                                <TextField fx:id="wpisanaCalka" layoutX="431.0" layoutY="15.0" onMouseClicked="#calkaPressed" prefHeight="71.0" prefWidth="388.0" styleClass="textField" stylesheets="@../css/textField.css">
+                                    <effect>
+                                        <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                            <color>
+                                                <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                            </color>
+                                        </DropShadow>
+                                    </effect>
+                                    <font>
+                                        <Font name="Yu Gothic Medium" size="13.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets top="20.0" />
+                                    </HBox.margin></TextField>
+                                <TextField fx:id="ukrytyWzorCalki" editable="false" layoutX="431.0" layoutY="84.0" prefHeight="25.0" prefWidth="70.0" visible="false">
+                                    <HBox.margin>
+                                        <Insets left="-150.0" top="100.0" />
+                                    </HBox.margin></TextField>
+                                <padding>
+                                    <Insets top="10.0" />
+                                </padding>
+                            </HBox>
                             <VBox prefHeight="200.0" prefWidth="380.0">
                                 <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
-                                        <Label layoutX="12.0" layoutY="32.0" text="Górna granica całkowania:">
+                                        <Label fx:id="granicaGornaLabel" layoutX="12.0" layoutY="32.0" text="Górna granica całkowania:">
                                             <font>
                                                 <Font name="Yu Gothic Medium" size="13.0" />
                                             </font>
@@ -231,7 +261,7 @@
                                         </TextField>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
-                                        <Label layoutX="12.0" layoutY="80.0" text="Dolna granica całkowania:">
+                                        <Label fx:id="granicaDolnaLabel" layoutX="12.0" layoutY="80.0" text="Dolna granica całkowania:">
                                             <font>
                                                 <Font name="Yu Gothic Medium" size="13.0" />
                                             </font>
@@ -254,7 +284,7 @@
                                             </HBox.margin></TextField>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
-                                        <Label layoutX="12.0" layoutY="129.0" text="Liczba podprzedziałów:">
+                                        <Label fx:id="liczbaPodprzedzialowLabel" layoutX="12.0" layoutY="129.0" text="Liczba podprzedziałów:">
                                             <font>
                                                 <Font name="Yu Gothic Medium" size="13.0" />
                                             </font>
@@ -283,36 +313,6 @@
                                 <padding>
                                     <Insets bottom="20.0" top="10.0" />
                                 </padding></VBox>
-                            <HBox prefHeight="195.0" prefWidth="516.0">
-                                <Label layoutX="376.0" layoutY="43.0" prefHeight="50.0" prefWidth="51.0" text="Wzór:">
-                                    <font>
-                                        <Font name="Yu Gothic Medium" size="13.0" />
-                                    </font>
-                                    <HBox.margin>
-                                        <Insets />
-                                    </HBox.margin></Label>
-                                <TextField fx:id="wpisanaCalka" layoutX="431.0" layoutY="15.0" onMouseClicked="#calkaPressed" prefHeight="71.0" prefWidth="388.0" styleClass="textField" stylesheets="@../css/textField.css">
-                                    <effect>
-                                        <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
-                                            <color>
-                                                <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
-                                            </color>
-                                        </DropShadow>
-                                    </effect>
-                                    <font>
-                                        <Font name="Yu Gothic Medium" size="13.0" />
-                                    </font>
-                                    <HBox.margin>
-                                        <Insets />
-                                    </HBox.margin></TextField>
-                                <TextField fx:id="ukrytyWzorCalki" editable="false" layoutX="431.0" layoutY="84.0" prefHeight="25.0" prefWidth="70.0" visible="false">
-                                    <HBox.margin>
-                                        <Insets left="-150.0" top="100.0" />
-                                    </HBox.margin></TextField>
-                                <padding>
-                                    <Insets top="10.0" />
-                                </padding>
-                            </HBox>
                         </children>
                     </HBox>
                     <HBox layoutX="3.0" layoutY="154.0" prefHeight="190.0" prefWidth="799.0">
@@ -375,7 +375,7 @@
                         <Insets bottom="70.0" top="40.0" />
                      </HBox.margin>
                   </Pane>
-                  <Label alignment="TOP_CENTER" layoutX="460.0" layoutY="80.0" prefHeight="20.0" prefWidth="25.0" text="=">
+                  <Label fx:id="wynikZnak" alignment="TOP_CENTER" layoutX="460.0" layoutY="80.0" prefHeight="20.0" prefWidth="25.0" text="=">
                      <font>
                         <Font size="14.0" />
                      </font>

@@ -22,7 +22,7 @@ public class HomeController {
         try {
             Stage menuStage = new Stage();
             menuStage.setTitle("Kalkulator naukowy");
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/kalkulatorNaukowy.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(HomeController.class.getResource("fxml/kalkulatorNaukowy.fxml")));
             menuStage.initStyle(StageStyle.UNDECORATED);
 
             root.setOnMousePressed(event -> {

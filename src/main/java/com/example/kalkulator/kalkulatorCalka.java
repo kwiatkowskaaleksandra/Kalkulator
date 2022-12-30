@@ -122,6 +122,10 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
     public Spinner<Integer> xMaxSpinner;
     @FXML
     public WebView webView1;
+    @FXML
+    public WebView grGornaWebView;
+    @FXML
+    public WebView grDolnaWebView;
     double x, y;
     static String granicaGornaPrzeksztalcona = null;
     static String granicaDolnaPrzeksztalcona = null;
@@ -137,6 +141,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         webView.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
         webView1.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
+        grGornaWebView.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
+        grDolnaWebView.getEngine().setUserStyleSheetLocation(Objects.requireNonNull(getClass().getResource("css/webView.css")).toString());
         menuBoczne();
         choiceBoxJednostka();
         choiceBoxMetodaCalkowania();
@@ -229,7 +235,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
 
     public void menuWykres() {
         paneWykres.setTranslateX(222);
-        wykresOtworz.setOnMouseClicked(event -> {
+        wykresZamknij.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(paneWykres);
@@ -237,12 +243,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             slide.play();
             paneWykres.setTranslateX(0);
             slide.setOnFinished((ActionEvent e) -> {
-                wykresOtworz.setVisible(false);
-                wykresZamknij.setVisible(true);
+                wykresOtworz.setVisible(true);
+                wykresZamknij.setVisible(false);
             });
         });
 
-        wykresZamknij.setOnMouseClicked(event -> {
+        wykresOtworz.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(paneWykres);
@@ -250,8 +256,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             slide.play();
             paneWykres.setTranslateX(222);
             slide.setOnFinished((ActionEvent e) -> {
-                wykresOtworz.setVisible(true);
-                wykresZamknij.setVisible(false);
+                wykresOtworz.setVisible(false);
+                wykresZamknij.setVisible(true);
             });
         });
 
@@ -267,6 +273,12 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         boolean err = false;
         String komunikat = "";
         try {
+            if (dzialanie.isEmpty()) {
+                komunikat = "Aby wyświetlić wykres należy najpierw wpisać funkcję.";
+                err = true;
+                throw new Exception(komunikat);
+            }
+
             if (dzialanie.matches("(.*)ln(.*)") || dzialanie.matches("(.*)log(.*)") || dzialanie.matches("(.*)sqrt(.*)")) {
                 if (max < 0 ||min < 0) {
                     komunikat = "Funkcja nie może przyjmować ujemnych argumentów.";
@@ -382,6 +394,8 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
         PrzeksztalcenieRownania przeksztalcenie = new PrzeksztalcenieRownania();
         WebEngine webEngine = webView.getEngine();
         WebEngine webEngine1 = webView1.getEngine();
+        WebEngine grD = grDolnaWebView.getEngine();
+        WebEngine grG = grGornaWebView.getEngine();
         if (wpisanaCalkaGraniceCheck(granicaDolna.getText(), granicaGorna.getText(), wpisanaCalka.getText(), metodaChoiceBox.getValue(), jednostkaChoiceBox.getValue())) {
             if (granicaDolna.getText().matches("[0-9]+")) {
                 granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
@@ -396,8 +410,11 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                 pressedJed = String.valueOf(Jednostka.RADIANY);
             }
 
-            granicaGornaWzor.setText(przeksztalcenie.zmianaRownania(granicaGorna.getText()));
-            granicaDolnaWzor.setText(przeksztalcenie.zmianaRownania(granicaDolna.getText()));
+            String gora = (przeksztalcenie.zmianaRownania(granicaGorna.getText()));
+            String dol =(przeksztalcenie.zmianaRownania(granicaDolna.getText()));
+            grD.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(dol) + "</p>", "text/html");
+            grG.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(gora) + "</p>", "text/html");
+
 
             webEngine.loadContent("<p scroll=\"no\">(" + przeksztalcenie.zmianaRownania(wpisanaCalka.getText()) + ")dx</p>", "text/html");
             if (metodaChoiceBox.getValue().equals("Metoda prostokątów z niedomiarem")) {
@@ -405,7 +422,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" +przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda prostokątów z nadmiarem")) {
@@ -413,7 +430,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda trapezów")) {
@@ -421,7 +438,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda Simpsona")) {
@@ -429,7 +446,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda analityczna")) {
@@ -437,7 +454,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                 wynikPrzeksztalcenie(przeksztalcenie);
                 if (!metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona).equals("")) {
                     wynikCalka.setText(metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona));
-                    webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 12px;\">" + granicaGornaPrzeksztalcona + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + granicaDolnaPrzeksztalcona + "</sub></p>", "text/html");
+                    webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
                 }
             } else if(metodaChoiceBox.getValue().equals("Całka nieoznaczona")){
                 wynikPrzeksztalcenie(przeksztalcenie);
@@ -873,9 +890,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     throw new Exception(komunikat);
                 }
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
-        }
+        } catch (Exception e) {JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);}
     }
 
     public void historiaOnMouseClicked() {
@@ -1154,6 +1169,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
         granicaDolnaWzor.setText("");
         granicaGornaWzor.setText("");
         webView.getEngine().load("");
+        webView1.getEngine().load("");
     }
 
     public void usunOstatnieOnAction() {
@@ -1161,21 +1177,25 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             case "GRANICA_GORNA" -> {
                 if (granicaGorna.getLength() > 0) {
                     granicaGorna.setText(granicaGorna.getText(0, granicaGorna.getLength() - 1));
+                    clickedWpisanaGranicaGorna = granicaGorna.getCaretPosition();
                 }
             }
             case "GRANICA_DOLNA" -> {
                 if (granicaDolna.getLength() > 0) {
                     granicaDolna.setText(granicaDolna.getText(0, granicaDolna.getLength() - 1));
+                    clickedWpisanaGranicaDolna = granicaDolna.getCaretPosition();
                 }
             }
             case "CALKA" -> {
                 if (wpisanaCalka.getLength() > 0) {
                     wpisanaCalka.setText(wpisanaCalka.getText(0, wpisanaCalka.getLength() - 1));
+                    clickedWpisanaCalka = wpisanaCalka.getCaretPosition();
                 }
             }
             case "LICZBA_PODPRZEDZIALOW" -> {
                 if (liczbaPodprzedzialow.getLength() > 0) {
                     liczbaPodprzedzialow.setText(liczbaPodprzedzialow.getText(0, liczbaPodprzedzialow.getLength() - 1));
+                    clickedLiczbaPrzedzialow = liczbaPodprzedzialow.getCaretPosition();
                 }
             }
         }
@@ -1226,7 +1246,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
         zamknij.setOnMouseClicked(event -> System.exit(0));
 
         slider.setTranslateX(222);
-        menu.setOnMouseClicked(event -> {
+        menuZamknij.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
@@ -1234,12 +1254,12 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             slide.play();
             slider.setTranslateX(0);
             slide.setOnFinished((ActionEvent e) -> {
-                menu.setVisible(false);
-                menuZamknij.setVisible(true);
+                menu.setVisible(true);
+                menuZamknij.setVisible(false);
             });
         });
 
-        menuZamknij.setOnMouseClicked(event -> {
+        menu.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
@@ -1247,8 +1267,8 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             slide.play();
             slider.setTranslateX(222);
             slide.setOnFinished((ActionEvent e) -> {
-                menu.setVisible(true);
-                menuZamknij.setVisible(false);
+                menu.setVisible(false);
+                menuZamknij.setVisible(true);
             });
         });
 

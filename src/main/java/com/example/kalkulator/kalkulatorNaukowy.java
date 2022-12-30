@@ -168,10 +168,10 @@ public class kalkulatorNaukowy implements Initializable {
         return !blad;
     }
 
-
     public void menuWykres() {
         paneWykres.setTranslateX(222);
-        wykresOtworz.setOnMouseClicked(event -> {
+
+        wykresZamknij.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(paneWykres);
@@ -179,12 +179,12 @@ public class kalkulatorNaukowy implements Initializable {
             slide.play();
             paneWykres.setTranslateX(0);
             slide.setOnFinished((ActionEvent e) -> {
-                wykresOtworz.setVisible(false);
-                wykresZamknij.setVisible(true);
+                wykresOtworz.setVisible(true);
+                wykresZamknij.setVisible(false);
             });
         });
 
-        wykresZamknij.setOnMouseClicked(event -> {
+        wykresOtworz.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(paneWykres);
@@ -192,8 +192,8 @@ public class kalkulatorNaukowy implements Initializable {
             slide.play();
             paneWykres.setTranslateX(222);
             slide.setOnFinished((ActionEvent e) -> {
-                wykresOtworz.setVisible(true);
-                wykresZamknij.setVisible(false);
+                wykresOtworz.setVisible(false);
+                wykresZamknij.setVisible(true);
             });
         });
 
@@ -223,6 +223,7 @@ public class kalkulatorNaukowy implements Initializable {
                 }
             }
             if (wzorWynik != null) {
+                System.out.println(wzorWynik);
                 if (wzorWynik.matches("(.*)ln(.*)") || wzorWynik.matches("(.*)sqrt(.*)")) {
                     if (max < 0 || min < 0) {
                         komunikat = "Funkcja nie może przyjmować ujemnych argumentów.";
@@ -274,8 +275,7 @@ public class kalkulatorNaukowy implements Initializable {
         if(!wzor.matches("(.*)x(.*)")){
             wzorFunkcji="0";
         }else{
-        try (Jep jep = new Jep() {
-        }) {
+        try (Jep jep = new Jep() {}) {
             jep.exec("""
                     import math
                     import sympy
@@ -351,16 +351,14 @@ public class kalkulatorNaukowy implements Initializable {
         zamknij.setOnMouseClicked(event -> System.exit(0));
 
         slider.setTranslateX(222);
+
         menu.setOnMouseClicked(event -> {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
-
-            slide.setToX(222);
+            slide.setToX(0);
             slide.play();
-
-            slider.setTranslateX(0);
-
+            slider.setTranslateX(222);
             slide.setOnFinished((ActionEvent e) -> {
                 menu.setVisible(false);
                 menuZamknij.setVisible(true);
@@ -371,12 +369,9 @@ public class kalkulatorNaukowy implements Initializable {
             TranslateTransition slide = new TranslateTransition();
             slide.setDuration(Duration.seconds(0.4));
             slide.setNode(slider);
-
-            slide.setToX(0);
+            slide.setToX(222);
             slide.play();
-
-            slider.setTranslateX(222);
-
+            slider.setTranslateX(0);
             slide.setOnFinished((ActionEvent e) -> {
                 menu.setVisible(true);
                 menuZamknij.setVisible(false);

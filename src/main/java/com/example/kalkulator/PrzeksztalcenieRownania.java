@@ -246,7 +246,7 @@ public class PrzeksztalcenieRownania {
                     for (int j = i - 1; j >= 0; j--) {
 
                         //Pętla warunkowa jeśli aktualny znak jest równy +,-,/,* to pętla for zostaje przerwana w przeciwnym wypadku znak jest zapisany do liczbaSilni
-                        if (!String.valueOf(wzor.charAt(j)).equals("+") && !String.valueOf(wzor.charAt(j)).equals("-") && !String.valueOf(wzor.charAt(j)).equals("/") && !String.valueOf(wzor.charAt(j)).equals("*")) {
+                        if (!String.valueOf(wzor.charAt(j)).equals("+") && !String.valueOf(wzor.charAt(j)).equals("-") && !String.valueOf(wzor.charAt(j)).equals("/") && !String.valueOf(wzor.charAt(j)).equals("*") && !String.valueOf(wzor.charAt(j)).equals("(") && !String.valueOf(wzor.charAt(j)).equals(")")) {
                             liczbaSilni += wzor.charAt(j);
                         } else break;
                     }
@@ -461,6 +461,8 @@ public class PrzeksztalcenieRownania {
                 wzor = wzor.replace("log", "ln");
             }
         }
+        wzor = wzor.replace("sympy." ,"");
+        wzor = wzor.replace("math." ,"");
         return wzor;
     }
 }

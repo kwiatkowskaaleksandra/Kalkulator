@@ -1,3 +1,5 @@
+package com.example.kalkulator;
+
 import com.example.kalkulator.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +16,7 @@ import java.util.Objects;
 
 
 class kalkulatorCalkaTest extends MetodyCalkowania {
-    public String metoda;
+ /*   public String metoda;
     public static String pressedJed = String.valueOf(Jednostka.STOPNIE);
     static String granicaGornaPrzeksztalcona = null;
     static String granicaDolnaPrzeksztalcona = null;
@@ -458,5 +460,5 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
                 System.out.println("exx" + w);
             }
         }
-    }
+    }*/
 }

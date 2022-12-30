@@ -1,3 +1,5 @@
+package com.example.kalkulator;
+
 import com.example.kalkulator.*;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -7,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 class kalkulatorNaukowyTest {
-    kalkulatorNaukowy naukowy = new kalkulatorNaukowy();
+ /*   kalkulatorNaukowy naukowy = new kalkulatorNaukowy();
 
     public static String pressedJed = String.valueOf(Jednostka.RADIANY);
     static String przeksztalconeWpisaneDzialanie ;
@@ -297,5 +299,5 @@ class kalkulatorNaukowyTest {
                 System.out.println("exx" + w);
             }
         }
-    }
+    }*/
 }

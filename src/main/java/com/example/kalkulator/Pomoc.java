@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class Pomoc implements Initializable {
     @FXML
-    public ImageView zamknij;
+    public ImageView zamknijPomoc;
     @FXML
     public WebView webView;
     @FXML
@@ -27,7 +27,7 @@ public class Pomoc implements Initializable {
 
     @FXML
     public void zamknijOnAction() {
-        Stage stage=(Stage) zamknij.getScene().getWindow();
+        Stage stage=(Stage) zamknijPomoc.getScene().getWindow();
         stage.close();
     }
 

@@ -1,22 +1,15 @@
 package com.example.kalkulator;
 
-import com.example.kalkulator.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.math.plot.Plot2DPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Objects;
 
-
 class kalkulatorCalkaTest extends MetodyCalkowania {
- /*   public String metoda;
+    public String metoda;
     public static String pressedJed = String.valueOf(Jednostka.STOPNIE);
     static String granicaGornaPrzeksztalcona = null;
     static String granicaDolnaPrzeksztalcona = null;
@@ -25,189 +18,289 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
     String ukrytyWzorCalki;
 
     @Test
-    void test1(){
+    void testPoprawnaCalka(){
         String wpisanaCalka="sin[x]+cos[π]";
         String grDolna = "1";
         String grGorna = "12";
         String liczbaPodprzedzialow = "4";
         String  jednostka ="Stopnie";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+         String wynikMetodaProstokatowNiedomiar = wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka, grDolna, grGorna, liczbaPodprzedzialow, jednostka);
+         Assertions.assertEquals("-9.187972366282045", wynikMetodaProstokatowNiedomiar);
+
+    String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka, grDolna, grGorna, liczbaPodprzedzialow, jednostka);
+    Assertions.assertEquals("-12.977593099004954", wynikMetodaProstokatowNadmiar);
+
+    String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka, grDolna, grGorna, liczbaPodprzedzialow, jednostka);
+    Assertions.assertEquals("-11.0827827326435", wynikMetodaTrapezow);
+
+    String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka, grDolna, grGorna, liczbaPodprzedzialow, jednostka);
+    Assertions.assertEquals("-11.78425351625917", wynikMetodaSimpsona);
+
+    String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka, grDolna, grGorna, liczbaPodprzedzialow, jednostka);
+    Assertions.assertEquals("-11.3035516528644", wynikMetodaAnalityczna);
+
     }
 
     @Test
-    void test2(){
+    void testBledneGranice(){
         String wpisanaCalka="2";
-        String grDolna = "m";
-        String grGorna = "w";
+        String grDolna = "m5";
+        String grGorna = "w1";
         String liczbaPodprzedzialow = "12.2";
         String  jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
     @Test
-    void test3(){
+    void testPustePola(){
         String wpisanaCalka="";
         String grDolna = "";
         String grGorna = "";
         String liczbaPodprzedzialow = "";
         String  jednostka ="";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
     @Test
-    void test4(){
+    void testBlednaLiczbaPodprzedzialow(){
         String wpisanaCalka="2";
         String grDolna = "-∞";
         String grGorna = "+∞";
         String liczbaPodprzedzialow = "-1";
         String  jednostka ="";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
     }
 
     @Test
-    void test5(){
+    void testNieusunietyZnakSpecjalny(){
         String wpisanaCalka="2*cos[?]";
         String grDolna = "-12";
         String grGorna = "2";
         String liczbaPodprzedzialow = "2";
         String jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
     @Test
-    void test6(){
-        String wpisanaCalka="2*cos[?]";
+    void testFunkcjaTrygBezJednostki(){
+        String wpisanaCalka="2*cos[10]";
         String grDolna = "-12";
         String grGorna = "2";
         String liczbaPodprzedzialow = "2";
         String jednostka ="Jednostka";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
     @Test
-    void test7(){
+    void testBledneDzialanie(){
         String wpisanaCalka="rownanie";
         String grDolna = "-12";
         String grGorna = "2";
         String liczbaPodprzedzialow = "2";
         String jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
     @Test
-    void test8(){
+    void testStringLiczbaPodprzedzialow(){
         String wpisanaCalka="2*cos[x]";
         String grDolna = "-12";
         String grGorna = "2";
         String liczbaPodprzedzialow = "podprzedzialy";
         String jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
     }
 
     @Test
-    void test9(){
+    void testPustaLiczbaPodprzedzialow(){
         String wpisanaCalka="2*cos[x]";
         String grDolna = "-12";
         String grGorna = "2";
         String liczbaPodprzedzialow = "";
         String jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
     }
 
     @Test
-    void test10(){
+    void tesstPusteDzialanie(){
         String wpisanaCalka="";
         String grDolna = "-12";
         String grGorna = "2";
         String liczbaPodprzedzialow = "2";
         String jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
     @Test
-    void test11(){
+    void testBlednaGranicaDolna(){
         String wpisanaCalka="2*cos[x]";
         String grDolna = "∞+cos[x]";
         String grGorna = "-4";
         String liczbaPodprzedzialow = "2";
         String jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
     @Test
-    void test12(){
+    void testBlednaGranicaGorna(){
         String wpisanaCalka="2*cos[x]";
         String grDolna = "3";
         String grGorna = "-sin[3]*∞";
         String liczbaPodprzedzialow = "2";
         String jednostka ="Radiany";
 
-        wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
-        wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        String wynikMetodaProstokatowNiedomiar =  wynikCalkaMetodaProstokatowNiedomiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNiedomiar));
+
+        String wynikMetodaProstokatowNadmiar = wynikCalkaMetodaProstokatowNadmiarTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaProstokatowNadmiar));
+
+        String wynikMetodaTrapezow = wynikCalkaMetodaTrapezowTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaTrapezow));
+
+        String wynikMetodaSimpsona = wynikCalkaMetodaSimpsonaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaSimpsona));
+
+        String wynikMetodaAnalityczna = wynikCalkaMetodaAnalitycznaTest(wpisanaCalka,grDolna,grGorna,liczbaPodprzedzialow,jednostka);
+        Assertions.assertFalse(Boolean.parseBoolean(wynikMetodaAnalityczna));
     }
 
-    void wynikCalkaMetodaProstokatowNiedomiarTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
+    String wynikCalkaMetodaProstokatowNiedomiarTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
         PrzeksztalcenieRownania przeksztalcenie = new PrzeksztalcenieRownania();
         metoda = "Metoda prostokątów z niedomiarem";
-
+String wynik="";
         if(calka.wpisanaCalkaGraniceCheck(granicaDolna, granicaGorna, wpisanaCalkaWzor, metoda, jednostka)){
             if (granicaDolna.matches("[0-9]+")) {
                 granicaDolna=(String.valueOf(Float.valueOf(granicaDolna)));
@@ -230,18 +323,19 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
                     wynikPrzeksztalcenie(przeksztalcenie,granicaDolna,granicaGorna,wpisanaCalkaWzor);
                     if(!metodaProstokatowZNiedomiarem(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow).equals("")){
                         System.out.println("wzor: "+przeksztalcenie.przeksztalcenieWyniku(wzorCalki));
-                        System.out.println("wynik calki: "+metodaProstokatowZNiedomiarem(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow));
+                        wynik=metodaProstokatowZNiedomiarem(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow);
                     }
                 }
             }
         }
+        return  wynik;
     }
 
 
-    void wynikCalkaMetodaProstokatowNadmiarTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
+    String wynikCalkaMetodaProstokatowNadmiarTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
         PrzeksztalcenieRownania przeksztalcenie = new PrzeksztalcenieRownania();
         metoda = "Metoda prostokątów z nadmiarem";
-
+        String wynik="";
         if(calka.wpisanaCalkaGraniceCheck(granicaDolna, granicaGorna, wpisanaCalkaWzor, metoda, jednostka)){
             if (granicaDolna.matches("[0-9]+")) {
                 granicaDolna=(String.valueOf(Float.valueOf(granicaDolna)));
@@ -264,18 +358,19 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
                     wynikPrzeksztalcenie(przeksztalcenie,granicaDolna,granicaGorna,wpisanaCalkaWzor);
                     if(!metodaProstokatowZNadmiarem(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow).equals("")){
                         System.out.println("wzor: "+przeksztalcenie.przeksztalcenieWyniku(wzorCalki));
-                        System.out.println("wynik calki: "+metodaProstokatowZNadmiarem(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow));
+                        wynik=metodaProstokatowZNadmiarem(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow);
                     }
                 }
             }
         }
+        return wynik;
     }
 
 
-    void wynikCalkaMetodaTrapezowTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
+    String wynikCalkaMetodaTrapezowTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
         PrzeksztalcenieRownania przeksztalcenie = new PrzeksztalcenieRownania();
         metoda = "Metoda trapezów";
-
+        String wynik="";
         if(calka.wpisanaCalkaGraniceCheck(granicaDolna, granicaGorna, wpisanaCalkaWzor, metoda, jednostka)){
             if (granicaDolna.matches("[0-9]+")) {
                 granicaDolna=(String.valueOf(Float.valueOf(granicaDolna)));
@@ -298,18 +393,19 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
                     wynikPrzeksztalcenie(przeksztalcenie,granicaDolna,granicaGorna,wpisanaCalkaWzor);
                     if(!metodaTrapezow(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow).equals("")){
                         System.out.println("wzor: "+przeksztalcenie.przeksztalcenieWyniku(wzorCalki));
-                        System.out.println("wynik calki: "+metodaTrapezow(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow));
+                       wynik=metodaTrapezow(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow);
                     }
                 }
             }
         }
+        return wynik;
     }
 
 
-    void wynikCalkaMetodaSimpsonaTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
+    String wynikCalkaMetodaSimpsonaTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
         PrzeksztalcenieRownania przeksztalcenie = new PrzeksztalcenieRownania();
         metoda = "Metoda Simpsona";
-
+        String wynik="";
         if(calka.wpisanaCalkaGraniceCheck(granicaDolna, granicaGorna, wpisanaCalkaWzor, metoda, jednostka)){
             if (granicaDolna.matches("[0-9]+")) {
                 granicaDolna=(String.valueOf(Float.valueOf(granicaDolna)));
@@ -332,18 +428,19 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
                     wynikPrzeksztalcenie(przeksztalcenie,granicaDolna,granicaGorna,wpisanaCalkaWzor);
                     if(!metodaSimpsona(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow).equals("")){
                         System.out.println("wzor: "+przeksztalcenie.przeksztalcenieWyniku(wzorCalki));
-                        System.out.println("wynik calki: "+metodaSimpsona(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow));
+                        wynik=metodaSimpsona(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona,lPodprzedzialow);
                     }
                 }
             }
         }
+        return wynik;
     }
 
 
-    void wynikCalkaMetodaAnalitycznaTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
+    String wynikCalkaMetodaAnalitycznaTest(String wpisanaCalkaWzor,String granicaDolna, String granicaGorna,String lPodprzedzialow, String jednostka){
         PrzeksztalcenieRownania przeksztalcenie = new PrzeksztalcenieRownania();
         metoda = "Metoda analityczna";
-
+        String wynik="";
         if(calka.wpisanaCalkaGraniceCheck(granicaDolna, granicaGorna, wpisanaCalkaWzor, metoda, jednostka)){
             if (granicaDolna.matches("[0-9]+")) {
                 granicaDolna=(String.valueOf(Float.valueOf(granicaDolna)));
@@ -365,10 +462,11 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
                 wynikPrzeksztalcenie(przeksztalcenie,granicaDolna,granicaGorna,wpisanaCalkaWzor);
                     if(!metodaAnalityczna(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona).equals("")){
                         System.out.println("wzor: "+przeksztalcenie.przeksztalcenieWyniku(wzorCalki));
-                        System.out.println("wynik calki: "+metodaAnalityczna(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona));
+                       wynik=metodaAnalityczna(ukrytyWzorCalki,granicaDolnaPrzeksztalcona,granicaGornaPrzeksztalcona);
                     }
             }
         }
+        return wynik;
     }
 
     public String wynikPrzeksztalcenie(PrzeksztalcenieRownania przeksztalcenie,String grDolna, String grGorna, String wpisanaCalka) {
@@ -460,5 +558,5 @@ class kalkulatorCalkaTest extends MetodyCalkowania {
                 System.out.println("exx" + w);
             }
         }
-    }*/
+    }
 }

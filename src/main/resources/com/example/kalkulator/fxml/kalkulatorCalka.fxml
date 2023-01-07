@@ -201,7 +201,7 @@
                 </AnchorPane>
             </right>
             <center>
-                <AnchorPane prefHeight="535.0" prefWidth="910.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                <AnchorPane prefHeight="535.0" prefWidth="825.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                     <HBox prefHeight="173.0" prefWidth="811.0">
                         <children>
                             <HBox prefHeight="195.0" prefWidth="516.0">
@@ -221,7 +221,7 @@
                                         </DropShadow>
                                     </effect>
                                     <font>
-                                        <Font name="Yu Gothic Medium" size="13.0" />
+                                        <Font name="Courier New" size="13.0" />
                                     </font>
                                     <HBox.margin>
                                         <Insets top="20.0" />
@@ -316,7 +316,7 @@
                         </children>
                     </HBox>
                     <HBox layoutX="3.0" layoutY="154.0" prefHeight="204.0" prefWidth="799.0">
-                        <ImageView fitHeight="108.0" fitWidth="54.0" layoutX="10.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                        <ImageView fitHeight="108.0" fitWidth="47.0" layoutX="10.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                             <image>
                                 <Image url="@../image/calka2.png" />
                             </image>
@@ -345,9 +345,9 @@
                         <Insets left="-70.0" />
                      </HBox.margin>
                   </Label>
-                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="80.0" prefWidth="328.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="81.0" prefWidth="305.0" styleClass="textField" stylesheets="@../css/textField.css">
                             <children>
-                                <WebView fx:id="webView" layoutX="4.0" layoutY="10.0" prefHeight="63.0" prefWidth="315.0" />
+                                <WebView fx:id="webView" layoutX="4.0" layoutY="10.0" prefHeight="63.0" prefWidth="297.0" />
                             </children>
                             <effect>
                                 <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
@@ -357,7 +357,7 @@
                                 </DropShadow>
                             </effect>
                             <HBox.margin>
-                                <Insets bottom="70.0" left="-40.0" top="50.0" />
+                                <Insets bottom="70.0" left="-65.0" top="50.0" />
                             </HBox.margin>
                         </Pane>
                         <Label alignment="TOP_CENTER" layoutX="520.0" layoutY="90.0" prefHeight="20.0" prefWidth="25.0" text="=">
@@ -365,11 +365,11 @@
                                 <Font size="14.0" />
                             </font>
                             <HBox.margin>
-                                <Insets bottom="50.0" top="80.0" />
+                                <Insets bottom="50.0" left="-5.0" top="80.0" />
                             </HBox.margin></Label>
-                  <Pane layoutX="57.0" layoutY="50.0" prefHeight="80.0" prefWidth="254.0" styleClass="textField" stylesheets="@../css/textField.css">
+                  <Pane layoutX="57.0" layoutY="50.0" prefHeight="84.0" prefWidth="279.0" styleClass="textField" stylesheets="@../css/textField.css">
                      <children>
-                        <WebView fx:id="webView1" layoutX="4.0" layoutY="5.0" prefHeight="74.0" prefWidth="241.0" />
+                        <WebView fx:id="webView1" layoutX="3.0" layoutY="5.0" prefHeight="74.0" prefWidth="274.0" />
                      </children>
                      <effect>
                         <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
@@ -379,7 +379,7 @@
                         </DropShadow>
                      </effect>
                      <HBox.margin>
-                        <Insets bottom="70.0" top="50.0" />
+                        <Insets bottom="70.0" left="-5.0" top="50.0" />
                      </HBox.margin>
                   </Pane>
                   <Label fx:id="wynikZnak" alignment="TOP_CENTER" layoutX="460.0" layoutY="80.0" prefHeight="20.0" prefWidth="25.0" text="=">
@@ -387,10 +387,10 @@
                         <Font size="14.0" />
                      </font>
                      <HBox.margin>
-                        <Insets bottom="50.0" top="80.0" />
+                        <Insets bottom="50.0" left="-5.0" top="80.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="wynikCalka" editable="false" layoutX="485.0" layoutY="50.0" prefHeight="89.0" prefWidth="146.0" styleClass="textField" stylesheets="@../css/textField.css">
+                  <TextField fx:id="wynikCalka" editable="false" layoutX="485.0" layoutY="50.0" prefHeight="84.0" prefWidth="146.0" styleClass="textField" stylesheets="@../css/textField.css">
                      <effect>
                         <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
                            <color>

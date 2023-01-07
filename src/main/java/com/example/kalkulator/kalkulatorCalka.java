@@ -397,11 +397,17 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
         WebEngine grD = grDolnaWebView.getEngine();
         WebEngine grG = grGornaWebView.getEngine();
         if (wpisanaCalkaGraniceCheck(granicaDolna.getText(), granicaGorna.getText(), wpisanaCalka.getText(), metodaChoiceBox.getValue(), jednostkaChoiceBox.getValue())) {
-            if (granicaDolna.getText().matches("[0-9]+")) {
-                granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
+            if (granicaDolna.getText().matches("[0-9]+") ) {
+              if( !granicaDolna.getText().matches("(.*)x(.*)")) {
+                  System.out.println("drfr");
+                  granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
+              }
             }
             if (granicaGorna.getText().matches("[0-9]+")) {
-                granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
+                if(!granicaGorna.getText().matches("(.*)x(.*)")){
+                    System.out.println("Fdf");
+                    granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
+                }
             }
 
             if (jednostkaChoiceBox.getValue().equals("Stopnie")) {
@@ -414,7 +420,6 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             String dol =(przeksztalcenie.zmianaRownania(granicaDolna.getText()));
             grD.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(dol) + "</p>", "text/html");
             grG.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(gora) + "</p>", "text/html");
-
 
             webEngine.loadContent("<p scroll=\"no\">(" + przeksztalcenie.zmianaRownania(wpisanaCalka.getText()) + ")dx</p>", "text/html");
             if (metodaChoiceBox.getValue().equals("Metoda prostokątów z niedomiarem")) {

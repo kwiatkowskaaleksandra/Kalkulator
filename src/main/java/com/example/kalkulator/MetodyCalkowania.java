@@ -15,7 +15,6 @@ public class MetodyCalkowania {
         String wynik;
         try (Jep jep = new Jep() {
         }) {
-            System.out.println(wzor);
             jep.exec("""
                     import sympy
                     import math
@@ -91,7 +90,6 @@ public class MetodyCalkowania {
                     """
             );
             wzorCalki = String.valueOf(jep.getValue("wzorNieozn"));
-            jep.exec("print(c)");
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
@@ -228,7 +226,6 @@ public class MetodyCalkowania {
         String wynik;
         try (Jep jep = new Jep() {
         }) {
-            System.out.println(wzor);
             jep.exec("""
                     import sympy
                     import math

@@ -13,8 +13,9 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
-
+import org.junit.jupiter.api.Assertions;
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 
 @ExtendWith(ApplicationExtension.class)
 public class pusteBledneNaukowyTest extends ApplicationTest {
@@ -56,7 +57,7 @@ public class pusteBledneNaukowyTest extends ApplicationTest {
         robot.sleep(3000);
         robot.clickOn("#usunID");
 
-        //DZIALANIE Z X BEZ POCHODNEJ
+        //DZIALANIE Z X BEZ ZAZNACZONEJ POCHODNEJ
         robot.clickOn("#wpisaneDzialanie").write("x");
         robot.clickOn("#minusID");
         robot.clickOn("#czteryOnAction");
@@ -64,7 +65,7 @@ public class pusteBledneNaukowyTest extends ApplicationTest {
         robot.sleep(3000);
         robot.clickOn("#usunID");
 
-        //DZIALANIE Z COS BEZ WYBRANEJ JEDNOSTKI
+        //DZIALANIE TRYGONOMETRYCZNE COS[30] BEZ WYBRANEJ JEDNOSTKI
         robot.clickOn("#wpisaneDzialanie");
         robot.clickOn("#cosID");
         robot.clickOn("#usunOstatnieID");

@@ -223,7 +223,6 @@ public class kalkulatorNaukowy implements Initializable {
                 }
             }
             if (wzorWynik != null) {
-                System.out.println(wzorWynik);
                 if (wzorWynik.matches("(.*)ln(.*)") || wzorWynik.matches("(.*)sqrt(.*)")) {
                     if (max < 0 || min < 0) {
                         komunikat = "Funkcja nie może przyjmować ujemnych argumentów.";
@@ -245,8 +244,10 @@ public class kalkulatorNaukowy implements Initializable {
         if (!wykresCheck(wpisaneDzialanie.getText(),xMaxSpinner.getValue(),xMinSpinner.getValue(),wzorFunkcji)) {
             try {
                 Plot2DPanel plotPanel = new Plot2DPanel();
-                double[] x = wykres.listaX(wpisaneDzialanie.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue());
-                double[] y = wykres.listaY(wpisaneDzialanie.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue(), x);
+                String przeksztalconyWzor = wpisaneDzialanie.getText();
+
+                double[] x = wykres.listaX(przeksztalconyWzor, xMaxSpinner.getValue(), xMinSpinner.getValue());
+                double[] y = wykres.listaY(przeksztalconyWzor, xMaxSpinner.getValue(), xMinSpinner.getValue(), x);
 
                 plotPanel.addLegend("SOUTH");
                 plotPanel.addLinePlot("f(x)", Color.BLUE, x, y);
@@ -284,7 +285,6 @@ public class kalkulatorNaukowy implements Initializable {
                     ).diff(x)
                     """);
             wzorFunkcji = String.valueOf(jep.getValue("c"));
-            System.out.println(wzorFunkcji);
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);
             wzorFunkcji = "";

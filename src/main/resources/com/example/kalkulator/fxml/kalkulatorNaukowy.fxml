@@ -233,11 +233,11 @@
                                 <Font size="14.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="20.0" top="40.0" />
+                                <Insets left="5.0" top="40.0" />
                             </HBox.margin></Label>
-                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="77.0" prefWidth="374.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <Pane layoutX="69.0" layoutY="64.0" prefHeight="92.0" prefWidth="394.0" styleClass="textField" stylesheets="@../css/textField.css">
                             <children>
-                                <WebView fx:id="webView2" layoutX="2.0" layoutY="9.0" prefHeight="72.0" prefWidth="366.0" />
+                                <WebView fx:id="webView2" layoutX="3.0" layoutY="9.0" prefHeight="72.0" prefWidth="388.0" />
                             </children>
                             <effect>
                                 <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
@@ -247,7 +247,7 @@
                                 </DropShadow>
                             </effect>
                             <HBox.margin>
-                                <Insets bottom="35.0" left="20.0" top="20.0" />
+                                <Insets bottom="35.0" top="20.0" />
                             </HBox.margin>
                             <padding>
                                 <Insets left="20.0" />

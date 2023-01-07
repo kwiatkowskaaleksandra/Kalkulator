@@ -356,7 +356,6 @@ public class PrzeksztalcenieRownania {
                     StringBuilder str;
                     StringBuilder strLib;
                     String nowyKat;
-                    System.out.println(wzor);
                     if (i - 1 >= 0 && wzor.charAt(i - 1) == 'a') {
                         str = new StringBuilder(kat);
                         strLib = new StringBuilder("a");
@@ -448,7 +447,7 @@ public class PrzeksztalcenieRownania {
                 String wykladnik = "";
 
                 for (int j = i + 2; j < wzor.length(); j++) {
-                    if (wzor.charAt(j) == '/') {
+                    if (wzor.charAt(j) == '/' || wzor.charAt(j) == '+' || wzor.charAt(j) == '-' || wzor.charAt(j) == '*') {
                         break;
                     } else {
                         wykladnik += wzor.charAt(j);
@@ -463,6 +462,48 @@ public class PrzeksztalcenieRownania {
         }
         wzor = wzor.replace("sympy." ,"");
         wzor = wzor.replace("math." ,"");
+        wzor = wzor.replace("radians" ,"");
+        return wzor;
+    }
+
+    public String wykresPrzeksztalcenie(String wzor){
+        String kat = "";
+        for(int i=0; i<wzor.length();i++){
+            if ((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's' && wzor.charAt(i + 3) == '(')) {
+              if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
+                  wzor=wzor.replace("cos","sympy.cos");
+              }
+              if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
+                    wzor=wzor.replace("acos","sympy.acos");
+                }
+            }
+            if ((wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'i' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '(')) {
+                if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
+                    wzor=wzor.replace("sin","sympy.sin");
+                }
+                if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
+                    wzor=wzor.replace("asin","sympy.asin");
+                }
+            }
+            if ((wzor.charAt(i) == 't' && wzor.charAt(i + 1) == 'a' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '(')) {
+                if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
+                    wzor=wzor.replace("tan","sympy.tan");
+                }
+                if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
+                    wzor=wzor.replace("atan","sympy.atan");
+                }
+            }
+            if ((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 't' && wzor.charAt(i + 3) == '(')) {
+                if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
+                    wzor=wzor.replace("cot","sympy.cot");
+                }
+                if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
+                    wzor=wzor.replace("acot","sympy.acot");
+                }
+            }
+        }
+
+
         return wzor;
     }
 }

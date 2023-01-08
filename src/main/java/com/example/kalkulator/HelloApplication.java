@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class HelloApplication extends Application {
-   public double x, y;
+    public double x, y;
 
     @Override
     public void start(Stage stage) throws IOException {

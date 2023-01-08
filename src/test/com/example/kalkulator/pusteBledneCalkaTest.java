@@ -180,7 +180,8 @@ public class pusteBledneCalkaTest extends ApplicationTest {
         robot.clickOn("#granicaDolna").write("3");
         robot.clickOn("#przecinekID");
         robot.clickOn("#usunOstatnieID");
-        robot.clickOn("#granicaDolna").write(",27]");;
+        robot.clickOn("#granicaDolna").write(",27]");
+        ;
         robot.clickOn("#granicaGorna");
         robot.clickOn("#pierNID");
         robot.clickOn("#usunOstatnieID");
@@ -190,7 +191,8 @@ public class pusteBledneCalkaTest extends ApplicationTest {
         robot.clickOn("#granicaGorna").write("2");
         robot.clickOn("#przecinekID");
         robot.clickOn("#usunOstatnieID");
-        robot.clickOn("#granicaGorna").write(",16]");;
+        robot.clickOn("#granicaGorna").write(",16]");
+        ;
 
         robot.clickOn("#wynikID");
         robot.sleep(3000);

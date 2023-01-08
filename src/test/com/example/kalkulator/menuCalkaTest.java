@@ -43,15 +43,15 @@ public class menuCalkaTest extends ApplicationTest {
     }
 
     @Test
-    public void menuTest(FxRobot robot){
+    public void menuTest(FxRobot robot) {
         robot.clickOn("#kCalek");
         robot.sleep(2000);
 
         robot.clickOn("#menu");
         robot.sleep(2000);
         robot.clickOn("#pomocButton");
-        robot.moveTo(1250,350);
-        robot.press(MouseButton.PRIMARY).moveTo(1300,400).drop();
+        robot.moveTo(1250, 350);
+        robot.press(MouseButton.PRIMARY).moveTo(1300, 400).drop();
         robot.clickOn("#zamknijPomoc");
 
         robot.clickOn("#metodaChoiceBox");
@@ -88,7 +88,7 @@ public class menuCalkaTest extends ApplicationTest {
         robot.sleep(500);
         robot.clickOn("#kalkulatorNaukowyButton");
         robot.sleep(2000);
-        robot.moveTo(1250,350);
-        robot.press(MouseButton.PRIMARY).moveTo(1300,400).drop();
+        robot.moveTo(1250, 350);
+        robot.press(MouseButton.PRIMARY).moveTo(1300, 400).drop();
     }
 }

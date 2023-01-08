@@ -170,7 +170,8 @@ public class PrzeksztalcenieRownania {
             for (int i = 0; i < wzor.length(); i++) {
                 if (wzor.charAt(i) == '/') {
                     for (int j = i - 1; j >= 0; j--) {
-                        if (wzor.charAt(j) == '+' || wzor.charAt(j) == 'π' || wzor.charAt(j) == '-' || wzor.charAt(j) == '*' || wzor.charAt(j) == '/' || wzor.charAt(j) == 'x' || wzor.charAt(j) == '(' || wzor.charAt(j) == ')' || wzor.charAt(j) == '[' || wzor.charAt(j) == ']') break;
+                        if (wzor.charAt(j) == '+' || wzor.charAt(j) == 'π' || wzor.charAt(j) == '-' || wzor.charAt(j) == '*' || wzor.charAt(j) == '/' || wzor.charAt(j) == 'x' || wzor.charAt(j) == '(' || wzor.charAt(j) == ')' || wzor.charAt(j) == '[' || wzor.charAt(j) == ']')
+                            break;
                         else licznik += wzor.charAt(j);
                     }
 
@@ -372,15 +373,15 @@ public class PrzeksztalcenieRownania {
                         strLib.append(str);
                         nowyKat = String.valueOf(strLib);
                     }
-                    if(!jednostka.equals("Jednostka")) {
+                    if (!jednostka.equals("Jednostka")) {
                         wzor = wzor.replace(kat, nowyKat);
                         wzor = wzor.replace(nowyKat, "(" + funkcjeTrygonometryczne(nowyKat, jednostka) + ")");
-                    }else throw new Exception();
+                    } else throw new Exception();
                 }
             }
         } catch (Exception e) {
-            System.out.println("Exception "+e);
-            JOptionPane.showMessageDialog(null, "Błąd działania." , "Alert", JOptionPane.WARNING_MESSAGE);
+            System.out.println("Exception " + e);
+            JOptionPane.showMessageDialog(null, "Błąd działania.", "Alert", JOptionPane.WARNING_MESSAGE);
         }
         return wzor;
     }
@@ -460,45 +461,46 @@ public class PrzeksztalcenieRownania {
                 wzor = wzor.replace("log", "ln");
             }
         }
-        wzor = wzor.replace("sympy." ,"");
-        wzor = wzor.replace("math." ,"");
-        wzor = wzor.replace("radians" ,"");
+        wzor = wzor.replace("sympy.", "");
+        wzor = wzor.replace("math.", "");
+        wzor = wzor.replace("radians", "");
+        wzor = wzor.replace("Integral", "");
         return wzor;
     }
 
-    public String wykresPrzeksztalcenie(String wzor){
+    public String wykresPrzeksztalcenie(String wzor) {
         String kat = "";
-        for(int i=0; i<wzor.length();i++){
+        for (int i = 0; i < wzor.length(); i++) {
             if ((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 's' && wzor.charAt(i + 3) == '(')) {
-              if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
-                  wzor=wzor.replace("cos","sympy.cos");
-              }
-              if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
-                    wzor=wzor.replace("acos","sympy.acos");
+                if (i - 1 >= 0 && wzor.charAt(i - 1) != '.' && wzor.charAt(i - 1) != 'a') {
+                    wzor = wzor.replace("cos", "sympy.cos");
+                }
+                if (wzor.charAt(i - 1) == 'a' && i - 2 >= 0 && wzor.charAt(i - 2) != '.') {
+                    wzor = wzor.replace("acos", "sympy.acos");
                 }
             }
             if ((wzor.charAt(i) == 's' && wzor.charAt(i + 1) == 'i' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '(')) {
-                if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
-                    wzor=wzor.replace("sin","sympy.sin");
+                if (i - 1 >= 0 && wzor.charAt(i - 1) != '.' && wzor.charAt(i - 1) != 'a') {
+                    wzor = wzor.replace("sin", "sympy.sin");
                 }
-                if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
-                    wzor=wzor.replace("asin","sympy.asin");
+                if (wzor.charAt(i - 1) == 'a' && i - 2 >= 0 && wzor.charAt(i - 2) != '.') {
+                    wzor = wzor.replace("asin", "sympy.asin");
                 }
             }
             if ((wzor.charAt(i) == 't' && wzor.charAt(i + 1) == 'a' && wzor.charAt(i + 2) == 'n' && wzor.charAt(i + 3) == '(')) {
-                if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
-                    wzor=wzor.replace("tan","sympy.tan");
+                if (i - 1 >= 0 && wzor.charAt(i - 1) != '.' && wzor.charAt(i - 1) != 'a') {
+                    wzor = wzor.replace("tan", "sympy.tan");
                 }
-                if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
-                    wzor=wzor.replace("atan","sympy.atan");
+                if (wzor.charAt(i - 1) == 'a' && i - 2 >= 0 && wzor.charAt(i - 2) != '.') {
+                    wzor = wzor.replace("atan", "sympy.atan");
                 }
             }
             if ((wzor.charAt(i) == 'c' && wzor.charAt(i + 1) == 'o' && wzor.charAt(i + 2) == 't' && wzor.charAt(i + 3) == '(')) {
-                if(i-1>=0 && wzor.charAt(i-1)!='.' && wzor.charAt(i-1)!='a'){
-                    wzor=wzor.replace("cot","sympy.cot");
+                if (i - 1 >= 0 && wzor.charAt(i - 1) != '.' && wzor.charAt(i - 1) != 'a') {
+                    wzor = wzor.replace("cot", "sympy.cot");
                 }
-                if(wzor.charAt(i-1)=='a' && i-2>=0 && wzor.charAt(i-2)!='.' ){
-                    wzor=wzor.replace("acot","sympy.acot");
+                if (wzor.charAt(i - 1) == 'a' && i - 2 >= 0 && wzor.charAt(i - 2) != '.') {
+                    wzor = wzor.replace("acot", "sympy.acot");
                 }
             }
         }

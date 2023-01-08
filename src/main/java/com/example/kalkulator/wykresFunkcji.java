@@ -11,7 +11,7 @@ public class wykresFunkcji {
     public double[] listaX(String funkcja, int xMax, double xMin) {
         PrzeksztalcenieRownania przeksztalcenieRownania = new PrzeksztalcenieRownania();
         String rownanie = przeksztalcenieRownania.przeksztalcenieRownania(funkcja, "sympy.", String.valueOf(Jednostka.RADIANY));
-        rownanie=przeksztalcenieRownania.wykresPrzeksztalcenie(rownanie);
+        rownanie = przeksztalcenieRownania.wykresPrzeksztalcenie(rownanie);
         System.out.println(rownanie);
         int ilosc = 1;
         double xm = xMin;
@@ -65,8 +65,8 @@ public class wykresFunkcji {
     public double[] listaY(String funkcja, int xMax, int xMin, double[] listaX) {
         PrzeksztalcenieRownania przeksztalcenieRownania = new PrzeksztalcenieRownania();
         String rownanie = przeksztalcenieRownania.przeksztalcenieRownania(funkcja, "sympy.", String.valueOf(Jednostka.RADIANY));
-        rownanie=przeksztalcenieRownania.wykresPrzeksztalcenie(rownanie);
-        System.out.println("rownanie  "+rownanie);
+        rownanie = przeksztalcenieRownania.wykresPrzeksztalcenie(rownanie);
+        System.out.println("rownanie  " + rownanie);
         int ilosc = 1;
         double xm = xMin;
         while (xm <= xMax) {

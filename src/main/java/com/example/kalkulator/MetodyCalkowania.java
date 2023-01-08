@@ -182,7 +182,7 @@ public class MetodyCalkowania {
         return wynik;
     }
 
-    public String metodaProstokatowZNadmiarem(String wzor,String dolnaGranica, String gornaGranica, String liczbaPodprzedzialow) {
+    public String metodaProstokatowZNadmiarem(String wzor, String dolnaGranica, String gornaGranica, String liczbaPodprzedzialow) {
         String wynik;
         try (Jep jep = new Jep() {
         }) {
@@ -212,7 +212,7 @@ public class MetodyCalkowania {
                     wzorNieozn=sympy.integrate(""" + wzor + """
                     ,x)
                     """);
-            wzorCalki=String.valueOf(jep.getValue("wzorNieozn"));
+            wzorCalki = String.valueOf(jep.getValue("wzorNieozn"));
             wynik = String.valueOf(jep.getValue("c"));
         } catch (Exception e) {
             System.out.println("EXCEPTION: " + e);

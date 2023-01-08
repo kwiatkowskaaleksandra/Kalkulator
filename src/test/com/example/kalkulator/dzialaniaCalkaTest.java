@@ -41,7 +41,7 @@ public class dzialaniaCalkaTest extends ApplicationTest {
     }
 
     @Test
-    public void dzialaniaCalka(FxRobot robot){
+    public void dzialaniaCalka(FxRobot robot) {
         robot.clickOn("#kCalek");
         robot.sleep(2000);
 

@@ -16,6 +16,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
 
 import java.util.Objects;
+
 @ExtendWith(ApplicationExtension.class)
 public class wykresNaukowyTest extends ApplicationTest {
     public double x, y;

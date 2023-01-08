@@ -13,9 +13,8 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
-import org.junit.jupiter.api.Assertions;
+
 import java.util.Objects;
-import java.util.function.BooleanSupplier;
 
 @ExtendWith(ApplicationExtension.class)
 public class pusteBledneNaukowyTest extends ApplicationTest {
@@ -42,7 +41,7 @@ public class pusteBledneNaukowyTest extends ApplicationTest {
     }
 
     @Test
-    public void pusteBledneTest(FxRobot robot){
+    public void pusteBledneTest(FxRobot robot) {
         robot.clickOn("#kNaukowy");
         robot.sleep(2000);
 

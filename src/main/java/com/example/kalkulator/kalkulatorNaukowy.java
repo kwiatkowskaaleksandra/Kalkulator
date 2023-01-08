@@ -119,7 +119,7 @@ public class kalkulatorNaukowy implements Initializable {
         }
         przeksztalconeWpisaneDzialanie = przeksztalcenieRownania.przeksztalcenieRownania(wpisaneDzialanie.getText(), "sympy.", pressedJed);
 
-        if (wpisaneDzialanieCheck(wpisaneDzialanie.getText(),pochodnaCheckBox.isSelected(),jednostkaChoiceBox.getValue())) {
+        if (wpisaneDzialanieCheck(wpisaneDzialanie.getText(), pochodnaCheckBox.isSelected(), jednostkaChoiceBox.getValue())) {
             if (!pochodnaCheckBox.isSelected() && !wynikKalkulatora(przeksztalconeWpisaneDzialanie).equals("")) {
                 webEngine.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.zmianaRownania(wpisaneDzialanie.getText()) + "</p>", "text/html");
                 webEngine2.loadContent("<p scroll=\"no\">" + przeksztalcenieRownania.przeksztalcenieWyniku(wynikKalkulatora(przeksztalconeWpisaneDzialanie)) + "</p>", "text/html");
@@ -205,7 +205,7 @@ public class kalkulatorNaukowy implements Initializable {
         xMaxSpinner.setValueFactory(valueFactoryMax);
     }
 
-    public boolean wykresCheck(String dzialanie,int max , int min, String wzorWynik) {
+    public boolean wykresCheck(String dzialanie, int max, int min, String wzorWynik) {
         boolean err = false;
         String komunikat = "";
         try {
@@ -241,7 +241,7 @@ public class kalkulatorNaukowy implements Initializable {
     public void wykres() {
         wykresFunkcji wykres = new wykresFunkcji();
 
-        if (!wykresCheck(wpisaneDzialanie.getText(),xMaxSpinner.getValue(),xMinSpinner.getValue(),wzorFunkcji)) {
+        if (!wykresCheck(wpisaneDzialanie.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue(), wzorFunkcji)) {
             try {
                 Plot2DPanel plotPanel = new Plot2DPanel();
                 String przeksztalconyWzor = wpisaneDzialanie.getText();
@@ -267,36 +267,38 @@ public class kalkulatorNaukowy implements Initializable {
                 frame.setSize(700, 700);
                 frame.setVisible(true);
             } catch (Exception w) {
-                System.out.println("exx" + w);
+                System.out.println("Exception: " + w);
             }
         }
     }
 
     public String wynikKalkulatoraPochodna(String wzor) {
-        if(!wzor.matches("(.*)x(.*)")){
-            wzorFunkcji="0";
-        }else{
-        try (Jep jep = new Jep() {}) {
-            jep.exec("""
-                    import math
-                    import sympy
-                    x=sympy.Symbol('x')
-                    c=(""" + wzor + """
-                    ).diff(x)
-                    """);
-            wzorFunkcji = String.valueOf(jep.getValue("c"));
-        } catch (Exception e) {
-            System.out.println("EXCEPTION: " + e);
-            wzorFunkcji = "";
-            JOptionPane.showMessageDialog(null, "Błąd działania.", "Alert", JOptionPane.WARNING_MESSAGE);
-        }
+        if (!wzor.matches("(.*)x(.*)")) {
+            wzorFunkcji = "0";
+        } else {
+            try (Jep jep = new Jep() {
+            }) {
+                jep.exec("""
+                        import math
+                        import sympy
+                        x=sympy.Symbol('x')
+                        c=(""" + wzor + """
+                        ).diff(x)
+                        """);
+                wzorFunkcji = String.valueOf(jep.getValue("c"));
+            } catch (Exception e) {
+                System.out.println("EXCEPTION: " + e);
+                wzorFunkcji = "";
+                JOptionPane.showMessageDialog(null, "Błąd działania.", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
         }
         return wzorFunkcji;
     }
 
     public String wynikKalkulatora(String wzor) {
         String wynik;
-        try (Jep jep = new Jep() {}) {
+        try (Jep jep = new Jep() {
+        }) {
             jep.exec("""
                     import math
                     import sympy
@@ -478,7 +480,7 @@ public class kalkulatorNaukowy implements Initializable {
             menuStage.setY(300);
             menuStage.show();
         } catch (Exception e) {
-            System.out.println("Exception: "+e);
+            System.out.println("Exception: " + e);
         }
     }
 

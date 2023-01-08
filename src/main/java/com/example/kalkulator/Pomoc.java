@@ -27,26 +27,26 @@ public class Pomoc implements Initializable {
 
     @FXML
     public void zamknijOnAction() {
-        Stage stage=(Stage) zamknijPomoc.getScene().getWindow();
+        Stage stage = (Stage) zamknijPomoc.getScene().getWindow();
         stage.close();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        if(kalkulatorCalka.rodzaj.equals("Kalkulator naukowy")) {
-            WebEngine webEngine=webView.getEngine();
+        if (kalkulatorCalka.rodzaj.equals("Kalkulator naukowy")) {
+            WebEngine webEngine = webView.getEngine();
 
-            URL url2=this.getClass().getResource("css/pomocNaukowy.html");
+            URL url2 = this.getClass().getResource("css/pomocNaukowy.html");
             webEngine.load(Objects.requireNonNull(url2).toString());
 
             labelRodzajKalkulatora.setText(kalkulatorCalka.rodzaj);
             labelOpis.setText("Kalkulator naukowy jest przeznaczony do prostych działań, jak i bardziej skomplikowanych, takich jak: dodawanie, odejmowanie, mnożenie, dzielenie, pierwiastkowanie, potęgowanie, logarytmowanie, obliczenia silni, działań z wykorzystaniem trygonometrii oraz obliczenia pochodnej.");
 
-        }else if (kalkulatorCalka.rodzaj.equals("Kalkulator całek")){
-            WebEngine webEngine=webView.getEngine();
+        } else if (kalkulatorCalka.rodzaj.equals("Kalkulator całek")) {
+            WebEngine webEngine = webView.getEngine();
 
-            URL url2=this.getClass().getResource("css/pomocCalka.html");
+            URL url2 = this.getClass().getResource("css/pomocCalka.html");
             webEngine.load(Objects.requireNonNull(url2).toString());
 
             labelRodzajKalkulatora.setText(kalkulatorCalka.rodzaj);

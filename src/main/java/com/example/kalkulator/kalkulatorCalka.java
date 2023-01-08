@@ -187,7 +187,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         liczbaPodprzedzialow.addEventFilter(MouseEvent.ANY, mouseEvent);
 
         metodaChoiceBox.setOnAction(actionEvent -> {
-            if(metodaChoiceBox.getValue().equals("Całka nieoznaczona")){
+            if (metodaChoiceBox.getValue().equals("Całka nieoznaczona")) {
                 granicaGorna.setVisible(false);
                 granicaDolna.setVisible(false);
                 liczbaPodprzedzialow.setVisible(false);
@@ -198,7 +198,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 granicaGornaWzor.setVisible(false);
                 wynikCalka.setVisible(false);
                 wynikZnak.setVisible(false);
-            }else{
+            } else {
                 granicaGorna.setVisible(true);
                 granicaDolna.setVisible(true);
                 liczbaPodprzedzialow.setVisible(true);
@@ -269,7 +269,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         xMaxSpinner.setValueFactory(valueFactoryMax);
     }
 
-    public boolean wykresCheck(String dzialanie,int max , int min) {
+    public boolean wykresCheck(String dzialanie, int max, int min) {
         boolean err = false;
         String komunikat = "";
         try {
@@ -280,7 +280,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
             }
 
             if (dzialanie.matches("(.*)ln(.*)") || dzialanie.matches("(.*)log(.*)") || dzialanie.matches("(.*)sqrt(.*)")) {
-                if (max < 0 ||min < 0) {
+                if (max < 0 || min < 0) {
                     komunikat = "Funkcja nie może przyjmować ujemnych argumentów.";
                     err = true;
                     throw new Exception(komunikat);
@@ -295,7 +295,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
     @FXML
     public void wykres() {
         wykresFunkcji wykres = new wykresFunkcji();
-        if (wykresCheck(wpisanaCalka.getText(),xMaxSpinner.getValue(),xMinSpinner.getValue())) {
+        if (wykresCheck(wpisanaCalka.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue())) {
             Plot2DPanel plotPanel = new Plot2DPanel();
             double[] x = wykres.listaX(wpisanaCalka.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue());
             double[] y = wykres.listaY(wpisanaCalka.getText(), xMaxSpinner.getValue(), xMinSpinner.getValue(), x);
@@ -324,66 +324,66 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
         String komunikat = "";
         boolean blad = false;
         try {
-if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
-            if (grDolna.isEmpty() || grGorna.isEmpty()) {
-                komunikat = "Granica całki nie może pozostać pusta.";
-                blad = true;
-                throw new Exception(komunikat);
-            }
-            if (wzor.isEmpty()) {
-                komunikat = "Wzór całki nie może pozostać pusty.";
-                blad = true;
-                throw new Exception(komunikat);
-            }
-            if (grDolna.matches("(.*)∞(.*)")) {
-                if (!grDolna.equals("-∞") && !grDolna.equals("+∞")) {
-                    komunikat = "Błędna wartość dolnej granicy.";
+            if (!metodaChoiceBox.getValue().equals("Całka nieoznaczona")) {
+                if (grDolna.isEmpty() || grGorna.isEmpty()) {
+                    komunikat = "Granica całki nie może pozostać pusta.";
+                    blad = true;
+                    throw new Exception(komunikat);
+                }
+                if (wzor.isEmpty()) {
+                    komunikat = "Wzór całki nie może pozostać pusty.";
+                    blad = true;
+                    throw new Exception(komunikat);
+                }
+                if (grDolna.matches("(.*)∞(.*)")) {
+                    if (!grDolna.equals("-∞") && !grDolna.equals("+∞")) {
+                        komunikat = "Błędna wartość dolnej granicy.";
+                        blad = true;
+                        throw new Exception(komunikat);
+                    }
+                }
+                if (grGorna.matches("(.*)∞(.*)")) {
+                    if (!grGorna.equals("-∞") && !grGorna.equals("+∞")) {
+                        komunikat = "Błędna wartość górnej granicy.";
+                        blad = true;
+                        throw new Exception(komunikat);
+                    }
+                }
+                if (grGorna.matches("(.*)∞") || grDolna.matches("(.*)∞")) {
+                    if (!metoda.equals("Metoda analityczna")) {
+                        komunikat = "Granice nieskończoności mogą być jedynie użyte przy całkowaniu metodą analityczną.";
+                        blad = true;
+                        throw new Exception(komunikat);
+                    }
+                }
+                if (wzor.matches("(.*)cos(.*)") || wzor.matches("(.*)sin(.*)") || wzor.matches("(.*)tan(.*)") || wzor.matches("(.*)cot(.*)") ||
+                        grGorna.matches("(.*)cos(.*)") || grGorna.matches("(.*)sin(.*)") || grGorna.matches("(.*)tan(.*)") || grGorna.matches("(.*)cot(.*)") ||
+                        grDolna.matches("(.*)cos(.*)") || grDolna.matches("(.*)sin(.*)") || grDolna.matches("(.*)tan(.*)") || grDolna.matches("(.*)cot(.*)")) {
+                    if (jednostka.equals("Jednostka")) {
+                        komunikat = "Proszę wybrać jedną jednostkę: stopnie lub radiany.";
+                        blad = true;
+                        throw new Exception(komunikat);
+                    }
+                }
+                if (wzor.matches("(.*)\\?(.*)") || grDolna.matches("(.*)\\?(.*)") || grGorna.matches("(.*)\\?(.*)")) {
+                    komunikat = "Błędnie wpisane działanie. W miejsce '?' należy wpisać wartość liczbową.";
+                    blad = true;
+                    throw new Exception(komunikat);
+                }
+            } else {
+                if (wzor.matches("(.*)cos(.*)") || wzor.matches("(.*)sin(.*)") || wzor.matches("(.*)tan(.*)") || wzor.matches("(.*)cot(.*)")) {
+                    if (jednostka.equals("Jednostka")) {
+                        komunikat = "Proszę wybrać jedną jednostkę: stopnie lub radiany.";
+                        blad = true;
+                        throw new Exception(komunikat);
+                    }
+                }
+                if (wzor.matches("(.*)\\?(.*)")) {
+                    komunikat = "Błędnie wpisane działanie. W miejsce '?' należy wpisać wartość liczbową.";
                     blad = true;
                     throw new Exception(komunikat);
                 }
             }
-            if (grGorna.matches("(.*)∞(.*)")) {
-                if (!grGorna.equals("-∞") && !grGorna.equals("+∞")) {
-                    komunikat = "Błędna wartość górnej granicy.";
-                    blad = true;
-                    throw new Exception(komunikat);
-                }
-            }
-            if (grGorna.matches("(.*)∞") || grDolna.matches("(.*)∞")) {
-                if (!metoda.equals("Metoda analityczna")) {
-                    komunikat = "Granice nieskończoności mogą być jedynie użyte przy całkowaniu metodą analityczną.";
-                    blad = true;
-                    throw new Exception(komunikat);
-                }
-            }
-            if (wzor.matches("(.*)cos(.*)") || wzor.matches("(.*)sin(.*)") || wzor.matches("(.*)tan(.*)") || wzor.matches("(.*)cot(.*)") ||
-                    grGorna.matches("(.*)cos(.*)") || grGorna.matches("(.*)sin(.*)") || grGorna.matches("(.*)tan(.*)") || grGorna.matches("(.*)cot(.*)") ||
-                    grDolna.matches("(.*)cos(.*)") || grDolna.matches("(.*)sin(.*)") || grDolna.matches("(.*)tan(.*)") || grDolna.matches("(.*)cot(.*)")) {
-                if (jednostka.equals("Jednostka")) {
-                    komunikat = "Proszę wybrać jedną jednostkę: stopnie lub radiany.";
-                    blad = true;
-                    throw new Exception(komunikat);
-                }
-            }
-            if (wzor.matches("(.*)\\?(.*)") || grDolna.matches("(.*)\\?(.*)") ||grGorna.matches("(.*)\\?(.*)")) {
-                komunikat = "Błędnie wpisane działanie. W miejsce '?' należy wpisać wartość liczbową.";
-                blad = true;
-                throw new Exception(komunikat);
-            }
-}else{
-    if (wzor.matches("(.*)cos(.*)") || wzor.matches("(.*)sin(.*)") || wzor.matches("(.*)tan(.*)") || wzor.matches("(.*)cot(.*)")) {
-        if (jednostka.equals("Jednostka")) {
-            komunikat = "Proszę wybrać jedną jednostkę: stopnie lub radiany.";
-            blad = true;
-            throw new Exception(komunikat);
-        }
-    }
-    if (wzor.matches("(.*)\\?(.*)")) {
-        komunikat = "Błędnie wpisane działanie. W miejsce '?' należy wpisać wartość liczbową.";
-        blad = true;
-        throw new Exception(komunikat);
-    }
-}
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
         }
@@ -397,15 +397,13 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
         WebEngine grD = grDolnaWebView.getEngine();
         WebEngine grG = grGornaWebView.getEngine();
         if (wpisanaCalkaGraniceCheck(granicaDolna.getText(), granicaGorna.getText(), wpisanaCalka.getText(), metodaChoiceBox.getValue(), jednostkaChoiceBox.getValue())) {
-            if (granicaDolna.getText().matches("[0-9]+") ) {
-              if( !granicaDolna.getText().matches("(.*)x(.*)")) {
-                  System.out.println("drfr");
-                  granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
-              }
+            if (granicaDolna.getText().matches("[0-9]+")) {
+                if (!granicaDolna.getText().matches("(.*)x(.*)")) {
+                    granicaDolna.setText(String.valueOf(Float.valueOf(granicaDolna.getText())));
+                }
             }
             if (granicaGorna.getText().matches("[0-9]+")) {
-                if(!granicaGorna.getText().matches("(.*)x(.*)")){
-                    System.out.println("Fdf");
+                if (!granicaGorna.getText().matches("(.*)x(.*)")) {
                     granicaGorna.setText(String.valueOf(Float.valueOf(granicaGorna.getText())));
                 }
             }
@@ -417,7 +415,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             }
 
             String gora = (przeksztalcenie.zmianaRownania(granicaGorna.getText()));
-            String dol =(przeksztalcenie.zmianaRownania(granicaDolna.getText()));
+            String dol = (przeksztalcenie.zmianaRownania(granicaDolna.getText()));
             grD.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(dol) + "</p>", "text/html");
             grG.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(gora) + "</p>", "text/html");
 
@@ -427,7 +425,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" +przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda prostokątów z nadmiarem")) {
@@ -435,7 +433,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda trapezów")) {
@@ -443,7 +441,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda Simpsona")) {
@@ -451,7 +449,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda analityczna")) {
@@ -459,11 +457,11 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                 wynikPrzeksztalcenie(przeksztalcenie);
                 if (!metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona).equals("")) {
                     wynikCalka.setText(metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona));
-                    webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" +  przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona)  + "</sub></p>", "text/html");
+                    webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                 }
-            } else if(metodaChoiceBox.getValue().equals("Całka nieoznaczona")){
+            } else if (metodaChoiceBox.getValue().equals("Całka nieoznaczona")) {
                 wynikPrzeksztalcenie(przeksztalcenie);
-                if(!calkaNieoznaczona(ukrytyWzorCalki.getText()).equals("")){
+                if (!calkaNieoznaczona(ukrytyWzorCalki.getText()).equals("")) {
                     wynikCalka.setText(calkaNieoznaczona(ukrytyWzorCalki.getText()));
                     webEngine1.loadContent("<p scroll=\"no\">" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "</p>", "text/html");
                 }
@@ -895,7 +893,9 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
                     throw new Exception(komunikat);
                 }
             }
-        } catch (Exception e) {JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);}
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, komunikat, "Alert", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public void historiaOnMouseClicked() {
@@ -1314,7 +1314,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             menuStage.setScene(new Scene(root, 1035, 653));
             menuStage.show();
         } catch (Exception e) {
-            System.out.println("Exception: "+e);
+            System.out.println("Exception: " + e);
         }
     }
 
@@ -1341,7 +1341,7 @@ if(!metodaChoiceBox.getValue().equals("Całka nieoznaczona") ){
             menuStage.setY(300);
             menuStage.show();
         } catch (Exception e) {
-            System.out.println("Exception: "+e);
+            System.out.println("Exception: " + e);
         }
     }
 

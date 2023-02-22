@@ -8,5 +8,7 @@ Kalkulator naukowy umożliwiający:
 
 Wykorzystana techonologia:
 - Java 19
-- JavaFX
-- Jep
+- JavaFX 19
+- Jep 4.0.2
+- Python 3.10
+- biblioteka SymPy

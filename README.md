@@ -5,6 +5,7 @@ Kalkulator naukowy umożliwiający:
 - Wyznaczanie całki nieoznaczonej;
 - Wyznaczanie całki oznaczonej z wykorzystaniem metod numerycznych oraz metody analitycznej;
 - Wyznaczenie wykresu funkcji;
+
 Wykorzystana techonologia:
 - Java 19
 - JavaFX

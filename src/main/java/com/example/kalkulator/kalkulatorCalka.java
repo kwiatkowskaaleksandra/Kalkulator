@@ -416,8 +416,8 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
 
             String gora = (przeksztalcenie.zmianaRownania(granicaGorna.getText()));
             String dol = (przeksztalcenie.zmianaRownania(granicaDolna.getText()));
-            grD.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(dol) + "</p>", "text/html");
-            grG.loadContent("<p scroll=\"no\" style=\"font-size: 9px;\">" + przeksztalcenie.przeksztalcenieWyniku(gora) + "</p>", "text/html");
+            grD.loadContent("<p scroll=\"no\" style=\"font-size: 12px;\">" + przeksztalcenie.przeksztalcenieWyniku(dol) + "</p>", "text/html");
+            grG.loadContent("<p scroll=\"no\" style=\"font-size: 12px;\">" + przeksztalcenie.przeksztalcenieWyniku(gora) + "</p>", "text/html");
 
             webEngine.loadContent("<p scroll=\"no\">(" + przeksztalcenie.zmianaRownania(wpisanaCalka.getText()) + ")dx</p>", "text/html");
             if (metodaChoiceBox.getValue().equals("Metoda prostokątów z niedomiarem")) {
@@ -425,7 +425,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaProstokatowZNiedomiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p> <p2 style=\"font-size:23;\">[</p2>" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "<p2 style=\"font-size:23;\">]</p2><sup style=\"position: relative; left: 3px; top:-4px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 3px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda prostokątów z nadmiarem")) {
@@ -433,7 +433,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaProstokatowZNadmiarem(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 12px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p><p2 style=\"font-size:23;\">[</p2>" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "<p2 style=\"font-size:23;\">]</p2><sup style=\"position: relative; left: 3px; top:-4px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 3px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda trapezów")) {
@@ -441,7 +441,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaTrapezow(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p><p2 style=\"font-size:23;\">[</p2>" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "<p2 style=\"font-size:23;\">]</p2><sup style=\"position: relative; left: 3px; top:-4px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 3px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda Simpsona")) {
@@ -449,7 +449,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                     wynikPrzeksztalcenie(przeksztalcenie);
                     if (!metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()).equals("")) {
                         wynikCalka.setText(metodaSimpsona(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona, liczbaPodprzedzialow.getText()));
-                        webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
+                        webEngine1.loadContent("<p><p2 style=\"font-size:23;\">[</p2>" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "<p2 style=\"font-size:23;\">]</p2><sup style=\"position: relative; left: 3px; top:-4px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 3px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                     }
                 }
             } else if (metodaChoiceBox.getValue().equals("Metoda analityczna")) {
@@ -457,7 +457,7 @@ public class kalkulatorCalka extends MetodyCalkowania implements Initializable {
                 wynikPrzeksztalcenie(przeksztalcenie);
                 if (!metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona).equals("")) {
                     wynikCalka.setText(metodaAnalityczna(ukrytyWzorCalki.getText(), granicaDolnaPrzeksztalcona, granicaGornaPrzeksztalcona));
-                    webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "]<sup style=\"position: relative; left: 3px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 6px;font-size: 11px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
+                    webEngine1.loadContent("<p scroll=\"no\">[" + przeksztalcenie.przeksztalcenieWyniku(wzorCalki) + "<p2 style=\"font-size:23;\">]</p2><sup style=\"position: relative; left: 3px; top:-4px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaGornaPrzeksztalcona) + "</sup><sub style=\"position: relative; left: -15px; top: 3px;\">" + przeksztalcenie.przeksztalcenieWyniku(granicaDolnaPrzeksztalcona) + "</sub></p>", "text/html");
                 }
             } else if (metodaChoiceBox.getValue().equals("Całka nieoznaczona")) {
                 wynikPrzeksztalcenie(przeksztalcenie);

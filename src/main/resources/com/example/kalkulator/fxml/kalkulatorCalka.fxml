@@ -329,17 +329,17 @@
                                 <Font name="Yu Gothic Medium" size="13.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="-60.0" top="145.0" />
+                                <Insets left="-55.0" top="145.0" />
                             </HBox.margin>
                      <graphic>
-                        <WebView fx:id="grDolnaWebView" prefHeight="200.0" prefWidth="200.0" />
+                        <WebView fx:id="grDolnaWebView" prefHeight="40.0" prefWidth="80.0" stylesheets="@../css/granica.css" />
                      </graphic></Label>
                         <Label fx:id="granicaGornaWzor" alignment="TOP_CENTER" prefHeight="40.0" prefWidth="90.0">
                             <font>
                                 <Font name="Yu Gothic Medium" size="13.0" />
                             </font>
                      <graphic>
-                        <WebView fx:id="grGornaWebView" prefHeight="30.0" prefWidth="76.0" />
+                        <WebView fx:id="grGornaWebView" prefHeight="30.0" prefWidth="76.0" stylesheets="@../css/granica.css" />
                      </graphic>
                      <HBox.margin>
                         <Insets left="-70.0" />

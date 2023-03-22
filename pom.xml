@@ -217,7 +217,7 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.kalkulator.HelloApplication</mainClass>
+                            <mainClass>com.example.calculator.StartApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -246,7 +246,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.kalkulator/com.example.kalkulator.HelloApplication</mainClass>
+                            <mainClass>com.example.kalkulator/com.example.calculator.StartApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

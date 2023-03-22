@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+
+<AnchorPane prefHeight="653.0" prefWidth="1035.0" style="-fx-background-color: white; -fx-border-color: grey;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.calculator.IntegralCalculatorController">
+    <BorderPane layoutX="236.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <top>
+            <AnchorPane prefHeight="23.0" prefWidth="972.0" style="-fx-border-color: grey;" BorderPane.alignment="CENTER">
+                <Pane layoutX="7.0" layoutY="-49.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <ImageView fx:id="close" fitHeight="22.0" fitWidth="22.0" layoutX="994.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../image/exit.png" />
+                    </ImageView>
+                </Pane>
+                <Pane layoutX="2.0" layoutY="27.0" prefHeight="40.0" prefWidth="972.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+                    <Label fx:id="menuClose" contentDisplay="RIGHT" layoutX="940.0" layoutY="9.0" prefHeight="22.0" prefWidth="79.0" text="MENU" textFill="#b7b7b7" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="840.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="9.0">
+                        <font>
+                            <Font name="Corbel" size="17.0" />
+                        </font>
+                        <graphic>
+                            <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../image/menu1.png" />
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label fx:id="menu" contentDisplay="RIGHT" layoutX="940.0" layoutY="9.0" prefHeight="22.0" prefWidth="79.0" text="MENU" textFill="#b7b7b7" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="840.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="9.0">
+                        <font>
+                            <Font name="Corbel Bold" size="17.0" />
+                        </font>
+                        <graphic>
+                            <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="960.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../image/menu1.png" />
+                            </ImageView>
+                        </graphic>
+                    </Label>
+                    <Label layoutX="14.0" layoutY="7.0" text="Integral calculator">
+                        <font>
+                            <Font name="Corbel Bold" size="21.0" />
+                        </font>
+                    </Label>
+                </Pane>
+            </AnchorPane>
+        </top>
+        <right>
+            <AnchorPane fx:id="slider" prefHeight="535.0" prefWidth="222.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
+                <VBox fx:id="vBoxMenu" layoutX="40.0" layoutY="62.0" prefHeight="469.0" prefWidth="222.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="62.0">
+                    <Button fx:id="scientificCalculatorButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#scientificCalculatorOnAction" prefHeight="25.0" prefWidth="222.0" styleClass="buttonMenu" text="Scientific calculator" textFill="WHITE">
+                        <VBox.margin>
+                            <Insets top="20.0" />
+                        </VBox.margin>
+                        <graphic>
+                            <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../image/calculatorSymbol.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="222.0">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                            <Image url="@../image/radStop.png" />
+                        </ImageView>
+                        <ChoiceBox fx:id="unitChoiceBox" prefHeight="33.0" prefWidth="226.0">
+                            <styleClass>
+                                <String fx:value="buttonMenu" />
+                                <String fx:value="choice-box" />
+                            </styleClass>
+                        </ChoiceBox>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="200.0">
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                            <Image url="@../image/radStop.png" />
+                        </ImageView>
+                        <ChoiceBox fx:id="integrationMethodsChoiceBox" prefHeight="33.0" prefWidth="226.0">
+                            <styleClass>
+                                <String fx:value="buttonMenu" />
+                                <String fx:value="choice-box" />
+                            </styleClass>
+                        </ChoiceBox>
+                    </HBox>
+                    <Button fx:id="helpButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#helpOnAction" prefHeight="25.0" prefWidth="222.0" styleClass="buttonMenu" text="Help" textFill="WHITE">
+                        <graphic>
+                            <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../image/help.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="operationHistoryButtonButton" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="25.0" prefWidth="222.0" styleClass="buttonMenu" text="Operation history" textFill="WHITE">
+                        <graphic>
+                            <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@../image/operationHistory.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <AnchorPane prefHeight="25.0" prefWidth="222.0">
+                        <Label fx:id="closeGraph" layoutY="2.0" prefHeight="25.0" prefWidth="222.0" styleClass="buttonMenu" text="Graph" textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../image/graphSymbol.png" />
+                                </ImageView>
+                            </graphic>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </Label>
+                        <Label fx:id="openGraph" layoutY="2.0" prefHeight="25.0" prefWidth="222.0" styleClass="buttonMenu" text="Graph" textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="920.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../image/graphSymbol.png" />
+                                </ImageView>
+                            </graphic>
+                            <padding>
+                                <Insets left="10.0" />
+                            </padding>
+                        </Label>
+                    </AnchorPane>
+                    <Pane fx:id="graphPane" prefHeight="145.0" prefWidth="222.0">
+                        <padding>
+                            <Insets left="12.0" />
+                        </padding>
+                        <VBox.margin>
+                            <Insets left="35.0" />
+                        </VBox.margin>
+                        <Label layoutX="14.0" layoutY="12.0" styleClass="labelMenu" text="x min" textFill="WHITE" />
+                        <Label layoutX="12.0" layoutY="47.0" styleClass="labelMenu" text="x max" textFill="WHITE" />
+                        <Button fx:id="drawID" layoutX="20.0" layoutY="102.0" mnemonicParsing="false" onAction="#graph" styleClass="buttonWykres" text="Draw" textFill="WHITE" />
+                        <Spinner layoutX="58.0" layoutY="10.0" prefHeight="25.0" prefWidth="90.0" fx:id="xMinSpinner" />
+                        <Spinner layoutX="59.0" layoutY="45.0" prefHeight="25.0" prefWidth="90.0" fx:id="xMaxSpinner" />
+                    </Pane>
+                </VBox>
+                <VBox fx:id="vBoxOperationHistory" layoutY="22.0" prefHeight="512.0" prefWidth="222.0" visible="false">
+                    <ImageView fx:id="back" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                        <VBox.margin>
+                            <Insets left="10.0" />
+                        </VBox.margin>
+                        <Image url="@../image/back.png" />
+                    </ImageView>
+                    <ScrollPane prefHeight="490.0" prefWidth="222.0" style="-fx-background-color: grey;">
+                        <VBox.margin>
+                            <Insets top="20.0" />
+                        </VBox.margin>
+                        <ListView fx:id="listViewOperationHistory" onMouseClicked="#operationHistoryOnMouseClicked" prefHeight="486.0" prefWidth="207.0" style="-fx-background-color: grey;" styleClass="list-cell" stylesheets="@../css/listView.css" />
+                    </ScrollPane>
+                </VBox>
+            </AnchorPane>
+        </right>
+        <center>
+            <AnchorPane prefHeight="535.0" prefWidth="825.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                <HBox prefHeight="173.0" prefWidth="811.0">
+                    <HBox prefHeight="195.0" prefWidth="516.0">
+                        <Label layoutX="376.0" layoutY="43.0" prefHeight="50.0" prefWidth="63.0" text="Formula:">
+                            <font>
+                                <Font name="Yu Gothic Medium" size="13.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="5.0" top="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="enteredIntegralFormula" layoutX="431.0" layoutY="15.0" onMouseClicked="#clickedIntegralField" prefHeight="71.0" prefWidth="388.0" styleClass="textField" stylesheets="@../css/textField.css">
+                            <effect>
+                                <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                    <color>
+                                        <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                            <font>
+                                <Font name="Courier New" size="13.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets top="20.0" />
+                            </HBox.margin>
+                        </TextField>
+                        <TextField fx:id="hiddenIntegralFormula" editable="false" layoutX="431.0" layoutY="84.0" prefHeight="25.0" prefWidth="70.0" visible="false">
+                            <HBox.margin>
+                                <Insets left="-150.0" top="100.0" />
+                            </HBox.margin>
+                        </TextField>
+                        <padding>
+                            <Insets top="10.0" />
+                        </padding>
+                    </HBox>
+                    <VBox prefHeight="200.0" prefWidth="380.0">
+                        <opaqueInsets>
+                            <Insets top="50.0" />
+                        </opaqueInsets>
+                        <padding>
+                            <Insets bottom="20.0" top="10.0" />
+                        </padding>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                            <Label fx:id="upperLimitLabel" layoutX="12.0" layoutY="32.0" text="Upper limit:">
+                                <font>
+                                    <Font name="Yu Gothic Medium" size="13.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="20.0" top="20.0" />
+                                </HBox.margin>
+                            </Label>
+                            <TextField fx:id="upperLimitTextField" layoutX="171.0" layoutY="22.0" onMouseClicked="#clickedUpperLimit" prefHeight="35.0" prefWidth="83.0" styleClass="textField" stylesheets="@../css/textField.css">
+                                <effect>
+                                    <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                        <color>
+                                            <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                        </color>
+                                    </DropShadow>
+                                </effect>
+                                <font>
+                                    <Font name="Yu Gothic Medium" size="13.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="20.0" top="10.0" />
+                                </HBox.margin>
+                            </TextField>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                            <Label fx:id="lowerLimitLabel" layoutX="12.0" layoutY="80.0" text="Lower limit:">
+                                <font>
+                                    <Font name="Yu Gothic Medium" size="13.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="20.0" top="20.0" />
+                                </HBox.margin>
+                            </Label>
+                            <TextField fx:id="lowerLimitTextField" layoutX="171.0" layoutY="70.0" onMouseClicked="#clickedLowerLimit" prefHeight="35.0" prefWidth="83.0" styleClass="textField" stylesheets="@../css/textField.css">
+                                <effect>
+                                    <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                        <color>
+                                            <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                        </color>
+                                    </DropShadow>
+                                </effect>
+                                <font>
+                                    <Font name="Yu Gothic Medium" size="13.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="20.0" top="10.0" />
+                                </HBox.margin>
+                            </TextField>
+                        </HBox>
+                        <HBox prefHeight="193.0" prefWidth="338.0">
+                            <Label fx:id="numberOfSubintervalsLabel" layoutX="12.0" layoutY="129.0" prefHeight="74.0" prefWidth="78.0" text="Number of subintervals:" wrapText="true">
+                                <font>
+                                    <Font name="Yu Gothic Medium" size="13.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="20.0" />
+                                </HBox.margin>
+                            </Label>
+                            <TextField fx:id="numberOfSubintervalsTextField" layoutX="171.0" layoutY="70.0" onMouseClicked="#clickedNumberOfSubintervals" prefHeight="29.0" prefWidth="83.0" styleClass="textField" stylesheets="@../css/textField.css">
+                                <effect>
+                                    <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                        <color>
+                                            <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                        </color>
+                                    </DropShadow>
+                                </effect>
+                                <font>
+                                    <Font name="Yu Gothic Medium" size="13.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="14.0" top="15.0" />
+                                </HBox.margin>
+                            </TextField>
+                        </HBox>
+                    </VBox>
+                </HBox>
+                <HBox layoutX="3.0" layoutY="154.0" prefHeight="204.0" prefWidth="799.0">
+                    <ImageView fitHeight="108.0" fitWidth="47.0" layoutX="10.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                        <HBox.margin>
+                            <Insets left="5.0" top="40.0" />
+                        </HBox.margin>
+                        <Image url="@../image/integralSymbol.png" />
+                    </ImageView>
+                    <Label fx:id="lowerLimitFormula" alignment="TOP_CENTER" layoutX="17.0" layoutY="150.0" prefHeight="40.0" prefWidth="90.0">
+                        <font>
+                            <Font name="Yu Gothic Medium" size="13.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets left="-55.0" top="145.0" />
+                        </HBox.margin>
+                        <graphic>
+                            <WebView fx:id="lowerLimitWebView" prefHeight="40.0" prefWidth="80.0" stylesheets="@../css/granica.css" />
+                        </graphic>
+                    </Label>
+                    <Label fx:id="upperLimitFormula" alignment="TOP_CENTER" prefHeight="40.0" prefWidth="90.0">
+                        <font>
+                            <Font name="Yu Gothic Medium" size="13.0" />
+                        </font>
+                        <graphic>
+                            <WebView fx:id="upperLimitWebView" prefHeight="30.0" prefWidth="76.0" stylesheets="@../css/granica.css" />
+                        </graphic>
+                        <HBox.margin>
+                            <Insets left="-70.0" />
+                        </HBox.margin>
+                    </Label>
+                    <Pane layoutX="69.0" layoutY="64.0" prefHeight="81.0" prefWidth="305.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                <color>
+                                    <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                </color>
+                            </DropShadow>
+                        </effect>
+                        <HBox.margin>
+                            <Insets bottom="70.0" left="-65.0" top="50.0" />
+                        </HBox.margin>
+                        <WebView fx:id="webView" layoutX="4.0" layoutY="10.0" prefHeight="63.0" prefWidth="297.0" />
+                    </Pane>
+                    <Label alignment="TOP_CENTER" layoutX="520.0" layoutY="90.0" prefHeight="20.0" prefWidth="25.0" text="=">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets bottom="50.0" left="-5.0" top="80.0" />
+                        </HBox.margin>
+                    </Label>
+                    <Pane layoutX="57.0" layoutY="50.0" prefHeight="84.0" prefWidth="279.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                <color>
+                                    <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                </color>
+                            </DropShadow>
+                        </effect>
+                        <HBox.margin>
+                            <Insets bottom="70.0" left="-5.0" top="50.0" />
+                        </HBox.margin>
+                        <WebView fx:id="webView1" layoutX="3.0" layoutY="5.0" prefHeight="74.0" prefWidth="274.0" />
+                    </Pane>
+                    <Label fx:id="resultSymbol" alignment="TOP_CENTER" layoutX="460.0" layoutY="80.0" prefHeight="20.0" prefWidth="25.0" text="=">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets bottom="50.0" left="-5.0" top="80.0" />
+                        </HBox.margin>
+                    </Label>
+                    <TextField fx:id="integralResultTextField" editable="false" layoutX="485.0" layoutY="50.0" prefHeight="84.0" prefWidth="146.0" styleClass="textField" stylesheets="@../css/textField.css">
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" height="5.93" offsetY="2.0" radius="2.465" width="5.93">
+                                <color>
+                                    <Color red="0.46052631735801697" green="0.45626217126846313" blue="0.45626217126846313" />
+                                </color>
+                            </DropShadow>
+                        </effect>
+                        <font>
+                            <Font name="Yu Gothic Medium" size="14.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets bottom="70.0" top="50.0" />
+                        </HBox.margin>
+                    </TextField>
+                </HBox>
+                <GridPane alignment="TOP_CENTER" layoutX="-5.0" layoutY="394.0" prefHeight="175.0" prefWidth="814.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="20.0" prefWidth="80.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="20.0" prefWidth="80.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="20.0" prefWidth="80.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <VBox.margin>
+                        <Insets right="350.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets left="-80.0" />
+                    </padding>
+                    <Button fx:id="piID" mnemonicParsing="false" onAction="#piOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="π" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                    <Button fx:id="minusID" mnemonicParsing="false" onAction="#minusOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="−" GridPane.rowIndex="1" />
+                    <Button fx:id="rightBrecketID" mnemonicParsing="false" onAction="#rightBracketOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text=")" GridPane.columnIndex="2" />
+                    <Button fx:id="plusID" mnemonicParsing="false" onAction="#plusOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="+" />
+                    <Button fx:id="leftBracketID" mnemonicParsing="false" onAction="#leftBracketOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="(" GridPane.columnIndex="1" />
+                    <Button fx:id="NrootID" mnemonicParsing="false" onAction="#NrootOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="ⁿ√" GridPane.columnIndex="4" />
+                    <Button fx:id="squareRootID" mnemonicParsing="false" onAction="#squareRootOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="√" GridPane.columnIndex="3" />
+                    <Button fx:id="resultID" mnemonicParsing="false" onAction="#resultOnAction" prefHeight="30.0" prefWidth="87.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="=" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                    <Button fx:id="squarePowerID" mnemonicParsing="false" onAction="#squarePowerOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="x²" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    <Button fx:id="NpowerID" mnemonicParsing="false" onAction="#NpowerOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="xⁿ" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                    <Button fx:id="naturalLogID" mnemonicParsing="false" onAction="#naturalLogarithmOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="ln" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    <Button fx:id="logID" mnemonicParsing="false" onAction="#logarithmOnAction" prefHeight="30.0" prefWidth="48.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: black;" text="logₙm" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <font>
+                            <Font name="Monospaced Regular" size="11.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="eulerID" mnemonicParsing="false" onAction="#eulerOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="e" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    <Button fx:id="multiplicationID" mnemonicParsing="false" onAction="#multiplicationOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="×" GridPane.rowIndex="2" />
+                    <Button fx:id="divisionID" mnemonicParsing="false" onAction="#divisionOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="÷" GridPane.rowIndex="3" />
+                    <Button fx:id="factorialID" mnemonicParsing="false" onAction="#factorialOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="n!" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Button fx:id="sinID" mnemonicParsing="false" onAction="#sinOnAction" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="sin(x)" GridPane.columnIndex="6" />
+                    <Button fx:id="acotID" mnemonicParsing="false" onAction="#acotOnAction" prefHeight="31.0" prefWidth="76.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="acot(x)" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+                    <Button fx:id="acosID" mnemonicParsing="false" onAction="#acosOnAction" prefHeight="31.0" prefWidth="76.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="acos(x)" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                    <Button fx:id="atanID" mnemonicParsing="false" onAction="#atanOnAction" prefHeight="31.0" prefWidth="76.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="atan(x)" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                    <Button fx:id="asinID" mnemonicParsing="false" onAction="#asinOnAction" prefHeight="31.0" prefWidth="76.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="asin(x)" GridPane.columnIndex="7" />
+                    <Button fx:id="cotID" mnemonicParsing="false" onAction="#cotOnAction" prefHeight="31.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="cot(x)" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                    <Button fx:id="tanID" mnemonicParsing="false" onAction="#tanOnAction" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="tan(x)" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                    <Button fx:id="cosID" mnemonicParsing="false" onAction="#cosOnAction" prefHeight="30.0" prefWidth="68.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="cos(x)" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                    <Button fx:id="infinityID" mnemonicParsing="false" onAction="#infinityOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="∞" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                    <Button fx:id="dotID" mnemonicParsing="false" onAction="#dotOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="." GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Button fx:id="commaID" mnemonicParsing="false" onAction="#commaOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="," GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                    <Button fx:id="xID" mnemonicParsing="false" onAction="#xOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="x" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                    <Button fx:id="removeAllID" mnemonicParsing="false" onAction="#removeAllOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="C" GridPane.columnIndex="9" />
+                    <Button fx:id="deleteLastID" mnemonicParsing="false" onAction="#deleteLastOnAction" prefHeight="30.0" prefWidth="48.0" styleClass="btnNauk" stylesheets="@../css/scientificCalculatorButton.css" text="⮨" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+                </GridPane>
+                <GridPane alignment="CENTER" layoutX="-2.0" layoutY="356.0" prefHeight="44.0" prefWidth="811.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <padding>
+                        <Insets left="-100.0" />
+                    </padding>
+                    <Button fx:id="zeroOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="0" />
+                    <Button fx:id="oneOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="1" GridPane.columnIndex="1" />
+                    <Button fx:id="twoOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="2" GridPane.columnIndex="2" />
+                    <Button fx:id="threeOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="3" GridPane.columnIndex="3" />
+                    <Button fx:id="fourOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="4" GridPane.columnIndex="4" />
+                    <Button fx:id="fiveOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="5" GridPane.columnIndex="5" />
+                    <Button fx:id="sixOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="6" GridPane.columnIndex="6" />
+                    <Button fx:id="sevenOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="7" GridPane.columnIndex="7" />
+                    <Button fx:id="eightOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="8" GridPane.columnIndex="8" />
+                    <Button fx:id="nineOnAction" mnemonicParsing="false" prefHeight="30.0" prefWidth="48.0" styleClass="btnCyfry" stylesheets="@../css/scientificCalculatorButton.css" text="9" GridPane.columnIndex="9" />
+                </GridPane>
+            </AnchorPane>
+        </center>
+    </BorderPane>
+</AnchorPane>

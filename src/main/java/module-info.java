@@ -18,6 +18,6 @@ module com.example.kalkulator {
     requires java.desktop;
     requires javafx.graphics;
 
-    opens com.example.kalkulator to javafx.fxml;
-    exports com.example.kalkulator;
+    opens com.example.calculator to javafx.fxml;
+    exports com.example.calculator;
 }
